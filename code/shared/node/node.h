@@ -13,8 +13,10 @@
 #define _DP_NODE_H_
 #include <rf24.h>
 const uint8_t ADDRESSES[][6] = { "PNode", "1Node", "2Node", "3Node", "4Node", "5Node"};
-typedef enum { PI, A1, A2, A3, A4, A5} address_t;
-typedef enum { OFF=0x00, BLUE, GREEN, CYAN, RED, MAGENTA, YELLOW, WHITE, NUM_COLORS } color_t;
+typedef enum { PI, A1, A2, A3, A4, A5} address_e;
+typedef enum { OFF=0x00, BLUE, GREEN, CYAN, RED, MAGENTA, YELLOW, WHITE, NUM_COLORS } color_e;
+typedef enum { IR_NONE=0x00, IR_SONY, IR_NEC }, ir_prot_e;
+
 
 /*
   Contains data for the nrf2401+ module.
@@ -27,7 +29,7 @@ struct nrf2401_prop {
   rf24_datarate_e data_rate;
   rf24_crclength_e crc_length;
   uint8_t channel;
-  address_t address;
+  address_e address;
 };
 
 /*
@@ -45,7 +47,7 @@ struct ir_props {
   Properties for each node.
 */
 struct node_prop {
-  color_t color;
+  color_e color;
   uint8_t id;
   struct nrf2401_prop rf;
   struct ir_prop ir;
@@ -53,6 +55,22 @@ struct node_prop {
 
 /*
   Initialzes node.
+
+  color = BLUE
+  id = 0
+
+  default rf properties set for maximum range
+  rf.power_level = RF24_PA_MAX
+  rf.data_rate = RF24_250KBPS
+  rf.crc_length = RF24_CRC_NONE
+  rf.channel = 0
+  rf.address = A1
+
+  zoom_in = 0
+  zoom_out = 0
+  focus_in = 0
+  focus_out = 0
+  ir_prot = 0
 */
 void node_init(struct node_prop *np);
 
@@ -60,7 +78,7 @@ void node_init(struct node_prop *np);
   Sets the rgb color of the node.
   If it's not a valid value, then it is set to be OFF.
 */
-void node_set_color(struct node_prop *np, color_t c);
+void node_set_color(struct node_prop *np, color_e c);
 
 /*
   Returns the color of the node.
@@ -130,12 +148,12 @@ uint8_t node_get_channel(struct node_prop *np);
 /*
   Sets the address of the node.
 */
-void node_set_address(struct node_prop *np, address_t a);
+void node_set_address(struct node_prop *np, address_e a);
 
 /*
   Returns the address of the node.
 */
-address_t node_get_address(struct node_prop *np);
+address_e node_get_address(struct node_prop *np);
 
 
 /******************************************************************************/
