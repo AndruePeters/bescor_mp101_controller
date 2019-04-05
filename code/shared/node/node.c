@@ -47,3 +47,22 @@ void node_set_color(struct node_prop *np, color_e c)
     np->color = c;
   }
 }
+
+
+/*
+  Returns the color of the node.
+*/
+color_t node_get_color(struct node_prop *np)
+{
+  assert(np != NULL);
+  return np->color;
+}
+
+/*
+  Sets the id of the node.
+  Can be any uint8_t value.
+*/
+void node_set_id(struct node_prop *np, uint8_t id)
+{
+
+}
