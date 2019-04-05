@@ -169,3 +169,118 @@ uint8_t node_get_channel(struct node_prop *np)
   assert (np != NULL);
   return np->rf.channel;
 }
+
+
+/*
+  Sets the address of the node.
+*/
+void node_set_address(struct node_prop *np, address_e a)
+{
+  assert (np != NULL);
+  if ( a < PI || a > A5) {
+    // what to do?
+    // decide in future
+  } else {
+    np->rf.address = a;
+  }
+}
+
+/*
+  Returns the address of the node.
+*/
+address_e node_get_address(struct node_prop *np)
+{
+  assert (np != NULL);
+  return np->rf.address;
+}
+
+/*
+  Sets the zoom in code.
+*/
+void node_set_zoom_in(struct node_prop *np, uint32_t zi)
+{
+  assert (np != NULL);
+  np->ir.zoom_in = zi;
+}
+
+/*
+  Returns the zoom in code.
+*/
+uint32_t node_get_zoom_in(struct node_prop *np)
+{
+  assert (np != NULL);
+  return np->ir.zoom_in;
+}
+
+/*
+  Sets the zoom out code.
+*/
+void node_set_zoom_out(struct node_prop *np, uint32_t zo)
+{
+  assert (np != NULL);
+  np->ir.zoom_out = zo;
+}
+
+/*
+  Returns the zoom out code.
+*/
+uint32_t node_get_zoom_out(struct node_prop *np)
+{
+  assert (np != NULL);
+  return np->ir.zoom_out;
+}
+
+/*
+  Sets the focus in code.
+*/
+void node_set_focus_in(struct node_prop *np, uint32_t fi)
+{
+  assert (np != NULL);
+  np->ir.focus_in = fi;
+}
+
+/*
+  Returns the focus in code.
+*/
+uint32_t node_get_focus_in(struct node_prop *np)
+{
+  assert (np != NULL);
+  return np->ir.focus_in;
+}
+
+/*
+  Sets the focus_out code.
+*/
+void node_set_focus_out(struct node_prop *np, uint32_t fo)
+{
+  assert (np != NULL);
+  np->ir.focus_out = fo;
+}
+
+/*
+  Returns the focus out code.
+*/
+uint32_t node_get_focus_out(struct node_prop *np)
+{
+  assert (np != NULL);
+  return np->ir.focus_out;
+}
+
+/*
+  Sets the ir protocol.
+  Need to determine supported protocols in future and check.
+*/
+void node_set_ir_prot(struct node_prop *np, uint_t ip)
+{
+  assert (np != NULL);
+  np->ir.ir_prot = ip;
+}
+
+/*
+  Returns the ir protocol.
+*/
+uint8_t node_get_ir_prot(struct node_prop *np)
+{
+  assert (np != NULL);
+  return np->ir.ir_prot;
+}
