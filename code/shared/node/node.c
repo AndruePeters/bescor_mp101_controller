@@ -151,3 +151,21 @@ rf24_crclength_e node_get_crc_length(struct node_prop *cp)
   assert (np != NULL);
   return np->rf.crc_length;
 }
+
+/*
+  Sets the channel the node operates on.
+*/
+void node_set_channel(struct node_prop *np, uint8_t c)
+{
+  assert (np != NULL);
+  np->rf.channel = c;
+}
+
+/*
+  Returns the channel the node is operating on.
+*/
+uint8_t node_get_channel(struct node_prop *np)
+{
+  assert (np != NULL);
+  return np->rf.channel;
+}
