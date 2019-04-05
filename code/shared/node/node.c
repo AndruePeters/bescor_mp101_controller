@@ -86,7 +86,7 @@ uint8_t node_get_id(struct node_prop *np)
 void node_set_power_level(struct node_prop *np, rf24_pa_dbm_e pl)
 {
   assert (np != NULL);
-  if (pl < RF24_PA_MIN || pl >= RF24_PA_MAX) {
+  if (pl < RF24_PA_MIN || pl > RF24_PA_MAX) {
     // what to do?
     // decide in the future.
   } else {
@@ -101,4 +101,28 @@ rf24_pa_dbm_e node_get_power_level(struct node_prop *np)
 {
   assert (np != NULL);
   return np->rf.power_level;
+}
+
+/*
+  Sets the data rate the node transmits at.
+  typedef enum { RF24_1MBPS = 0, RF24_2MBPS, RF24_250KBPS } rf24_datarate_e;
+*/
+void node_set_data_rate(struct node_prop *np, rf24_datarate_e dr)
+{
+  assert (np != NULL);
+  if (dr < RF24_1MBPS || dr > RF24_250KBPS) {
+    // what to do?
+    // decide in future
+  } else {
+    np->rf.data_rate = dr;
+  }
+}
+
+/*
+  Returns the data rate.
+*/
+rf24_datarate_e node_get_data_rate(struct node_prop *np)
+{
+  assert (np != NULL);
+  return np->rf.data_rate;
 }
