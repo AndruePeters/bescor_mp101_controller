@@ -126,3 +126,28 @@ rf24_datarate_e node_get_data_rate(struct node_prop *np)
   assert (np != NULL);
   return np->rf.data_rate;
 }
+
+
+/*
+  Sets the crc length of the radio.
+  typedef enum { RF24_CRC_DISABLED = 0, RF24_CRC_8, RF24_CRC_16 } rf24_crclength_e;
+*/
+void node_set_crc_length(struct node_prop *np, rf24_crclength_e cl)
+{
+  assert (np != NULL);
+  if (cl < RF24_CRC_DISABLED || cl > RF24_CRC_16) {
+    // what to do?
+    // decide in future
+  } else {
+    np->rf.crc_length = cl;
+  }
+}
+
+/*
+  Returns the crc length.
+*/
+rf24_crclength_e node_get_crc_length(struct node_prop *cp)
+{
+  assert (np != NULL);
+  return np->rf.crc_length;
+}
