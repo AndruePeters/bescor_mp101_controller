@@ -76,3 +76,29 @@ uint8_t node_get_id(struct node_prop *np)
   assert (np != NULL);
   return np->id;
 }
+
+/*
+  Sets power level of node.
+  *TODO Look up implementation to see if it automatically sets invalid values.
+
+  typedef enum { RF24_PA_MIN = 0,RF24_PA_LOW, RF24_PA_HIGH, RF24_PA_MAX, RF24_PA_ERROR } rf24_pa_dbm_e ;
+*/
+void node_set_power_level(struct node_prop *np, rf24_pa_dbm_e pl)
+{
+  assert (np != NULL);
+  if (pl < RF24_PA_MIN || pl >= RF24_PA_MAX) {
+    // what to do?
+    // decide in the future.
+  } else {
+    np->rf.power_level  = pl;
+  }
+}
+
+/*
+  Returns the power level.
+*/
+rf24_pa_dbm_e node_get_power_level(struct node_prop *np)
+{
+  assert (np != NULL);
+  return np->rf.power_level;
+}
