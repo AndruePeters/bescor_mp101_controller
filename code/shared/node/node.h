@@ -11,9 +11,10 @@
 
 #ifndef _DP_NODE_H_
 #define _DP_NODE_H_
-
+#include <rf24.h>
 const uint8_t ADDRESSES[][6] = { "PNode", "1Node", "2Node", "3Node", "4Node", "5Node"};
-typedef enum { Pi, A1, A2, A3, A4, A5} address_t;
+typedef enum { PI, A1, A2, A3, A4, A5} address_t;
+typedef enum { OFF=0x00, BLUE, GREEN, CYAN, RED, MAGENTA, YELLOW, WHITE, NUM_COLORS } color_t;
 
 /*
   Contains data for the nrf2401+ module.
@@ -23,7 +24,7 @@ typedef enum { Pi, A1, A2, A3, A4, A5} address_t;
 */
 struct nrf2401_prop {
   rf24_pa_dbm_e power_level;
-  rff24_datarate_e data_rate;
+  rf24_datarate_e data_rate;
   rf24_crclength_e crc_length;
   uint8_t channel;
   address_t address;
@@ -41,14 +42,153 @@ struct ir_props {
 };
 
 /*
-  Information for each node.
+  Properties for each node.
 */
 struct node_prop {
-  uint8_t color;
+  color_t color;
   uint8_t id;
   struct nrf2401_prop rf;
   struct ir_prop ir;
-}
+};
+
+/*
+  Initialzes node.
+*/
+void node_init(struct node_prop *np);
+
+/*
+  Sets the rgb color of the node.
+  If it's not a valid value, then it is set to be OFF.
+*/
+void node_set_color(struct node_prop *np, color_t c);
+
+/*
+  Returns the color of the node.
+*/
+color_t node_get_color(struct node_prop *np);
+
+/*
+  Sets the id of the node.
+  Can be any uint8_t value.
+*/
+void node_set_id(struct node_prop *np, uint8_t id);
+
+/*
+  Returns the id of the node.
+*/
+uint8_t node_get_id(struct node_prop *np);
+
+/******************************************************************************/
+/*         The following are for the radio properties of the node.            */
+/******************************************************************************/
 
 
+/*
+  Sets power level of node.
+  *TODO Look up implementation to see if it automatically sets invalid values.
+
+  typedef enum { RF24_PA_MIN = 0,RF24_PA_LOW, RF24_PA_HIGH, RF24_PA_MAX, RF24_PA_ERROR } rf24_pa_dbm_e ;
+*/
+void node_set_power_level(struct node_prop *np, rf24_pa_dbm_e pl);
+
+/*
+  Returns the power level.
+*/
+rf24_pa_dbm_e node_get_power_level(struct node_prop *np);
+
+/*
+  Sets the data rate the node transmits at.
+  typedef enum { RF24_1MBPS = 0, RF24_2MBPS, RF24_250KBPS } rf24_datarate_e;
+*/
+void node_set_data_rate(struct node_prop *np, rf24_datarate_e dr);
+
+/*
+  Returns the data rate.
+*/
+rf24_datarate_e node_get_data_rate(struct node_prop *np);
+
+/*
+  Sets the crc length of the radio.
+  typedef enum { RF24_CRC_DISABLED = 0, RF24_CRC_8, RF24_CRC_16 } rf24_crclength_e;
+*/
+void node_set_crc_length(struct node_prop *np, rf24_crclength_e);
+
+/*
+  Returns the crc length.
+*/
+rf24_crclength_e node_get_crc_length(struct node_prop *cp);
+/*
+  Sets the channel the node operates on.
+*/
+void node_set_channel(struct node_prop *np, uint8_t c);
+
+/*
+  Returns the channel the node is operating on.
+*/
+uint8_t node_get_channel(struct node_prop *np);
+
+/*
+  Sets the address of the node.
+*/
+void node_set_address(struct node_prop *np, address_t a);
+
+/*
+  Returns the address of the node.
+*/
+address_t node_get_address(struct node_prop *np);
+
+
+/******************************************************************************/
+/*         The following are for the radio properties of the node.            */
+/******************************************************************************/
+
+/*
+  Sets the zoom in code.
+*/
+void node_set_zoom_in(struct node_prop *np, uint32_t zi);
+
+/*
+  Returns the zoom in code.
+*/
+uint32_t node_get_zoom_in(struct node_prop *np);
+
+/*
+  Sets the zoom out code.
+*/
+void node_set_zoom_out(struct node_prop *np, uint32_t zo);
+
+/*
+  Returns the zoom out code.
+*/
+uint32_t node_get_zoom_out(struct node_prop *np);
+
+/*
+  Sets the focus in code.
+*/
+void node_set_focus_in(struct node_prop *np, uint32_t fi);
+
+/*
+  Returns the focus in code.
+*/
+uint32_t node_get_focus_in(struct node_prop *np);
+
+/*
+  Sets the focus_out code.
+*/
+void node_set_focus_out(struct node_prop *np, uint32_t fo);
+
+/*
+  Returns the focus out code.
+*/
+uint32_t node_get_focus_out(struct node_prop *np);
+
+/*
+  Sets the ir protocol.
+*/
+void node_set_ir_prot(struct node_prop *np, uint_t ip);
+
+/*
+  Returns the ir protocol.
+*/
+uint8_t node_get_ir_prot(struct node_prop *np);
 #endif
