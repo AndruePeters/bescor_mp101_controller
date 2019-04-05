@@ -7,6 +7,13 @@
   The Pi will be able to tell the Arduino to change certain settings like the power and IR code,
   but not the other way around. (Technically it's possible, but why?)
 
+  Note about the address: The actual addressing is stored in the ADDRESSES array.
+  address_e stores the index of each actual address. Using this method (variable to store index)
+  makes changing and storing the address much simpler and easier to transmit for an embedded system.
+
+  ToDo: Figure out a better way to handle null pointers. Right now, I just assert.
+        Figure out how I want to set radio changes.
+
 */
 
 #ifndef _DP_NODE_H_
