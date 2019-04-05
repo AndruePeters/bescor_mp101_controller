@@ -64,5 +64,15 @@ color_t node_get_color(struct node_prop *np)
 */
 void node_set_id(struct node_prop *np, uint8_t id)
 {
+  assert (np != NULL);
+  np->id = id;
+}
 
+/*
+  Returns the id of the node.
+*/
+uint8_t node_get_id(struct node_prop *np)
+{
+  assert (np != NULL);
+  return np->id;
 }
