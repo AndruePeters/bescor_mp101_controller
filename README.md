@@ -19,16 +19,16 @@ User uses a PS4 controller to control the motor.
 # Installation
 
 ## Raspberry Pi
-* **wiringPi**
+* **wiringPi** (dynamically linked since it is preinstalled)
   * wiringPi is installed by default. Follow [the instructions](http://wiringpi.com/download-and-install/) if you need to install it.
-* **RF24**
+* **RF24** (statically linked)
   * `git clone https://github.com/nRF24/RF24`
   * `cd RF24/`
   * `./configure`
   * `sudo make install`
-* **yaml-cpp**
+* **yaml-cpp** (statically inked)
   * Follow the instructions [here](https://github.com/jbeder/yaml-cpp).
-* **sfml**
+* **sfml** (need to decide - probably statically linked)
   * If you have Debian then run `sudo apt-get install libsfml-dev`
   * Otherwise, follow the [official guide](https://www.sfml-dev.org/tutorials/2.5/start-linux.php) to manually install it. Version is 2.5 at the time of writing.
 
