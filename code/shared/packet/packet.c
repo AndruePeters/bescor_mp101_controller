@@ -56,7 +56,12 @@ void packet_set_payload_used(struct packet *p, uint8_t size)
   p->payload_used = size;
 }
 
+/*
+  Copies size amount of bytes from data into p->payload;
+  If size is zero, then it uses packet->payload_used;
 
+  Aborts if size <= PAYLOAD_MAX_SIZE or if size <= p->payload_used
+*/
 void packet_set_payload_data(struct packet *p, const void *data, uint8_t size)
 {
   uint8_t i = 0;
