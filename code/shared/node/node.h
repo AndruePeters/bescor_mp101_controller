@@ -18,7 +18,7 @@
 
 #ifndef _DP_NODE_H_
 #define _DP_NODE_H_
-#include <rf24.h>
+#include <RF24.h>
 const uint8_t ADDRESSES[][6] = { "PNode", "1Node", "2Node", "3Node", "4Node", "5Node"};
 typedef enum { PI, A1, A2, A3, A4, A5} address_e;
 typedef enum { OFF=0x00, BLUE, GREEN, CYAN, RED, MAGENTA, YELLOW, WHITE, NUM_COLORS } color_e;
