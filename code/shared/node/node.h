@@ -211,7 +211,7 @@ uint32_t node_get_focus_out(struct node_prop *np);
 /*
   Sets the ir protocol.
 */
-void node_set_ir_prot(struct node_prop *np, uint_t ip);
+void node_set_ir_prot(struct node_prop *np, uint32_t ip);
 
 /*
   Returns the ir protocol.
