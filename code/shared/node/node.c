@@ -18,7 +18,7 @@
   default rf properties set for maximum range
   rf.power_level = RF24_PA_MAX
   rf.data_rate = RF24_250KBPS
-  rf.crc_length = RF24_CRC_NONE
+  rf.crc_length = RF24_CRC_DISABLED
   rf.channel = 0
   rf.address = A1
 
@@ -36,7 +36,7 @@ void node_init(struct node_prop *np)
 
   node_set_power_level(np, RF24_PA_MAX);
   node_set_data_rate(np, RF24_250KBPS);
-  node_set_crc_length(np, RF24_CRC_NONE);
+  node_set_crc_length(np, RF24_CRC_DISABLED);
   node_set_channel(np, 0);
   node_set_address(np, A1);
 
@@ -66,7 +66,7 @@ void node_set_color(struct node_prop *np, color_e c)
 /*
   Returns the color of the node.
 */
-color_t node_get_color(struct node_prop *np)
+color_e node_get_color(struct node_prop *np)
 {
   assert(np != NULL);
   return np->color;
@@ -160,7 +160,7 @@ void node_set_crc_length(struct node_prop *np, rf24_crclength_e cl)
 /*
   Returns the crc length.
 */
-rf24_crclength_e node_get_crc_length(struct node_prop *cp)
+rf24_crclength_e node_get_crc_length(struct node_prop *np)
 {
   assert (np != NULL);
   return np->rf.crc_length;

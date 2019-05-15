@@ -22,7 +22,7 @@
 const uint8_t ADDRESSES[][6] = { "PNode", "1Node", "2Node", "3Node", "4Node", "5Node"};
 typedef enum { PI, A1, A2, A3, A4, A5} address_e;
 typedef enum { OFF=0x00, BLUE, GREEN, CYAN, RED, MAGENTA, YELLOW, WHITE, NUM_COLORS } color_e;
-typedef enum { IR_NONE=0x00, IR_SONY, IR_NEC }, ir_prot_e;
+typedef enum { IR_NONE=0x00, IR_SONY, IR_NEC } ir_prot_e;
 
 
 /*
@@ -42,7 +42,7 @@ struct nrf2401_prop {
 /*
   Stores information for the infrared functionality.
 */
-struct ir_props {
+struct ir_prop {
   uint32_t zoom_in;
   uint32_t zoom_out;
   uint32_t focus_in;
@@ -90,7 +90,7 @@ void node_set_color(struct node_prop *np, color_e c);
 /*
   Returns the color of the node.
 */
-color_t node_get_color(struct node_prop *np);
+color_e node_get_color(struct node_prop *np);
 
 /*
   Sets the id of the node.
