@@ -31,6 +31,20 @@
 void node_init(struct node_prop *np)
 {
   assert(np != NULL);
+  node_set_color(np, BLUE);
+  node_set_id(np, 0);
+
+  node_set_power_level(np, RF24_PA_MAX);
+  node_set_data_rate(np, RF24_250KBPS);
+  node_set_crc_length(np, RF24_CRC_NONE);
+  node_set_channel(np, 0);
+  node_set_address(np, A1);
+
+  node_set_zoom_in(np, 0);
+  node_set_zoom_out(np, 0);
+  node_set_focus_in(np, 0);
+  node_set_focus_out(np, 0);
+  node_set_ir_prot(np, 0);
 }
 
 
@@ -270,7 +284,7 @@ uint32_t node_get_focus_out(struct node_prop *np)
   Sets the ir protocol.
   Need to determine supported protocols in future and check.
 */
-void node_set_ir_prot(struct node_prop *np, uint_t ip)
+void node_set_ir_prot(struct node_prop *np, uint32_t ip)
 {
   assert (np != NULL);
   np->ir.ir_prot = ip;
