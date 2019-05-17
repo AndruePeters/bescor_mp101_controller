@@ -62,7 +62,7 @@ Acceptable values: 1 - 255
 0 is not allowed.
 
 #### Color
-Acceptable values:  OFF, BLUE, GREEN< CYAN, RED, MAGENTA, YELLOW, WHITE
+Acceptable values:  OFF, BLUE, GREEN, CYAN, RED, MAGENTA, YELLOW, WHITE
 
 #### Power Level
 Acceptable values: MIN, LOW, HIGH, MAX
