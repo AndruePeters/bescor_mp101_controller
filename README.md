@@ -32,6 +32,27 @@ User uses a PS4 controller to control the motor.
   * If you have Debian then run `sudo apt-get install libsfml-dev`
   * Otherwise, follow the [official guide](https://www.sfml-dev.org/tutorials/2.5/start-linux.php) to manually install it. Version is 2.5 at the time of writing.
 
+## YAML Configuration
+Configuration settings for each node.
+Example yaml file.
+```
+camera_nodes:
+  # this is the first came
+  - channel: 1
+    id: 1
+    address: 1
+    color: BLUE
+    power_level: MAX
+    data_rate: 250KBPS
+    crc_length: DISABLED
+    ir_proto: 1
+    zoom_in: 5
+    zoom_out: 5
+    focus_in: 5
+    focus_out: 5
+
+  # add following cameras here
+```
 ## Cross-compile
 I created a basic [toolchain](https://github.com/AndruePeters/pi_toolchain) to cross compile for the Raspberry Pi.
 The toolchain is simply the standard Raspberry Pi toolchain with precompiled libraries and headers I commonly use for my projects.
@@ -44,4 +65,3 @@ I'll write a better cross-compile description once I get the full thing back up.
 * R
   * Moving up and down zooms in and out
   * Moving left and right focuses in and out
-
