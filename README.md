@@ -61,6 +61,10 @@ Only channel 1 is supported at the moment
 Acceptable values: 1 - 255
 0 is not allowed.
 
+#### Address
+Acceptable values: A1, A2, A3, A4, A5
+At this point in time, I recommend only using A1
+
 #### Color
 Acceptable values:  OFF, BLUE, GREEN, CYAN, RED, MAGENTA, YELLOW, WHITE
 
