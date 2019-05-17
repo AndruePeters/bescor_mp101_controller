@@ -45,7 +45,7 @@ camera_nodes:
     power_level: MAX
     data_rate: 250KBPS
     crc_length: DISABLED
-    ir_proto: 1
+    ir_proto: SONY
     zoom_in: 5
     zoom_out: 5
     focus_in: 5
@@ -53,6 +53,35 @@ camera_nodes:
 
   # add following cameras here
 ```
+
+#### Channel
+Only channel 1 is supported at the moment
+
+#### ID
+Acceptable values: 1 - 255
+0 is not allowed.
+
+#### Color
+Acceptable values:  OFF, BLUE, GREEN< CYAN, RED, MAGENTA, YELLOW, WHITE
+
+#### Power Level
+Acceptable values: MIN, LOW, HIGH, MAX
+
+#### Data Rate
+Acceptable values: 250KBPS, 1MBPS, 2MBPS
+* The lower the speed the further the range. No reason in changing from 250KBPS for this application.
+
+#### CRC Length
+Acceptable values: DISABLED, CRC_8, CRC_16
+
+#### IR Protocol
+Acceptable values: SONY, NEC
+* Hopefully, more will be supported in the future.
+
+#### Zoom In, Zoom Out, Focus In, Focus Out
+Any 32 bit number.
+
+
 ## Cross-compile
 I created a basic [toolchain](https://github.com/AndruePeters/pi_toolchain) to cross compile for the Raspberry Pi.
 The toolchain is simply the standard Raspberry Pi toolchain with precompiled libraries and headers I commonly use for my projects.
