@@ -4,11 +4,13 @@ cmake_minimum_required (VERSION 3.0)
 project (node_test)
 
 
-set (CUSTOM_LIB_PATH $ENV{RPI_TC_PATH}/libs/bin)
+set (CUSTOM_LIB_PATH $ENV{RPI_TC_PATH}/libs/)
 
 # Add the local include directory and custom include directory
 include_directories ( ${CMAKE_CURRENT_SOURCE_DIR}  ../../shared/node/ PUBLIC ${CUSTOM_LIB_PATH}/include)
 message ("Include directories: ${CMAKE_CURRENT_SOURCE_DIR}   ${CUSTOM_LIB_PATH}/include")
+
+link_directories ( ${CUSTOM_LIB_PATH}/bin)
 
 FILE (GLOB SRC_FILES *.cpp)
 message (${SRC_FILES})
