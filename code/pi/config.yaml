@@ -1,0 +1,13 @@
+camera_nodes:
+    - channel: 1
+      id: 1
+      address: A1
+      color: BLUE
+      power_level: MAX
+      date_rate: 250KBPS
+      crc_length: DISABLED
+      ir_proto: SONY
+      zoom_in: 0x00000005
+      zoom_out: 0x0000000A
+      focus_in: 5
+      focus_out: 10
