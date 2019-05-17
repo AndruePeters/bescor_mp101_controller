@@ -35,7 +35,7 @@ User uses a PS4 controller to control the motor.
 ## YAML Configuration
 Configuration settings for each node.
 Example yaml file.
-```
+```yaml
 camera_nodes:
   # this is the first came
   - channel: 1
