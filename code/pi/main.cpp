@@ -26,7 +26,8 @@ RF24 radio(3, 10);
 
 int main()
 {
-  //wiringPiSetup();
+  wiringPiSetup();
+  radio.begin();
   radio.openWritingPipe(ADDRESSES[2]);
   radio.openReadingPipe(1, ADDRESSES[0]);
 
