@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 3.0)
 
 # Name of the project
-project (node_test)
+project (main)
 
 
 set (CUSTOM_LIB_PATH $ENV{RPI_TC_PATH}/libs/)
@@ -12,10 +12,10 @@ message ("Include directories: ${CMAKE_CURRENT_SOURCE_DIR}   ${CUSTOM_LIB_PATH}/
 
 link_directories ( ${CUSTOM_LIB_PATH}/bin ../../shared/node/ ../../shared/packet/)
 
-FILE (GLOB SRC_FILES *.cpp)
+FILE (GLOB SRC_FILES *.cpp ../shared/node/*.cpp ../shared/packet/*.cpp)
 message (${SRC_FILES})
-add_executable(test ${SRC_FILES})
+add_executable(main ${SRC_FILES})
 
 # link pre-compiled libraries
 # use rf24 for nrf2401+ and wiringPi for wiringPi
-target_link_libraries(test rf24)
+target_link_libraries(main pthread stdc++ rf24.so.1.3.2 wiringPi)
