@@ -38,7 +38,7 @@ void send_packet(const nrf2401_prop &n, const packet &p);
 void match_node_radio(const nrf2401_prop &n);
 
 /*
- *  Set write address
+ *  Set write address of the raspberry pi
  */
  void set_rf24_write_addr(const address_e listening_addr);
 
