@@ -7,8 +7,7 @@ make
 scp main pi@192.168.1.162:~
 cd ..
 echo Done
-ssh  -tt pi@192.168.1.162 << ENDSSH
-  cd ~/Desktop
+ssh  -tt -T pi@192.168.1.162 << 'ENDSSH'
   ./main
   echo "Finished running main"
 ENDSSH
