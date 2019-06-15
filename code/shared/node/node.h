@@ -18,9 +18,16 @@
 
 #ifndef _DP_NODE_H_
 #define _DP_NODE_H_
-#include <RF24/RF24.h>
+
+#ifndef ARDUINO
+  #include <RF24/RF24.h>
+#else
+  #include <RF24.h>
+#endif
+
+
 const uint8_t ADDRESSES[][6] = { "PNode", "1Node", "2Node", "3Node", "4Node", "5Node"};
-typedef enum { PI, A1, A2, A3, A4, A5} address_e;
+typedef enum { RPI_ADDR=0x00, A1_ADDR, A2_ADDR, A3_ADDR, A4_ADDR, A5_ADDR} address_e;
 typedef enum { OFF=0x00, BLUE, GREEN, CYAN, RED, MAGENTA, YELLOW, WHITE, NUM_COLORS } color_e;
 typedef enum { IR_NONE=0x00, IR_SONY, IR_NEC } ir_prot_e;
 

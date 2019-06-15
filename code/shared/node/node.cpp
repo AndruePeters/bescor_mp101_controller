@@ -38,7 +38,7 @@ void node_init(struct node_prop *np)
   node_set_data_rate(np, RF24_250KBPS);
   node_set_crc_length(np, RF24_CRC_DISABLED);
   node_set_channel(np, 0);
-  node_set_address(np, A1);
+  node_set_address(np, A1_ADDR);
 
   node_set_zoom_in(np, 0);
   node_set_zoom_out(np, 0);
@@ -191,7 +191,7 @@ uint8_t node_get_channel(struct node_prop *np)
 void node_set_address(struct node_prop *np, address_e a)
 {
   assert (np != NULL);
-  if ( a < PI || a > A5) {
+  if ( a < RPI_ADDR || a > A5_ADDR) {
     // what to do?
     // decide in future
   } else {
