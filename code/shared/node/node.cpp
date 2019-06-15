@@ -195,7 +195,7 @@ void node_set_address(struct node_prop *np, address_e a)
     // what to do?
     // decide in future
   } else {
-    np->rf.address = a;
+    np->rf.listening_addr = a;
   }
 }
 
@@ -205,7 +205,7 @@ void node_set_address(struct node_prop *np, address_e a)
 address_e node_get_address(struct node_prop *np)
 {
   assert (np != NULL);
-  return np->rf.address;
+  return np->rf.listening_addr;
 }
 
 /*

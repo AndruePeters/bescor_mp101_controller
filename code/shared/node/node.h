@@ -36,7 +36,7 @@ struct nrf2401_prop {
   rf24_datarate_e data_rate;
   rf24_crclength_e crc_length;
   uint8_t channel;
-  address_e address;
+  address_e listening_addr;
 };
 
 /*
@@ -58,6 +58,7 @@ struct node_prop {
   uint8_t id;
   struct nrf2401_prop rf;
   struct ir_prop ir;
+  char description[50];
 };
 
 /*
