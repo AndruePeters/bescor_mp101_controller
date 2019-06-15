@@ -18,4 +18,4 @@ add_executable(main ${SRC_FILES})
 
 # link pre-compiled libraries
 # use rf24 for nrf2401+ and wiringPi for wiringPi
-target_link_libraries(main pthread stdc++ rf24.so.1.3.2 wiringPi)
+target_link_libraries(main pthread wiringPi rf24 )
