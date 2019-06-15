@@ -6,7 +6,6 @@
   This is the main file for the program.
   Better description later.
 */
-#include <list>
 #include <iostream>
 #include <iterator>
 
@@ -18,20 +17,23 @@
 #include <node.h>
 #include <packet.h>
 
-#include <unistd.h>
+#include <unistd.h> // for sleep
+
+#include <main.h>
 // global radio instance
 // using wiringPi, so wiringPi pin scheme is also used
 // this is equivalent to radio(22, 0) in the generic gettingstarted.cpp
 RF24 radio(3, 10);
+node_list_t node_list;
 
 int main()
 {
   wiringPiSetup();
-  radio.begin();
-  radio.openWritingPipe(ADDRESSES[2]);
-  radio.openReadingPipe(1, ADDRESSES[0]);
+  rf24_init();
 
-  while (1) {
+
+
+  while (0) {
     // First, stop listening so we can talk.
     radio.stopListening();
 
@@ -76,3 +78,43 @@ int main()
   std::cout << "Ran successfully.\n";
   return 0;
 }
+
+
+void rf24_init()
+{
+  radio.begin();
+  radio.openWritingPipe(ADDRESSES[2]);
+  radio.openReadingPipe(1, ADDRESSES[0]);
+}
+
+/*
+ * Configures radio to match node n's properties.
+ */
+void match_node_radio(const nrf2401_prop &n)
+{
+  radio.setPALevel(n.power_level);
+  radio.setDataRate(n.data_rate);
+  radio.setCRCLength(n.crc_length);
+  radio.setChannel(n.channel);
+  set_rf24_write_addr(n.listening_addr);
+}
+
+
+/*
+ *
+ */
+void send_packet(const nrf2401_prop &n, const packet &p)
+{
+  match_node_radio(n);
+  radio.write(&p, sizeof(p));
+}
+
+
+/*
+ *  Sets the raspberry pi write address to the arduino node listening address
+ */
+ void set_rf24_write_addr(const address_e listening_addr)
+ {
+   radio.openWritingPipe(ADDRESSES[listening_addr]);
+   radio.openReadingPipe(1, ADDRESSES[0]);
+ }
