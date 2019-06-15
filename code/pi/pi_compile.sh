@@ -6,4 +6,4 @@ cd _build
 make
 scp main pi@192.168.1.162:~/Desktop
 cd ..
-
+echo Done
