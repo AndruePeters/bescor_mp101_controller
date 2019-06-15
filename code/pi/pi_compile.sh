@@ -6,4 +6,12 @@ cd _build
 make
 scp main pi@192.168.1.162:~/Desktop
 cd ..
+<<<<<<< HEAD
 echo Done
+=======
+ssh  -tt pi@192.168.1.162 << 'ENDSSH'
+  echo "Trying to run main"
+  ~/Desktop/main
+  echo "Finished running main"
+ENDSSH
+>>>>>>> 589d21e512b96819e1c8235c24e252be09e9cd42
