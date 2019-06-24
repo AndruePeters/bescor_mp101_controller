@@ -16,6 +16,7 @@
 // specific files projectc++c
 #include <node.h>
 #include <packet.h>
+#include <js.h>
 
 #include <unistd.h> // for sleep
 
@@ -44,16 +45,17 @@ int main()
 void rf24_init()
 {
   radio.begin();
+  radio.setAutoAck(true);
+  radio.setRetries(2, 15);
   radio.openWritingPipe(ADDRESSES[2]);
   radio.openReadingPipe(1, ADDRESSES[0]);
 }
 
 /*
- * Configures radio to match node n's properties.
+ * Configures radio to match node n's properties needed for sending/receiving messages.
  */
 void match_node_radio(const nrf2401_prop &n)
 {
-  radio.setPALevel(n.power_level);
   radio.setDataRate(n.data_rate);
   radio.setCRCLength(n.crc_length);
   radio.setChannel(n.channel);
@@ -72,35 +74,10 @@ void send_packet(const nrf2401_prop &n, const packet &p)
   // First, stop listening so we can talk.
   radio.stopListening();
 
-  // Take the time, and send it.  This will block until complete
-  bool ok = radio.write( &p, sizeof(p));
 
-  // do something if transmission failed
-  if (!ok) {
+  // attempt to send packet
+  if (!radio.write( &p, sizeof(p))) {
 
-  }
-  // Now, continue listening
-  radio.startListening();
-
-  // Wait here until we get a response, or timeout (250ms)
-  unsigned long started_waiting_at = millis();
-  bool timeout = false;
-  while ( ! radio.available() && ! timeout ) {
-    if (millis() - started_waiting_at > 200 )
-      timeout = true;
-  }
-
-  // Describe the results
-  if ( timeout ) {
-    printf("Failed, response timed out.\n");
-  }
-  else {
-    // Grab the response, compare, and send to debugging spew
-    unsigned long got_time;
-    radio.read( &got_time, sizeof(unsigned long) );
-
-    // Spew it
-    printf("Got response %lu, round-trip delay: %lu\n",got_time,millis()-got_time);
   }
 }
 
