@@ -3,6 +3,8 @@
 
 #include <chrono>
 #include <iostream>
+#include <iterator>
+#include <list>
 #include <string>
 #include <sstream>
 #include <thread>
@@ -11,6 +13,8 @@
 #include <curses.h>
 using namespace controller;
 JS_State js(0);
+std::list<unsigned> testList;
+auto it = testList.begin();
 
 int printDiagnostic()
 {
@@ -18,6 +22,12 @@ int printDiagnostic()
   js.update();
 
   if (js.isConnected()) {
+    if ( js.isBtnPressed(DS4::L1)) {
+      --it;
+    } else if (js.isBtnPressed(DS4::R1)) {
+      ++it;
+    }
+
     stream << js.getName() << std::endl
               << js.getProductID() << std::endl
               << js.getVendorID() << std::endl;
@@ -43,7 +53,8 @@ int printDiagnostic()
               << "\nRS_X: " << js.getAxisPos(DS4::RS_X)
               << "\nRS_Y: " << js.getAxisPos(DS4::RS_Y)
               << "\nPovX: " << js.getAxisPos(DS4::PovX)
-              << "\nPovY: " << js.getAxisPos(DS4::PovY) << std::endl;
+              << "\nPovY: " << js.getAxisPos(DS4::PovY) << "\n"
+              << "Current node: " << *it << std::endl;
       erase();
       addstr(stream.str().c_str());
       refresh();
@@ -57,7 +68,6 @@ int main()
   cbreak();
   int h,w;
   getmaxyx(stdscr, h, w);
-
   js.update();
   WINDOW *win = newwin(h, w, 0,0);
 
@@ -65,6 +75,11 @@ int main()
 
   printDiagnostic();
   refresh();
+
+  for (unsigned i = 0; i < 5; ++i) {
+    testList.push_back(i);
+  }
+  it = testList.begin();
   while(1) {
     printDiagnostic();
     std::this_thread::sleep_for(std::chrono::milliseconds(15));
