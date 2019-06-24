@@ -1,25 +1,27 @@
 #include <js.h>
 #include <iostream>
 #include <string>
+#include <sstream>
+#include <curses.h>
 
+JS_State js(0);
 
 void clearScreen()
 {
   std::cout << "\033[2J\033[1;1H";
 }
 
-int main()
+void printDiagnostic()
 {
-  JS_State js(0);
+  std::stringstream stream;
   js.update();
 
-  while(1) {
-    clearScreen();
-    std::cout << js.getName() << std::endl
+  if (js.isConnected()) {
+    stream << js.getName() << std::endl
               << js.getProductID() << std::endl
               << js.getVendorID() << std::endl;
 
-    std::cout << "\nX: " << js.isBtnPressed(0)
+    stream << "\nX: " << js.isBtnPressed(0)
               << "\nO: " << js.isBtnPressed(1)
               << "\nTri: " << js.isBtnPressed(2)
               << "\nSqr: " << js.isBtnPressed(3)
@@ -41,7 +43,29 @@ int main()
               << "\nV: " << js.getAxisPos(Axis::V)
               << "\nPovX: " << js.getAxisPos(Axis::PovX)
               << "\nPovY: " << js.getAxisPos(Axis::PovY) << std::endl;
-              js.update();
+      erase();
+      addstr(stream.str().c_str());
+      refresh();
+  }
+}
+
+int main()
+{
+  initscr();
+  noecho();
+  cbreak();
+  int h,w;
+  getmaxyx(stdscr, h, w);
+
+  js.update();
+  WINDOW *win = newwin(h, w, 0,0);
+
+  wrefresh(win);
+
+  printDiagnostic();
+  refresh();
+  while(1) {
+    printDiagnostic();
   }
 
 }
