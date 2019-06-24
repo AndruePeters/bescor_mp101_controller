@@ -43,10 +43,16 @@ public:
   unsigned getProductID();
 
 private:
+  // number asigned to joystick 0 <= js_num < 8
   unsigned js_num;
+
+  // keeps track of previous button state
   std::array <bool, 32> prev_btn_state;
+
+  // keeps track of the current button state
   std::array <bool, 32> curr_btn_state;
-  std::array <bool, 32> btn_state;
+
+  // 1 if axis is normal, -1 if axis is inverted
   std::array <int, 8> inv_axes_state;
   void printJsNotConnected() const;
 
