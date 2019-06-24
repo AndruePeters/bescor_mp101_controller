@@ -18,7 +18,6 @@ JS_State::JS_State(unsigned js_num)
     for (unsigned i = 0; i < 32; ++i) {
       prev_btn_state [i] = 0;
       curr_btn_state [i] = 0;
-      btn_state [i] = 0;
     }
 }
 
@@ -32,11 +31,6 @@ void JS_State::update()
   // update current button state
   for (unsigned i = 0; i < getNumBtns(); ++i) {
     curr_btn_state[i] = isBtnPressedRaw(i);
-  }
-
-  // set new button state
-  for (unsigned i = 0; i < getNumBtns(); ++i) {
-
   }
 }
 
@@ -78,11 +72,8 @@ unsigned JS_State::getJSNumber() const
 */
 unsigned JS_State::getNumBtns() const
 {
-  if ( isConnected() ) {
-    return sf::Joystick::getButtonCount(js_num);
-  } else {
-    return 0;
-  }
+  if (!isConnected()) return 0;
+  return sf::Joystick::getButtonCount(js_num);
 }
 
 /*
@@ -90,7 +81,6 @@ unsigned JS_State::getNumBtns() const
 */
 bool JS_State::isConnected() const
 {
-
   return sf::Joystick::isConnected(js_num);
 }
 
@@ -128,11 +118,8 @@ bool JS_State::isBtnPressed(Button btn, bool onPress) const
 */
 bool JS_State::isBtnPressedRaw(Button btn) const
 {
-  if ( isConnected() ) {
-    return sf::Joystick::isButtonPressed(js_num, btn);
-  } else {
-    return 0;
-  }
+  if (!isConnected()) return 0;
+  return sf::Joystick::isButtonPressed(js_num, btn);
 }
 
 /*
@@ -140,11 +127,8 @@ bool JS_State::isBtnPressedRaw(Button btn) const
 */
 float JS_State::getAxisPos(Axis axis) const
 {
-  if ( isConnected() ) {
-    return sf::Joystick::getAxisPosition(js_num, axis) * inv_axes_state[axis];
-  } else {
-    return 0;
-  }
+  if (!isConnected()) return 0;
+  return sf::Joystick::getAxisPosition(js_num, axis) * inv_axes_state[axis];
 }
 
 /*
@@ -211,31 +195,28 @@ void JS_State::invertPovY(bool inv)
   inv_axes_state[PovY_INV] = inv ? AXIS_NORMAL : AXIS_INVERTED;
 }
 
+
+/*
+ *  Returns the name of the controller.
+ *  Returns a blank string if controller is not connected.
+ */
 std::string JS_State::getName()
 {
-  if ( isConnected() ) {
-    return sf::Joystick::getIdentification(js_num).name.toAnsiString();
-  } else {
-  }
+  if (!isConnected()) return "";
+  return sf::Joystick::getIdentification(js_num).name.toAnsiString();
 }
 
 
 unsigned JS_State::getVendorID()
 {
-  if ( isConnected() ) {
-    return sf::Joystick::getIdentification(js_num).vendorId;
-  } else {
-    return 0;
-  }
+  if (!isConnected()) return 0;
+  return sf::Joystick::getIdentification(js_num).vendorId;
 }
 
 unsigned JS_State::getProductID()
 {
-  if ( isConnected() ) {
-    return sf::Joystick::getIdentification(js_num).productId;
-  } else {
-    return 0;
-  }
+  if (isConnected()) return 0;
+  return sf::Joystick::getIdentification(js_num).productId;
 }
 
 
