@@ -42,4 +42,19 @@ void match_node_radio(const nrf2401_prop &n);
  */
  void set_rf24_write_addr(const address_e listening_addr);
 
+ /*
+  * Handle and process the input of a joystick
+  */
+  void process_input();
+
+  /*
+   * Cycle node left
+   */
+  void cycle_node_list_left(node_list_t &it);
+
+  /*
+   *  Cycle node right
+   */
+  void cycle_node_list_right(node_list_t &it);
+
 #endif

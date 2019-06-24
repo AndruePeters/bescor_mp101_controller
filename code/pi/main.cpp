@@ -25,12 +25,14 @@
 // using wiringPi, so wiringPi pin scheme is also used
 // this is equivalent to radio(22, 0) in the generic gettingstarted.cpp
 RF24 radio(3, 10);
+JS_State js(0);
 node_list_t node_list;
 
 int main()
 {
   wiringPiSetup();
   rf24_init();
+
 
 
 
@@ -68,13 +70,10 @@ void match_node_radio(const nrf2401_prop &n)
  */
 void send_packet(const nrf2401_prop &n, const packet &p)
 {
-
   match_node_radio(n);
 
   // First, stop listening so we can talk.
   radio.stopListening();
-
-
   // attempt to send packet
   if (!radio.write( &p, sizeof(p))) {
 
@@ -90,3 +89,32 @@ void send_packet(const nrf2401_prop &n, const packet &p)
    radio.openWritingPipe(ADDRESSES[listening_addr]);
    radio.openReadingPipe(1, ADDRESSES[0]);
  }
+
+ /*
+  * Handle and process the input of a joystick
+  */
+ void process_input()
+ {
+   if (!js.isConnected()) return;
+
+   // get current joystick state
+   js.update();
+
+
+ }
+
+ /*
+  * Cycle node left
+  */
+  void cycle_node_list_left(node_list_t &it)
+ {
+   --it;
+ }
+
+ /*
+  *  Cycle node right
+  */
+  void cycle_node_list_right(node_list_t &it)
+  {
+    ++it;
+  }
