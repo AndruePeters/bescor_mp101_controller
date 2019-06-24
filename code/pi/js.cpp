@@ -206,13 +206,19 @@ std::string JS_State::getName()
   return sf::Joystick::getIdentification(js_num).name.toAnsiString();
 }
 
-
+/*
+ *  Returns vendor ID for the controller.
+ */
 unsigned JS_State::getVendorID()
 {
   if (!isConnected()) return 0;
   return sf::Joystick::getIdentification(js_num).vendorId;
 }
 
+
+/*
+ *  Returns the product ID for the controller.
+ */
 unsigned JS_State::getProductID()
 {
   if (isConnected()) return 0;
