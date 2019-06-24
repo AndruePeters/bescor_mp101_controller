@@ -27,7 +27,8 @@ public:
   unsigned getJSNumber() const;
   unsigned getNumBtns() const;
   bool isConnected() const;
-  bool isBtnPressed(Button btn) const;
+  bool isBtnPressed(Button btn, bool onPress=true) const;
+  bool isBtnPressedRaw(Button btn) const;
   float getAxisPos(Axis axis) const;
   void invertX(bool inv);
   void invertY(bool inv);
@@ -43,7 +44,9 @@ public:
 
 private:
   unsigned js_num;
-
+  std::array <bool, 32> prev_btn_state;
+  std::array <bool, 32> curr_btn_state;
+  std::array <bool, 32> btn_state;
   std::array <int, 8> inv_axes_state;
   void printJsNotConnected() const;
 

@@ -13,6 +13,13 @@ JS_State::JS_State(unsigned js_num)
     for (auto &x: inv_axes_state) {
       x = AXIS_NORMAL;
     }
+
+    // set all buttons as not pressed
+    for (unsigned i = 0; i < 32; ++i) {
+      prev_btn_state [i] = 0;
+      curr_btn_state [i] = 0;
+      btn_state [i] = 0;
+    }
 }
 
 /*
@@ -20,7 +27,17 @@ JS_State::JS_State(unsigned js_num)
 */
 void JS_State::update()
 {
+  prev_btn_state = curr_btn_state;
   sf::Joystick::update();
+  // update current button state
+  for (unsigned i = 0; i < getNumBtns(); ++i) {
+    curr_btn_state[i] = isBtnPressedRaw(i);
+  }
+
+  // set new button state
+  for (unsigned i = 0; i < getNumBtns(); ++i) {
+
+  }
 }
 
 /*
@@ -78,10 +95,38 @@ bool JS_State::isConnected() const
 }
 
 /*
-  Returns the value of btn. True if pressed, false if not.
-  Warns user if joystick not connected and returns false.
+  Returns the status of whether or not the button was pressed.
+  Set to true on press.
+
+  Result from a simple boolean expression using a truth table.
+  P and C are the previous and current button states
+
+  | P | C | Out
+  _____________
+  | 0 | 0 | nothing
+  | 0 | 1 | on press
+  | 1 | 0 | on release
+  | 1 | 1 | nothing
+
+  As can be seen, !p and c = on press
+                  p and !c = on release
 */
-bool JS_State::isBtnPressed(Button btn) const
+bool JS_State::isBtnPressed(Button btn, bool onPress) const
+{
+  if (!isConnected()) return false;
+  if (btn >= getNumBtns()) return false;
+
+  if (onPress) {
+    return !prev_btn_state[btn] && curr_btn_state[btn];
+  } else {
+    return prev_btn_state[btn] && !curr_btn_state[btn];
+  }
+}
+
+/*
+  Returns the current value of the button without checking states.
+*/
+bool JS_State::isBtnPressedRaw(Button btn) const
 {
   if ( isConnected() ) {
     return sf::Joystick::isButtonPressed(js_num, btn);
