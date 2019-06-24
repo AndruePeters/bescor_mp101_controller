@@ -1,17 +1,13 @@
 #include <js.h>
+#include <controller_map.h>
 #include <iostream>
 #include <string>
 #include <sstream>
 #include <curses.h>
-
+using namespace controller;
 JS_State js(0);
 
-void clearScreen()
-{
-  std::cout << "\033[2J\033[1;1H";
-}
-
-void printDiagnostic()
+int printDiagnostic()
 {
   std::stringstream stream;
   js.update();
@@ -21,28 +17,28 @@ void printDiagnostic()
               << js.getProductID() << std::endl
               << js.getVendorID() << std::endl;
 
-    stream << "\nX: " << js.isBtnPressed(0)
-              << "\nO: " << js.isBtnPressed(1)
-              << "\nTri: " << js.isBtnPressed(2)
-              << "\nSqr: " << js.isBtnPressed(3)
-              << "\nL1: " << js.isBtnPressed(4)
-              << "\nR1: " << js.isBtnPressed(5)
-              << "\nL2 " << js.isBtnPressed(6)
-              << "\nR2 " << js.isBtnPressed(7)
-              << "\nShare: " << js.isBtnPressed(8)
-              << "\nOptions: " << js.isBtnPressed(9)
-              << "\nPS Btn: " << js.isBtnPressed(10)
-              << "\nLS: " << js.isBtnPressed(11)
-              << "\nRS: " << js.isBtnPressed(12)
+    stream << "\nX: " << js.isBtnPressed(DS4::X)
+              << "\nO: " << js.isBtnPressed(DS4::O)
+              << "\nTri: " << js.isBtnPressed(DS4::Tri)
+              << "\nSqr: " << js.isBtnPressed(DS4::Sqr)
+              << "\nL1: " << js.isBtnPressed(DS4::L1)
+              << "\nR1: " << js.isBtnPressed(DS4::R1)
+              << "\nL2 " << js.isBtnPressed(DS4::L2)
+              << "\nR2 " << js.isBtnPressed(DS4::R2)
+              << "\nShare: " << js.isBtnPressed(DS4::Share)
+              << "\nOptions: " << js.isBtnPressed(DS4::Opt)
+              << "\nPS Btn: " << js.isBtnPressed(DS4::PS)
+              << "\nLS: " << js.isBtnPressed(DS4::LS)
+              << "\nRS: " << js.isBtnPressed(DS4::RS)
               << "\n\nAxes:"
-              << "\nX: " << js.getAxisPos(Axis::X)
-              << "\nY: " << js.getAxisPos(Axis::Y)
-              << "\nZ: " << js.getAxisPos(Axis::Z)
-              << "\nR: " << js.getAxisPos(Axis::R)
-              << "\nU: " << js.getAxisPos(Axis::U)
-              << "\nV: " << js.getAxisPos(Axis::V)
-              << "\nPovX: " << js.getAxisPos(Axis::PovX)
-              << "\nPovY: " << js.getAxisPos(Axis::PovY) << std::endl;
+              << "\nLS_X: " << js.getAxisPos(DS4::LS_X)
+              << "\nLS_Y: " << js.getAxisPos(DS4::LS_Y)
+              << "\nL: " << js.getAxisPos(DS4::L)
+              << "\nR: " << js.getAxisPos(DS4::R)
+              << "\nRS_X: " << js.getAxisPos(DS4::RS_X)
+              << "\nRS_Y: " << js.getAxisPos(DS4::RS_Y)
+              << "\nPovX: " << js.getAxisPos(DS4::PovX)
+              << "\nPovY: " << js.getAxisPos(DS4::PovY) << std::endl;
       erase();
       addstr(stream.str().c_str());
       refresh();
