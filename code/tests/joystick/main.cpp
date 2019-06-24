@@ -1,8 +1,13 @@
 #include <js.h>
 #include <controller_map.h>
+
+#include <chrono>
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <thread>
+
+
 #include <curses.h>
 using namespace controller;
 JS_State js(0);
@@ -62,6 +67,7 @@ int main()
   refresh();
   while(1) {
     printDiagnostic();
+    std::this_thread::sleep_for(std::chrono::milliseconds(15));
   }
 
 }
