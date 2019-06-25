@@ -4,95 +4,71 @@
 #include <chrono>
 #include <sstream>
 #include <thread>
-
+#include <iostream>
+#include <iterator>
 #include <curses.h>
 using namespace controller;
 
-
-bescor_environment be;
+void create_load_nodes(node_list_t &nl);
+void cycle_node_right( node_list_t &nl, node_list_it &it);
+void cycle_node_left( node_list_t &nl, node_list_it &it);
 
 int main()
 {
-  create_nodes(be.node_list);
-  be.nl_it = be.node_list.begin();
+  node_list_t nl;
+  create_load_nodes(nl);
+  auto it = nl.begin();
+  while (1) {
+    std::cout << "Color: " << (*it)->color << "\nID: " << (*it)->id << std::endl;
+    cycle_node_left(nl, it);
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
-  // set up ncruses environment
-  initscr();
-  noecho();
-  cbreak();
-  int h,w;
-  getmaxyx(stdscr, h, w);
-  WINDOW *win = newwin(h, w, 0,0);
-  refresh();
-
-
-  while(1) {
-    be.js.update();
-    process_input();
-    erase();
-    print_current_node();
-    refresh();
-    std::this_thread::sleep_for(std::chrono::milliseconds(15));
   }
-
 }
 
-void create_nodes(node_list_t &nl)
+void create_load_nodes(node_list_t &nl)
 {
-  node_prop *np;
-  np = new node_prop;
-  np->color = "Red";
-  np->id = 0;
-  nl.push_back(np);
-  np = new node_prop;
-  np->color = "Orange";
-  np->id = 1;
-  nl.push_back(np);
-  np = new node_prop;
-  np->color = "Yellow";
-  np->id = 2;
-  nl.push_back(np);
-  np = new node_prop;
-  np->color = "Green";
-  np->id = 3;
-  nl.push_back(np);
-  np = new node_prop;
-  np->color = "Blue";
-  np->id = 4;
-  nl.push_back(np);
+  node_prop *p = NULL;
+
+  p = new node_prop;
+  p->color = "Red";
+  p->id = 0;
+  nl.push_back(p);
+
+  p = new node_prop;
+  p->color = "Orange";
+  p->id = 1;
+  nl.push_back(p);
+
+  p = new node_prop;
+  p->color = "Yellow";
+  p->id = 2;
+  nl.push_back(p);
+
+  p = new node_prop;
+  p->color = "Green";
+  p->id = 3;
+  nl.push_back(p);
+
+  p = new node_prop;
+  p->color = "Blue";
+  p->id = 4;
+  nl.push_back(p);
 }
 
-void process_input()
+void cycle_node_right( node_list_t &nl, node_list_it &it)
 {
-  if (!be.js.isConnected()) {
-     addstr("Joystick not connected\n");
-     return;
+  ++it;
+  if (it == nl.end()) {
+    it = nl.begin();
   }
+}
 
-  if (be.js.isBtnPressed(DS4::L1)) {
-    node_list_cycle_left();
-  } else if (be.js.isBtnPressed(DS4::L2)) {
-    node_list_cycle_right();
+void cycle_node_left( node_list_t &nl, node_list_it &it)
+{
+  if (it == nl.begin()) {
+    it = std::prev(nl.end());
+  } else {
+    --it;
   }
-
-
-}
-
-void node_list_cycle_left()
-{
-  --be.nl_it;
-}
-
-void node_list_cycle_right()
-{
-  ++be.nl_it;
-}
-
-
-void print_current_node()
-{
-  std::stringstream ss;
-  ss << "Color:\t" << (*be.nl_it)->color
-     << "ID:\t" << (*be.nl_it)->id << std::endl;
-  addstr(ss.str().c_str());
 }
