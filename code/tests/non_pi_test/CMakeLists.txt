@@ -5,6 +5,7 @@ project (ps4_test)
 
 
 # set (CUSTOM_LIB_PATH $ENV{RPI_TC_PATH}/libs/)
+set(CMAKE_CXX_FLAGS "-Wall -g")
 
 # Add the local include directory and custom include directory
 include_directories ( ${CMAKE_CURRENT_SOURCE_DIR}  PUBLIC ../../pi/ ../../shared/packet/)
