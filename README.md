@@ -113,6 +113,9 @@ I'll write a better cross-compile description once I get the full thing back up.
 
 ## IR Packet
 `packet.packet_type = 1;`
+
 `packet.payload_used = 5;`
+
 `packet.payload[0] = IR prot.`
+
 `packet.payload[1 through 4]` is a 32 bit integer code with packet.payload[1] being the MSByte and packet.payload[4] LSByte
