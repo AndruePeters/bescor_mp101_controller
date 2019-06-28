@@ -3,7 +3,6 @@
 
 #include <array>
 #include <string>
-#include <bitset>
 #include <SFML/Window/Joystick.hpp>
 const int AXIS_INVERTED = -1;
 const int AXIS_NORMAL = 1;
