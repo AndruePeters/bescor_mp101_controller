@@ -102,14 +102,17 @@ I'll write a better cross-compile description once I get the full thing back up.
 # Packet Structure
 ## Motor Packets
 `packet.packet_type = 0;`
+
 `packet.payload_used = 3;`
+
 `packet.payload[0] = speed`  This is an integer [0-255]
+
 `packet.payload[1] = x_axis`. Values = {0, 1, 2}. 0 is off, 1 is left, 2 is right.
+
 `packet.payloadp2] = y_axis`. Values = {0, 1, 2}. 0 is off, 1 is down, 2 is up.
 
 ## IR Packet
 `packet.packet_type = 1;`
 `packet.payload_used = 5;`
-`packet.payload[0] = IR prot.` 
+`packet.payload[0] = IR prot.`
 `packet.payload[1 through 4]` is a 32 bit integer code with packet.payload[1] being the MSByte and packet.payload[4] LSByte
-
