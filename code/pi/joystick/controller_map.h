@@ -7,7 +7,7 @@
 #define _BESCOR_MP101_PS4_MAP_H_
 
 // this will include any dependencies I need no matter controller backend
-#include <js.h>
+#include <joystick/js.h>
 
 namespace controller {
   namespace DS4 {

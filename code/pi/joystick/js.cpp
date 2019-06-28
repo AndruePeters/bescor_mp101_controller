@@ -1,5 +1,5 @@
 #include <iostream>
-#include <js.h>
+#include <joystick/js.h>
 
 
 /*

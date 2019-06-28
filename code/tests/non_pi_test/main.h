@@ -7,8 +7,8 @@
 
 // Custom stuff
 #include <packet.h>
-#include <js.h>
-#include <controller_map.h>
+#include <joystick/js.h>
+#include <joystick/controller_map.h>
 
 
 struct node_prop {
