@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 #include <joystick/js.h>
 
 
@@ -52,7 +53,7 @@ bool JS_State::setJSNum(unsigned js_num) {
   Waits for the current joystick to be connected.
   Be careful with use as it can lock up the program.
 */
-void JS_State::waitUntilConnected()
+void JS_State::waitUntilConnected() const
 {
   while ( !sf::Joystick::isConnected(js_num) ) {}
 }
@@ -200,7 +201,7 @@ void JS_State::invertPovY(bool inv)
  *  Returns the name of the controller.
  *  Returns a blank string if controller is not connected.
  */
-std::string JS_State::getName()
+std::string JS_State::getName() const
 {
   if (!isConnected()) return "";
   return sf::Joystick::getIdentification(js_num).name.toAnsiString();
@@ -209,7 +210,7 @@ std::string JS_State::getName()
 /*
  *  Returns vendor ID for the controller.
  */
-unsigned JS_State::getVendorID()
+unsigned JS_State::getVendorID() const
 {
   if (!isConnected()) return 0;
   return sf::Joystick::getIdentification(js_num).vendorId;
@@ -219,12 +220,42 @@ unsigned JS_State::getVendorID()
 /*
  *  Returns the product ID for the controller.
  */
-unsigned JS_State::getProductID()
+unsigned JS_State::getProductID() const
 {
   if (isConnected()) return 0;
   return sf::Joystick::getIdentification(js_num).productId;
 }
 
+
+/*
+  Normalizes axes X and Y,
+  x_out is equal to scaled version of x
+  y_out is equal to scaled version of y
+
+  returns the normalized magnitude of X and Y
+*/
+float JS_State::getNormAxis(float &x_out, float &y_out, Axis x, Axis y) const
+{
+  float ls_x = getAxisPos(x);
+  float ls_y = getAxisPos(y);
+  float mag = std::sqrt( ls_x*ls_x + ls_y*ls_y);
+  float range, scale, mag_norm = 0.0f;
+  unsigned dead_zone_high = 5;
+  unsigned dead_zone_low = 5;
+  x_out = y_out = 0;
+
+  // normalize, set radial boundaries
+  if (mag > dead_zone_low) {
+    range = 100 - dead_zone_high - dead_zone_low;
+    mag_norm = std::fmin(1.0, (mag - dead_zone_high) / range);
+    scale = mag_norm / mag;
+    x_out = ls_x * scale;
+    y_out = ls_y * scale;
+  }
+
+  // return normalized magnitude
+  return mag_norm;
+}
 
 /******************************************************************************/
 /*                      Private Methods                                       */
