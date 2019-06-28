@@ -18,4 +18,4 @@ message (${SRC_FILES})
 add_executable(ps4_test ${SRC_FILES})
 
 # link pre-compiled libraries
-target_link_libraries(ps4_test ncurses sfml-window sfml-system)
+target_link_libraries(ps4_test ncurses sfml-window sfml-system yaml-cpp)
