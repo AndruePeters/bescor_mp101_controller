@@ -41,8 +41,8 @@ int main()
     process_input(nl, it);
     erase();
     print_curr_node(it);
-    create_ir_packet(it, p, 0x12345678);
-    //create_motor_packet(it, p);
+    //create_ir_packet(it, p, 0x12345678);
+    create_motor_packet(it, p);
     refresh();
     std::this_thread::sleep_for(std::chrono::milliseconds(15));
   }
@@ -116,7 +116,7 @@ void print_curr_node(node_list_it &it)
 void create_motor_packet(node_list_it &it, packet& p)
 {
   float x_out, y_out;
-  float norm_mag = normalize_axis(x_out, y_out, DS4::LS_X, DS4::LS_Y, js);
+  float norm_mag = js.getNormAxis(x_out, y_out, DS4::LS_X, DS4::LS_Y);
   float speed = norm_mag * 255 ;
 
   p.packet_type = 0;
