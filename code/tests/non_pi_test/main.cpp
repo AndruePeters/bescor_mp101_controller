@@ -1,5 +1,6 @@
 #include <main.h>
 #include <packet.h>
+#include <yaml-cpp/yaml.h>
 
 #include <cmath>
 #include <chrono>
@@ -51,31 +52,18 @@ int main()
 void create_load_nodes(node_list_t &nl)
 {
   node_prop *p = NULL;
+  YAML::Node base = YAML::LoadFile("config.yaml");
+  base = base["camera_nodes"];
 
-  p = new node_prop;
-  p->color = "Red    ";
-  p->id = 0;
-  nl.push_back(p);
-
-  p = new node_prop;
-  p->color = "Orange  ";
-  p->id = 1;
-  nl.push_back(p);
-
-  p = new node_prop;
-  p->color = "Yellow";
-  p->id = 2;
-  nl.push_back(p);
-
-  p = new node_prop;
-  p->color = "Green      ";
-  p->id = 3;
-  nl.push_back(p);
-
-  p = new node_prop;
-  p->color = "Blue         ";
-  p->id = 4;
-  nl.push_back(p);
+  for (auto it = base.begin(); it != base.end(); ++it) {
+    p = new node_prop;
+    p.id = (*it)["id"].as<uint8_t>();
+    p.color = (*it)["color"].as<std::string>();
+    p.zoomin = (*it)["zoom_in"].as<uint32_t>();
+    p.zoomout = (*it)["zoom_out"].as<uint32_t>();
+    p.focusin = (*it)["focus_in"].as<uint32_t>();
+    p.focusout = (*it)["focus_out"].as<uint32_t>();
+  }
 }
 
 void cycle_node_right( node_list_t &nl, node_list_it &it)

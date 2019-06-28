@@ -14,6 +14,10 @@
 struct node_prop {
   std::string color;
   unsigned id;
+  unsigned zoomin;
+  unsigned zoomout;
+  unsigned focusin;
+  unsigned focusout;
 };
 
 typedef std::list<node_prop *> node_list_t;
