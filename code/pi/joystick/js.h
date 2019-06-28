@@ -23,7 +23,7 @@ public:
   JS_State(unsigned js_num);
   void update();
   bool setJSNum(unsigned js_num);
-  void waitUntilConnected();
+  void waitUntilConnected() const;
   unsigned getJSNumber() const;
   unsigned getNumBtns() const;
   bool isConnected() const;
@@ -38,9 +38,10 @@ public:
   void invertV(bool inv);
   void invertPovX(bool inv);
   void invertPovY(bool inv);
-  std::string getName();
-  unsigned getVendorID();
-  unsigned getProductID();
+  std::string getName() const;
+  unsigned getVendorID() const;
+  unsigned getProductID() const;
+  float getNormAxis(float &x_out, float &y_out, Axis x, Axis y) const;
 
 private:
   // number asigned to joystick 0 <= js_num < 8
