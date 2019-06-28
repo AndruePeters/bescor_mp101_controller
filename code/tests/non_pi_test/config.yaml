@@ -16,7 +16,7 @@ camera_nodes:
   - channel: 1
     id: 2
     address: 1
-    color: BLUE
+    color: Red
     power_level: MAX
     data_rate: 250KBPS
     crc_length: DISABLED
@@ -29,7 +29,7 @@ camera_nodes:
   - channel: 1
     id: 3
     address: 1
-    color: BLUE
+    color: Green
     power_level: MAX
     data_rate: 250KBPS
     crc_length: DISABLED
@@ -42,7 +42,7 @@ camera_nodes:
   - channel: 1
     id: 4
     address: 1
-    color: BLUE
+    color: Violet
     power_level: MAX
     data_rate: 250KBPS
     crc_length: DISABLED
@@ -55,7 +55,7 @@ camera_nodes:
   - channel: 1
     id: 5
     address: 1
-    color: BLUE
+    color: Orange
     power_level: MAX
     data_rate: 250KBPS
     crc_length: DISABLED
