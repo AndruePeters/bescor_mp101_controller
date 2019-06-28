@@ -13,7 +13,7 @@ message ("Include directories: ${CMAKE_CURRENT_SOURCE_DIR} ")
 
 # link_directories ( ${CUSTOM_LIB_PATH}/bin)
 
-FILE (GLOB SRC_FILES *.cpp ../../pi/js.cpp ../../shared/packet/packet.cpp)
+FILE (GLOB SRC_FILES *.cpp ../../pi/joystick/js.cpp ../../shared/packet/packet.cpp)
 message (${SRC_FILES})
 add_executable(ps4_test ${SRC_FILES})
 
