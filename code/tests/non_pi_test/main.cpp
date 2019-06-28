@@ -6,6 +6,7 @@
 #include <sstream>
 #include <thread>
 #include <iostream>
+#include <iomanip>
 #include <iterator>
 #include <curses.h>
 using namespace controller;
@@ -15,12 +16,15 @@ void cycle_node_right( node_list_t &nl, node_list_it &it);
 void cycle_node_left( node_list_t &nl, node_list_it &it);
 void process_input(node_list_t &nl, node_list_it &it);
 void print_curr_node(node_list_it &it);
-void create_motor_packet();
+void create_motor_packet(node_list_it &it, packet& p);
+void create_ir_packet(node_list_it &it, packet &p, uint32_t ir_code);
+void print_packet(const packet &p);
 float normalize_axis(float &x_out, float &y_out, Axis a, Axis b, JS_State &js);
 JS_State js(0);
 
 int main()
 {
+  packet p;
   js.invertY(false);
   initscr();
   noecho();
@@ -37,7 +41,8 @@ int main()
     process_input(nl, it);
     erase();
     print_curr_node(it);
-    create_motor_packet();
+    create_ir_packet(it, p, 0x12345678);
+    //create_motor_packet(it, p);
     refresh();
     std::this_thread::sleep_for(std::chrono::milliseconds(15));
   }
@@ -108,12 +113,26 @@ void print_curr_node(node_list_it &it)
   addstr(ss.str().c_str());
 }
 
-void create_motor_packet()
+void create_motor_packet(node_list_it &it, packet& p)
 {
-  packet p;
   float x_out, y_out;
   float norm_mag = normalize_axis(x_out, y_out, DS4::LS_X, DS4::LS_Y, js);
   float speed = norm_mag * 255 ;
+
+  p.packet_type = 0;
+  p.payload_used = 3;
+  p.id = (*it)->id;
+  p.payload[0] = (unsigned)speed;
+
+  if (x_out > 0.0f)   p.payload[1] = 2;
+  else if (x_out == 0.0f)  p.payload[1] = 0;
+  else if (x_out < 0.0f)   p.payload[1] = 1;
+
+  if (y_out > 0.0f) p.payload[2] = 2;
+  else if (y_out == 0.0f) p.payload[2] = 0;
+  else if (y_out < 0.0f)  p.payload[2] = 1;
+
+  print_packet(p);
 
   std::stringstream ss;
   ss  << "\nX raw: " << js.getAxisPos(DS4::LS_X)
@@ -146,4 +165,32 @@ float normalize_axis(float &x_out, float &y_out, Axis x, Axis y, JS_State &js)
 
   // return normalized magnitude
   return mag_norm;
+}
+
+void print_packet(const packet &p)
+{
+  std::stringstream ss;
+  ss << "Packet Type: " << (unsigned)p.packet_type
+     << "Payload Used: " << (unsigned)p.payload_used
+     << "\nPacket ID; " << (unsigned)p.id;
+  for (int i = 0; i < p.payload_used; ++i) {
+    ss << "\nPayload[" << i << "]: " << std::hex << (unsigned)p.payload[i];
+  }
+  addstr(ss.str().c_str());
+}
+
+void create_ir_packet(node_list_it &it, packet &p, uint32_t ir_code)
+{
+  uint8_t mask = 0xFF;
+
+  p.packet_type = 1;
+  p.payload_used = 5;
+  p.id = (*it)->id;
+  p.payload[0] = 1;
+  p.payload[1] = ir_code >> 24;
+  p.payload[2] = ir_code >> 16;
+  p.payload[3] = ir_code >> 8;
+  p.payload[4] = ir_code;
+
+  print_packet(p);
 }
