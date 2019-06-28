@@ -9,7 +9,7 @@ typedef struct {
   uint8_t left;
   uint8_t up;
   uint8_t down;
-} motor_pins;
+} motor_pin_config;
 
 /*
   Contains pins for the rgb led
@@ -18,7 +18,14 @@ typedef struct {
   uint8_t red;
   uint8_t grn;
   uint8_t blu;
-} rgb_pins;
+  uint8_t ir;
+} led_pin_config;
+
+
+typedef struct {
+  uint8_t ce;
+  uint8_t cs;
+} radio_pin_config;
 
 
 /*
@@ -35,9 +42,19 @@ void init();
 void init_pins();
 void init_rf24();
 void read_packet();
-void process_packet();
+void process_packet(packet &p);
 void process_admin_pack();
 void process_telem_pack();
 void process_motor_pack();
 void process_ir_pack();
+
+
+void set_motor_speed(uint8_t speed);
+void set_motor_up(bool value);
+void set_motor_down(bool value);
+void set_motor_left(bool value);
+void set_motor_right(bool value);
+void set_motor_tilt(uint8_t value);
+void set_motor_pan(uint8_t value);
+
 #endif
