@@ -27,18 +27,23 @@ int main()
 {
   packet p;
   js.invertY(false);
-  initscr();
+  /*initscr();
   noecho();
   cbreak();
   int h,w;
   getmaxyx(stdscr, h, w);
-  WINDOW *win = newwin(h, w, 0, 0);
+  WINDOW *win = newwin(h, w, 0, 0);*/
 
 
   node_list_t nl;
   create_load_nodes(nl);
   auto it = nl.begin();
-  while (1) {
+
+  for (auto i = nl.begin(); i != nl.end(); ++i) {
+    print_curr_node(i);
+    std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+  }
+  while (0) {
     process_input(nl, it);
     erase();
     print_curr_node(it);
@@ -56,13 +61,20 @@ void create_load_nodes(node_list_t &nl)
   base = base["camera_nodes"];
 
   for (auto it = base.begin(); it != base.end(); ++it) {
+    std::cout << "\nID: " << (unsigned)(*it)["id"].as<unsigned>()
+              << "\nColor: " << (*it)["color"].as<std::string>()
+              << "\nZoom In: " << std::hex << (*it)["zoom_in"].as<uint32_t>()
+              << "\nZoom Out: " << (*it)["zoom_out"].as<uint32_t>()
+              << "\nFocus In: " << (*it)["focus_in"].as<uint32_t>()
+              << "\nFocus Out: " << (*it)["focus_out"].as<uint32_t>()
+              << std::endl;
     p = new node_prop;
-    p.id = (*it)["id"].as<uint8_t>();
-    p.color = (*it)["color"].as<std::string>();
-    p.zoomin = (*it)["zoom_in"].as<uint32_t>();
-    p.zoomout = (*it)["zoom_out"].as<uint32_t>();
-    p.focusin = (*it)["focus_in"].as<uint32_t>();
-    p.focusout = (*it)["focus_out"].as<uint32_t>();
+    p->id = (uint8_t)(*it)["id"].as<unsigned>();
+    p->color = (*it)["color"].as<std::string>();
+    p->zoomin = (*it)["zoom_in"].as<uint32_t>();
+    p->zoomout = (*it)["zoom_out"].as<uint32_t>();
+    p->focusin = (*it)["focus_in"].as<uint32_t>();
+    p->focusout = (*it)["focus_out"].as<uint32_t>();
   }
 }
 
@@ -97,8 +109,16 @@ void process_input(node_list_t &nl, node_list_it &it)
 void print_curr_node(node_list_it &it)
 {
   std::stringstream ss;
-  ss << (*it)->color <<  " : " << (*it)->id << std::endl;
-  addstr(ss.str().c_str());
+  node_prop *np = (*it);
+  ss << "\nColor:\t" << np->color
+     << "\nID:\t" << (unsigned)np->id
+     << "\nZoomIn:\t" << np->zoomin
+     << "\nZoomOut:\t" << np->zoomout
+     << "\nFocus In:\t" << np->focusin
+     << "\nFocus Out: " << np->focusout
+     << std::endl;
+  //addstr(ss.str().c_str());
+  std::cout << ss.str();
 }
 
 void create_motor_packet(node_list_it &it, packet& p)
