@@ -11,6 +11,20 @@
 #include <joystick/controller_map.h>
 
 
+#define UNKNOWN 0
+#define NEC 1
+#define SONY 2
+#define RC5 3
+#define RC6 4
+#define PANASONIC_OLD 5
+#define JVC 6
+#define NECX 7
+#define SAMSUNG36 8
+#define GICABLE 9
+#define DIRECTV 10
+#define RCMM 11
+#define CYKM 12
+
 struct node_prop {
   std::string color;
   unsigned id;
