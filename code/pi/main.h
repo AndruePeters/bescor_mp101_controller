@@ -68,7 +68,8 @@ void set_rf24_write_addr(const address_e listening_addr);
 /*
  * Handle and process the input of a joystick
  */
-void process_input();
+ void process_input(node_list_t &nl, node_list_it &it);
+
 
   /*
    * Cycle node left

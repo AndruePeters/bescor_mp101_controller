@@ -97,12 +97,14 @@ void send_packet(const nrf2401_prop &n, const packet &p)
  /*
   * Handle and process the input of a joystick
   */
-void process_input()
+void process_input(node_list_t &nl, node_list_it &it)
  {
    if (!js.isConnected()) return;
 
    // get current joystick state
    js.update();
+
+
 
 
  }
