@@ -85,6 +85,7 @@ void load_config(node_list_t &nl);
 void create_ir_packet(node_list_it &it, packet &P, uint32_t ir_code);
 void create_motor_packet(node_list_it &it, packet &p);
 void print_packet(const packet &p);
+void load_config(std::string file);
 
 
 #endif
