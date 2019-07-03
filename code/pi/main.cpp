@@ -219,3 +219,24 @@ void print_packet(const packet &p)
     ss << "\nPayload[" << i << "]: " << std::hex << (unsigned)p.payload[i];
   }
 }
+
+
+void load_config(std::string file, node_list_t &nl)
+{
+  node_prop *np = NULL;
+
+  // verify correct loading of file in future.
+  YAML::Node base = YAML::LoadFile(filepat);
+  base = base["camera_nodes"];
+
+  for (auto it = base.begin(); it != base.end(); ++it) {
+    np = new node_prop;
+    node_init(np);
+    node_set_id(np, (uint8_t)(*it)["id"].as<unsigned>()); // yaml-cpp has issue directly converting to uint8_t
+
+
+
+
+  }
+
+}
