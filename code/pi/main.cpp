@@ -100,11 +100,23 @@ void send_packet(const nrf2401_prop &n, const packet &p)
 void process_input(node_list_t &nl, node_list_it &it)
  {
    if (!js.isConnected()) return;
+   packet p;
 
    // get current joystick state
    js.update();
 
+   // first check and cycle node
+   if (js.isBtnPressed(DS4::L1)) {
+     cycle_node_left(nl, it);
+   } else if (js.isBtnPressed(DS4::R1)) {
+     cycle_node_right(nl, it);
+   }
 
+   // if magnitude of left stick is greater than 0, then form motor packet
+   if (js.getAxisMagnitude(DS4::LS_X, DS4::LS_Y)) {
+     create_motor_packet(it, p);
+     send_packet((*it)->rf, p);
+   }
 
 
  }
