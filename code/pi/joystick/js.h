@@ -41,6 +41,7 @@ public:
   unsigned getVendorID() const;
   unsigned getProductID() const;
   float getNormAxis(float &x_out, float &y_out, Axis x, Axis y) const;
+  float getAxisMagnitude(Axis a, Axis b);
 
 private:
   // number asigned to joystick 0 <= js_num < 8

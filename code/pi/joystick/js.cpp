@@ -257,6 +257,17 @@ float JS_State::getNormAxis(float &x_out, float &y_out, Axis x, Axis y) const
   return mag_norm;
 }
 
+float JS_State::getAxisMagnitude(Axis a, Axis b)
+{
+  if (!isConnected()) return 0.0f;
+
+  float ax = getAxisPos(a);
+  float bx = getAxisPos(b);
+
+  return std::sqrt( ax*ax + bx*bx);
+}
+
+
 /******************************************************************************/
 /*                      Private Methods                                       */
 /******************************************************************************/
