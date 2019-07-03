@@ -118,6 +118,29 @@ void process_input(node_list_t &nl, node_list_it &it)
      send_packet((*it)->rf, p);
    }
 
+   // now time to process IR stuff
+   // this is all done on the right stick, and L2 must be pressed to toggle
+   // between zoom and focus
+   // *there's gotta be a better way to factor this logic, check back when not tired
+   if (js.getAxisMagnitude(DS4::RS_Y) >= 10.0f) {
+     if (js.isBtnPressedRaw(DS4::L2)) {
+       // we're going to focus
+       if (js.getAxisPos(DS4::RS_Y) >= 10.0f) {
+         create_ir_packet(it, p, node_get_focus_in(*it));
+       } else if (js.getAxisPos(DS4::RS_Y) <= -10.0f) {
+         create_ir_packet(it, p, node_get_focus_out(*it));
+       }
+     } else {
+       // now we're going to zoom zoom zoom
+       if (js.getAxisPos(DS4::RS_Y) >= 10.0f) {
+         create_ir_packet(it, p, node_get_zoom_in(*it));
+       } else if (js.getAxisPos(DS4::RS_Y) <= -10.0f) {
+         create_ir_packet(it, p, node_get_zoom_out(*it));
+       }
+     }
+     // if we made it here, then we need to send IR packet
+     send_packet((*it)->rf, p);
+   }
 
  }
 
