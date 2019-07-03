@@ -257,6 +257,9 @@ float JS_State::getNormAxis(float &x_out, float &y_out, Axis x, Axis y) const
   return mag_norm;
 }
 
+/*
+ *  Returns magnitude of two axes.
+ */
 float JS_State::getAxisMagnitude(Axis a, Axis b)
 {
   if (!isConnected()) return 0.0f;
@@ -267,6 +270,15 @@ float JS_State::getAxisMagnitude(Axis a, Axis b)
   return std::sqrt( ax*ax + bx*bx);
 }
 
+/*
+ *  Returns magnitude of a single axis.
+ */
+float JS_State::getAxisMagnitude(Axis a)
+{
+  if (!isConnected()) return 0.0f;
+  float ax = getAxisPos(a);
+  return std::abs(ax);
+}
 
 /******************************************************************************/
 /*                      Private Methods                                       */
