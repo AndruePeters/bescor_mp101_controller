@@ -87,5 +87,12 @@ void create_motor_packet(node_list_it &it, packet &p);
 void print_packet(const packet &p);
 void load_config(std::string file);
 
+// These are used to convert strings from config.yaml file to the appropriate type
+color_e str_to_clr(std::string color);
+rf24_pa_dbm_e str_to_pwr(std::string power);
+rf24_datarate_e str_to_datarate(std::string dr);
+rf24_crclength_e str_to_crclen(std::string crc);
+address_e str_to_addr(std::string addr);
+uint8_t str_to_irprot(std:string ir);
 
 #endif
