@@ -65,7 +65,7 @@ struct node_prop {
   uint8_t id;
   struct nrf2401_prop rf;
   struct ir_prop ir;
-  char description[50];
+  std::string description;
 };
 
 /*
