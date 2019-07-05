@@ -18,6 +18,7 @@
 
 #ifndef _DP_NODE_H_
 #define _DP_NODE_H_
+#include <string>
 
 #ifndef ARDUINO
   #include <RF24/RF24.h>
