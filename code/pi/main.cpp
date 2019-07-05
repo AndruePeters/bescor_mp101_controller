@@ -319,6 +319,27 @@ rf24_datarate_e str_to_datarate(std::string dr)
 
   return ret;
 }
-rf24_crclength_e str_to_crclen(std::string crc);
+
+/*
+ *  Converts string crc to rf24_crclength_e
+ *  Valid string values: DISABLED, CRC_8, CRC_16
+ */
+rf24_crclength_e str_to_crclen(std::string crc)
+{
+  rf24_crclength_e ret;
+  std::transform(crc.begin(), crc.end(), crc.begin(), ::toupper);
+
+  if (crc == "CRC_8") {
+    ret = RF24_CRC_8;
+  } else if (crc == "CRC_16") {
+    ret = RF24_CRC_16;
+  } else {
+    ret = RF24_CRC_DISABLED;
+  }
+
+  return ret;
+}
+
+
 address_e str_to_addr(std::string addr);
 uint8_t str_to_irprot(std:string ir);
