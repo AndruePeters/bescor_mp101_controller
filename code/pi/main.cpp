@@ -23,7 +23,7 @@
 #include <joystick/js.h>
 
 #include <unistd.h> // for sleep
-
+#include <yaml-cpp/yaml.h>
 #include <main.h>
 
 using namespace controller;
@@ -228,7 +228,7 @@ void load_config(std::string file, node_list_t &nl)
   node_prop *np = NULL;
 
   // verify correct loading of file in future.
-  YAML::Node base = YAML::LoadFile(filepat);
+  YAML::Node base = YAML::LoadFile(file);
   base = base["camera_nodes"];
 
   for (auto it = base.begin(); it != base.end(); ++it) {
@@ -251,7 +251,7 @@ color_e str_to_clr(std::string color)
 {
   color_e ret;
   // transform string to upper for comparison
-  std::transform(color.begin(), color.end(), color.begin(), ::toupper)
+  std::transform(color.begin(), color.end(), color.begin(), ::toupper);
   if (color == "BLUE") {
     ret = BLUE;
   } else if (color == "GREEN") {
@@ -280,7 +280,7 @@ color_e str_to_clr(std::string color)
 rf24_pa_dbm_e str_to_pwr(std::string power)
 {
   rf24_pa_dbm_e ret;
-  std::transform(power.begin(), power.end(),power,begin(), ::toupper);
+  std::transform(power.begin(), power.end(), power.begin(), ::toupper);
 
   if (power == "MIN") {
     ret = RF24_PA_MIN;
@@ -362,13 +362,14 @@ address_e str_to_addr(std::string addr)
   } else {
     ret = A1_ADDR;
   }
+  return ret;
 }
 
 /*
  * Convert string ir to ir_prot_e
  * Valid string values: NEC, SONY, RC5, RC6, PANASONIC_OLD, JVC, NECX, SAMSUNG36, GICABLE, DIRECTV, RCMM, CKYM
  */
-ir_prot_e str_to_irprot(std:string ir)
+ir_prot_e str_to_irprot(std::string ir)
 {
   ir_prot_e ret;
   std::transform(ir.begin(), ir.end(), ir.begin(), ::toupper);
