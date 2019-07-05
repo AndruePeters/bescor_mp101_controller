@@ -340,6 +340,66 @@ rf24_crclength_e str_to_crclen(std::string crc)
   return ret;
 }
 
+/*
+ * Converts string addr to address_e
+ * Valid string values: A1, A2, A3, A4, A5
+ */
+address_e str_to_addr(std::string addr)
+{
+  address_e ret;
+  std::transform(addr.begin(), addr.end(), addr.begin(), ::toupper);
 
-address_e str_to_addr(std::string addr);
-uint8_t str_to_irprot(std:string ir);
+  if (addr == "A1") {
+    ret = A1_ADDR;
+  } else if (addr == "A2") {
+    ret = A2_ADDR;
+  } else if (addr == "A3") {
+    ret = A3_ADDR;
+  } else if (addr == "A4") {
+    ret = A4_ADDR;
+  } else if (addr == "A5") {
+    ret = A5_ADDR;
+  } else {
+    ret = A1_ADDR;
+  }
+}
+
+/*
+ * Convert string ir to ir_prot_e
+ * Valid string values: NEC, SONY, RC5, RC6, PANASONIC_OLD, JVC, NECX, SAMSUNG36, GICABLE, DIRECTV, RCMM, CKYM
+ */
+ir_prot_e str_to_irprot(std:string ir)
+{
+  ir_prot_e ret;
+  std::transform(ir.begin(), ir.end(), ir.begin(), ::toupper);
+
+  if (ir == "NEC") {
+    ret = IR_NEC;
+  } else if (ir == "SONY") {
+    ret = IR_SONY;
+  } else if (ir == "RC5") {
+    ret = IR_RC5;
+  } else if (ir == "RC6") {
+    ret = IR_RC6;
+  } else if (ir == "PANASONIC_OLD") {
+    ret = IR_PANASONIC_OLD;
+  } else if (ir == "JVC") {
+    ret = IR_JVC;
+  } else if (ir == "NECX") {
+    ret = IR_NECX;
+  } else if (ir == "SAMSUNG36") {
+    ret = IR_SAMSUNG36;
+  } else if (ir == "GICABLE") {
+    ret = IR_GICABLE;
+  } else if (ir == "DIRECTV") {
+    ret = IR_DIRECTV;
+  } else if (ir == "RCMM") {
+    ret = IR_RCMM;
+  } else if (ir == "CKYM") {
+    ret = IR_CYKM;
+  } else {
+    ret = IR_UNKNOWN;
+  }
+
+  return ret;
+}
