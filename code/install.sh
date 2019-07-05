@@ -16,13 +16,7 @@ sudo make install
 cd ..
 
 # intall libyaml-cpp
-git clone https://github.com/jbeder/yaml-cpp
-cd yaml-cpp
-cmake . -DBUILD_SHARED_LIBS=OFF -Bbuild
-cd build
-make
-sudo make install
-cd ../../
+sudo apt install libyaml-cpp-dev
 
 # install libsfml-dev
 sudo apt-get install libsfml-dev -y
