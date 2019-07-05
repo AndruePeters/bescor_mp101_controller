@@ -298,7 +298,27 @@ rf24_pa_dbm_e str_to_pwr(std::string power)
 }
 
 
-rf24_datarate_e str_to_datarate(std::string dr);
+/*
+ * Converts string dr to rf24_datarate_e
+ * Valid string values: 250KBPS, 1MBPS, 2MBPS
+ */
+rf24_datarate_e str_to_datarate(std::string dr)
+{
+  rf24_datarate_e ret;
+  std::transform(dr.begin(), dr.end(), dr.begin(), ::toupper);
+
+  if (dr == "250KBPS") {
+    ret = RF24_250KBPS;
+  } else if (dr == "1MBPS") {
+    ret = RF24_1MBPS;
+  } else if (dr == "2MBPS") {
+    ret = RF24_2MBPS;
+  } else {
+    ret = RF24_250KBPS;
+  }
+
+  return ret;
+}
 rf24_crclength_e str_to_crclen(std::string crc);
 address_e str_to_addr(std::string addr);
 uint8_t str_to_irprot(std:string ir);
