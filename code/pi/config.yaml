@@ -7,7 +7,20 @@ camera_nodes:
       date_rate: 250KBPS
       crc_length: DISABLED
       ir_proto: SONY
-      zoom_in: 0x00000005
+      zoom_in: 0x00000001
       zoom_out: 0x0000000A
+      focus_in: 5
+      focus_out: 10
+
+    - channel: 2
+      id: 2
+      address: A1
+      color: RED
+      power_level: MAX
+      date_rate: 250KBPS
+      crc_length: DISABLED
+      ir_proto: SONY
+      zoom_in: 0x00000002
+      zoom_out: 0x0000000B
       focus_in: 5
       focus_out: 10
