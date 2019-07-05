@@ -16,7 +16,7 @@ sudo make install
 cd ..
 
 # intall libyaml-cpp
-sudo apt install libyaml-cpp-dev
+sudo apt install libyaml-cpp-dev -y
 
 # install libsfml-dev
 sudo apt-get install libsfml-dev -y
