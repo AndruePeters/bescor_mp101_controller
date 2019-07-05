@@ -273,8 +273,31 @@ color_e str_to_clr(std::string color)
   return ret;
 }
 
+/*
+ * Converts power to rf24_pa_dbm_e
+ * Valid string values: MIN, LOW, HIGH, MAX
+ */
+rf24_pa_dbm_e str_to_pwr(std::string power)
+{
+  rf24_pa_dbm_e ret;
+  std::transform(power.begin(), power.end(),power,begin(), ::toupper);
 
-rf24_pa_dbm_e str_to_pwr(std::string power);
+  if (power == "MIN") {
+    ret = RF24_PA_MIN;
+  } else if (power == "LOW") {
+    ret = RF24_PA_LOW;
+  } else if (power == "HIGH") {
+    ret = RF24_PA_HIGH;
+  } else if (power == "MAX") {
+    ret = RF24_PA_MAX;
+  } else {
+    ret = RF24_PA_ERROR;
+  }
+
+  return ret;
+}
+
+
 rf24_datarate_e str_to_datarate(std::string dr);
 rf24_crclength_e str_to_crclen(std::string crc);
 address_e str_to_addr(std::string addr);
