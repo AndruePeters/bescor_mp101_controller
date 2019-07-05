@@ -18,4 +18,4 @@ SET (CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 SET (CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 SET (CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 
-add_compile_options( -Wall -Wextra -Werror -Wpedantic -pedantic-errors)
+add_compile_options( -Wall -Wextra -Wpedantic -pedantic-errors)
