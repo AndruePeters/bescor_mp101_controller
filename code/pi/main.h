@@ -74,6 +74,6 @@ rf24_pa_dbm_e str_to_pwr(std::string power);
 rf24_datarate_e str_to_datarate(std::string dr);
 rf24_crclength_e str_to_crclen(std::string crc);
 address_e str_to_addr(std::string addr);
-uint8_t str_to_irprot(std:string ir);
+ir_prot_e str_to_irprot(std::string ir);
 
 #endif
