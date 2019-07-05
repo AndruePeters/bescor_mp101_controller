@@ -39,7 +39,11 @@ int main()
   wiringPiSetup();
   rf24_init();
 
-
+  load_config("config.yaml", node_list);
+  for (auto it = node_list.begin(); it != node_list.end(); ++it) {
+    print_curr_node(it);
+    std::cout << "\n\n";
+  }
 
 
   while (0) {
@@ -235,13 +239,43 @@ void load_config(std::string file, node_list_t &nl)
     np = new node_prop;
     node_init(np);
     node_set_id(np, (uint8_t)(*it)["id"].as<unsigned>()); // yaml-cpp has issue directly converting to uint8_t
+    node_set_color(np, str_to_clr((*it)["color"].as<std::string>()));
 
+    // configure rf properties
+    node_set_power_level(np,  str_to_pwr( (*it)["power_level"].as<std::string>()) );
+    node_set_data_rate(np,    str_to_datarate( (*it)["data_rate"].as<std::string>() ));
+    node_set_crc_length(np,   str_to_crclen( (*it)["crc_length"].as<std::string>() ));
+    node_set_channel(np,      (uint8_t)(*it)["channel"].as<unsigned>() ); // yaml-cpp has issue converting to uint8_t
+    node_set_address(np,      str_to_addr( (*it)["address"].as<std::string>() ));
 
+    // configure ir properties
+    node_set_ir_prot(np,      str_to_irprot( (*it)["ir_proto"].as<std::string>() ));
+    node_set_zoom_in(np,      (*it)["zoom_in"].as<uint32_t>() );
+    node_set_zoom_out(np,     (*it)["zoom_out"].as<uint32_t>() );
+    node_set_focus_in(np,     (*it)["focus_in"].as<uint32_t>() );
+    node_set_focus_out(np,    (*it)["focus_out"].as<uint32_t>() );
 
-
+    // now store this created node
+    nl.push_back(np);
   }
 
 }
+
+void print_curr_node(node_list_it &it)
+{
+  std::stringstream ss;
+  node_prop *np = (*it);
+  ss << "\nColor:\t" << (unsigned)node_get_color(np)
+     << "\nID:\t" << (unsigned)node_get_id(np)
+     << "\nZoomIn:\t" << node_get_zoom_in(np)
+     << "\nZoomOut:\t" << node_get_zoom_out(np)
+     << "\nFocus In:\t" << node_get_focus_in(np)
+     << "\nFocus Out: " << node_get_focus_out(np)
+     << std::endl;
+  //addstr(ss.str().c_str());
+  std::cout << ss.str();
+}
+
 
 /*
  *  Returns the color_e version of color.
