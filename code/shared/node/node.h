@@ -29,7 +29,13 @@
 const uint8_t ADDRESSES[][6] = { "PNode", "1Node", "2Node", "3Node", "4Node", "5Node"};
 typedef enum { RPI_ADDR=0x00, A1_ADDR, A2_ADDR, A3_ADDR, A4_ADDR, A5_ADDR} address_e;
 typedef enum { OFF=0x00, BLUE, GREEN, CYAN, RED, MAGENTA, YELLOW, WHITE, NUM_COLORS } color_e;
-typedef enum { IR_NONE=0x00, IR_SONY, IR_NEC } ir_prot_e;
+
+/*
+  These are defined in IRLIB2 for the Arduino platform, and are
+  used here for conistency.
+*/
+typedef enum { IR_UNKNOWN=0x00, IR_NEC, IR_SONY, IR_RC5, IR_RC6, IR_PANASONIC_OLD, IR_JVC,
+               IR_NECX, IR_SAMSUNG36, IR_GICABLE, IR_DIRECTV, IR_RCMM, IR_CYKM } ir_prot_e;
 
 
 /*
