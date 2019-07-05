@@ -5,6 +5,7 @@ cmake . -DCMAKE_TOOLCHAIN_FILE=toolchain-rpi.cmake -B_build
 cd _build
 make
 scp main pi@192.168.1.162:~
+scp ../config.yaml pi@192.168.1.162:~
 cd ..
 echo Done
 ssh  -tt -T pi@192.168.1.162 << 'ENDSSH'
