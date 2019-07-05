@@ -6,6 +6,8 @@
   This is the main file for the program.
   Better description later.
 */
+#include <algorithm>
+#include <cctype>
 #include <iostream>
 #include <sstream>
 #include <iterator>
@@ -240,3 +242,40 @@ void load_config(std::string file, node_list_t &nl)
   }
 
 }
+
+/*
+ *  Returns the color_e version of color.
+ *  Valid string values: OFF, BLUE, GREEN, CYAN, RED, MAGENTA, YELLOW, WHITE
+ */
+color_e str_to_clr(std::string color)
+{
+  color_e ret;
+  // transform string to upper for comparison
+  std::transform(color.begin(), color.end(), color.begin(), ::toupper)
+  if (color == "BLUE") {
+    ret = BLUE;
+  } else if (color == "GREEN") {
+    ret = GREEN;
+  } else if (color == "CYAN") {
+    ret = CYAN;
+  } else if (color == "RED") {
+    ret = RED;
+  } else if (color == "MAGENTA") {
+    ret = MAGENTA;
+  } else if (color == "YELLOW") {
+    ret = YELLOW;
+  } else if (color == "WHITE") {
+    ret = WHITE;
+  } else {
+    ret = OFF;
+  }
+
+  return ret;
+}
+
+
+rf24_pa_dbm_e str_to_pwr(std::string power);
+rf24_datarate_e str_to_datarate(std::string dr);
+rf24_crclength_e str_to_crclen(std::string crc);
+address_e str_to_addr(std::string addr);
+uint8_t str_to_irprot(std:string ir);
