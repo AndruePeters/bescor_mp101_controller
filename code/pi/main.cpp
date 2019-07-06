@@ -252,7 +252,6 @@ void load_config(std::string file, node_list_t &nl)
   YAML::Node base = YAML::LoadFile(file.c_str());
   YAML::Node arr = base["camera_nodes"];
   std::cout << "\nLoaded file\n";
-  //base = base["camera_nodes"];
 
   for (auto it = arr.begin(); it != arr.end(); ++it) {
     np = new node_prop;
