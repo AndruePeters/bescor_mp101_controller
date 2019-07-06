@@ -11,7 +11,7 @@ include_directories ( ${CMAKE_CURRENT_SOURCE_DIR}  ../shared/node/ ../shared/pac
 message ("\n\nInclude directories: \t${CMAKE_CURRENT_SOURCE_DIR}   \n\t\t\t${CUSTOM_LIB_PATH}/include\n\n")
 
 
-link_directories ( ${CUSTOM_LIB_PATH}/bin ../../shared/node/ ../../shared/packet/ joystick/)
+link_directories (. ${CUSTOM_LIB_PATH}/bin ../../shared/node/ ../../shared/packet/ joystick/)
 message ("\n\nLink Directories:\t${CUSTOM_LIB_PATH}/bin\n\t\t\t../shared/node/\n\t\t\t./../shared/packet/\n\t\t\tjoystick/\n\n")
 
 FILE (GLOB SRC_FILES *.cpp ../shared/node/*.cpp ../shared/packet/*.cpp joystick/*.cpp)
