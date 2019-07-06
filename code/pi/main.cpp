@@ -42,9 +42,25 @@ int main()
   rf24_init();
 
   // make iterator. This is what's used for the current node.
-  node_list_it curr_node = node_list.begin();
+
 
   load_config("config.yaml", node_list);
+  node_list_it curr_node = node_list.begin();
+  packet p;
+  uint32_t code;
+  create_ir_packet(curr_node, p, 0x12345678);
+  code = p.payload[1] << 24 | p.payload[2] << 16 | p.payload[3] << 8 | p.payload[4];
+  std::cout << std::hex << "Recombined code: \n" << code << std::endl;
+
+
+
+
+
+
+
+
+
+
 
   // dump for debug
   for (auto it = node_list.begin(); it != node_list.end(); ++it) {
@@ -61,7 +77,6 @@ int main()
 
   return 0;
 }
-
 
 /*
  *  Initialize rf24 module to defaults.
@@ -86,7 +101,6 @@ void match_node_radio(const nrf2401_prop &n)
   set_rf24_write_addr(n.listening_addr);
 }
 
-
 /*
  *  Sends a packet.
  */
@@ -101,7 +115,6 @@ void send_packet(const nrf2401_prop &n, const packet &p)
 
   }
 }
-
 
 /*
  *  Sets the raspberry pi write address to the arduino node listening address
@@ -189,6 +202,9 @@ void cycle_node_right( node_list_t &nl, node_list_it &it)
   }
 }
 
+/*
+ *  Creates motor packet.
+ */
 void create_motor_packet(node_list_it &it, packet& p)
 {
   float x_out, y_out;
@@ -217,11 +233,14 @@ void create_motor_packet(node_list_it &it, packet& p)
 
 }
 
+/*
+ *  Creates the IR packet.
+ */
 void create_ir_packet(node_list_it &it, packet &p, uint32_t ir_code)
 {
   p.packet_type = 1;
   p.payload_used = 5;
-  p.id = (*it)->id;
+  p.id = node_get_id(*it);
   p.payload[0] = node_get_ir_prot((*it));
   p.payload[1] = ir_code >> 24;
   p.payload[2] = ir_code >> 16;
@@ -231,6 +250,9 @@ void create_ir_packet(node_list_it &it, packet &p, uint32_t ir_code)
   print_packet(p);
 }
 
+/*
+ *  Dumps packet information to screen;
+ */
 void print_packet(const packet &p)
 {
   std::stringstream ss;
