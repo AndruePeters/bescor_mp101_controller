@@ -241,6 +241,7 @@ void print_packet(const packet &p)
   for (int i = 0; i < p.payload_used; ++i) {
     ss << "\nPayload[" << i << "]: " << std::hex << (unsigned)p.payload[i];
   }
+  addstr(ss.str().c_str());
 }
 
 /*
@@ -293,8 +294,7 @@ void print_curr_node(node_list_it &it)
      << "\nFocus In:\t" << node_get_focus_in(np)
      << "\nFocus Out: " << node_get_focus_out(np)
      << std::endl;
-  //addstr(ss.str().c_str());
-  std::cout << ss.str();
+  addstr(ss.str().c_str());
 }
 
 
