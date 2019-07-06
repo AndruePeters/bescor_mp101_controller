@@ -22,7 +22,7 @@ public:
   JS_State(unsigned js_num);
   void update();
   bool setJSNum(unsigned js_num);
-  void waitUntilConnected() const;
+  void waitUntilConnected();
   unsigned getJSNumber() const;
   unsigned getNumBtns() const;
   bool isConnected() const;

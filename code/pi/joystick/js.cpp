@@ -1,4 +1,6 @@
+#include <chrono>
 #include <iostream>
+#include <thread>
 #include <cmath>
 #include <joystick/js.h>
 
@@ -53,9 +55,12 @@ bool JS_State::setJSNum(unsigned js_num) {
   Waits for the current joystick to be connected.
   Be careful with use as it can lock up the program.
 */
-void JS_State::waitUntilConnected() const
+void JS_State::waitUntilConnected()
 {
-  while ( !sf::Joystick::isConnected(js_num) ) {}
+  while ( !sf::Joystick::isConnected(js_num) ) {
+    update();
+    std::this_thread::sleep_for(std::chrono::milliseconds(16));
+  }
 }
 
 
