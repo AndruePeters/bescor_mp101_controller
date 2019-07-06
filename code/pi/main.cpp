@@ -8,8 +8,10 @@
 */
 #include <algorithm>
 #include <cctype>
+#include <chrono>
 #include <iostream>
 #include <sstream>
+#include <thread>
 #include <iterator>
 
 #include <RF24/RF24.h>
@@ -46,8 +48,10 @@ int main()
   }
 
 
-  while (0) {
-    sleep(1);
+  while (1) {
+
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(15));
   }
 
   return 0;
@@ -105,7 +109,11 @@ void send_packet(const nrf2401_prop &n, const packet &p)
   */
 void process_input(node_list_t &nl, node_list_it &it)
  {
-   if (!js.isConnected()) return;
+   if (!js.isConnected()) {
+     std::cout << "Joystick is not connected. Please connect it to continue." << std::endl;
+     js.waitUntilConnected();
+    }
+
    packet p;
 
    // get current joystick state
