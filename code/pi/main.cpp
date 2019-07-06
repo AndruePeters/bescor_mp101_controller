@@ -226,19 +226,23 @@ void print_packet(const packet &p)
   }
 }
 
-
+/*
+ *  Reads and parses a yaml file (file) and stores nodes in nl
+ */
 void load_config(std::string file, node_list_t &nl)
 {
   node_prop *np = NULL;
-
+  file = "config.yaml";
   // verify correct loading of file in future.
-  YAML::Node base = YAML::LoadFile(file);
-  base = base["camera_nodes"];
+  YAML::Node base = YAML::LoadFile(file.c_str());
+  YAML::Node arr = base["camera_nodes"];
+  std::cout << "\nLoaded file\n";
+  //base = base["camera_nodes"];
 
-  for (auto it = base.begin(); it != base.end(); ++it) {
+  for (auto it = arr.begin(); it != arr.end(); ++it) {
     np = new node_prop;
     node_init(np);
-    node_set_id(np, (uint8_t)(*it)["id"].as<unsigned>()); // yaml-cpp has issue directly converting to uint8_t
+    node_set_id(np, (*it)["id"].as<unsigned>()); // yaml-cpp has issue directly converting to uint8_t
     node_set_color(np, str_to_clr((*it)["color"].as<std::string>()));
 
     // configure rf properties
@@ -258,9 +262,11 @@ void load_config(std::string file, node_list_t &nl)
     // now store this created node
     nl.push_back(np);
   }
-
 }
 
+/*
+ *  Dumps information for the current node.
+ */
 void print_curr_node(node_list_it &it)
 {
   std::stringstream ss;
