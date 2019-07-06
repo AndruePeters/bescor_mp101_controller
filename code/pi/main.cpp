@@ -24,7 +24,6 @@
 #include <joystick/controller_map.h>
 #include <joystick/js.h>
 
-#include <unistd.h> // for sleep
 #include <yaml-cpp/yaml.h>
 #include <main.h>
 
@@ -38,10 +37,16 @@ node_list_t node_list;
 
 int main()
 {
+  // initialize wiringPi and RF24
   wiringPiSetup();
   rf24_init();
 
+  // make iterator. This is what's used for the current node.
+  node_list_it curr_node = node_list.begin();
+
   load_config("config.yaml", node_list);
+
+  // dump for debug
   for (auto it = node_list.begin(); it != node_list.end(); ++it) {
     print_curr_node(it);
     std::cout << "\n\n";
@@ -49,7 +54,7 @@ int main()
 
 
   while (1) {
-
+    process_input(node_list, curr_node);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(15));
   }
@@ -58,6 +63,9 @@ int main()
 }
 
 
+/*
+ *  Initialize rf24 module to defaults.
+ */
 void rf24_init()
 {
   radio.begin();
@@ -80,7 +88,7 @@ void match_node_radio(const nrf2401_prop &n)
 
 
 /*
- *
+ *  Sends a packet.
  */
 void send_packet(const nrf2401_prop &n, const packet &p)
 {
@@ -110,7 +118,7 @@ void send_packet(const nrf2401_prop &n, const packet &p)
 void process_input(node_list_t &nl, node_list_it &it)
  {
    if (!js.isConnected()) {
-     std::cout << "Joystick is not connected. Please connect it to continue." << std::endl;
+     std::cout << "Joystick is not connected. Please connect it to continue." << std::endl << std::endl;
      js.waitUntilConnected();
     }
 
@@ -240,7 +248,6 @@ void print_packet(const packet &p)
 void load_config(std::string file, node_list_t &nl)
 {
   node_prop *np = NULL;
-  file = "config.yaml";
   // verify correct loading of file in future.
   YAML::Node base = YAML::LoadFile(file.c_str());
   YAML::Node arr = base["camera_nodes"];
