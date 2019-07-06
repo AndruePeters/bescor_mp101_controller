@@ -38,11 +38,12 @@ int main()
   node_list_t nl;
   create_load_nodes(nl);
   auto it = nl.begin();
-
-  for (auto i = nl.begin(); i != nl.end(); ++i) {
-    print_curr_node(i);
-    std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+  for (; it != nl.end(); ++it) {
+    print_curr_node(it);
+    std::cout << "\n\n";
   }
+
+
   while (0) {
     process_input(nl, it);
     erase();
@@ -75,6 +76,7 @@ void create_load_nodes(node_list_t &nl)
     p->zoomout = (*it)["zoom_out"].as<uint32_t>();
     p->focusin = (*it)["focus_in"].as<uint32_t>();
     p->focusout = (*it)["focus_out"].as<uint32_t>();
+    nl.push_back(p);
   }
 }
 
@@ -108,14 +110,14 @@ void process_input(node_list_t &nl, node_list_it &it)
 
 void print_curr_node(node_list_it &it)
 {
-  std::stringstream ss;
+  std::ostringstream ss;
   node_prop *np = (*it);
-  ss << "\nColor:\t" << np->color
-     << "\nID:\t" << (unsigned)np->id
-     << "\nZoomIn:\t" << np->zoomin
+  ss << "\nColor:\t\t" << np->color
+     << "\nID:\t\t" << (unsigned)np->id
+     << "\nZoomIn:\t\t" <<std::hex << np->zoomin
      << "\nZoomOut:\t" << np->zoomout
      << "\nFocus In:\t" << np->focusin
-     << "\nFocus Out: " << np->focusout
+     << "\nFocus Out:\t" << np->focusout
      << std::endl;
   //addstr(ss.str().c_str());
   std::cout << ss.str();
