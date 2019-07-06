@@ -1,26 +1,66 @@
 camera_nodes:
-    - channel: 1
-      id: 1
-      address: A1
-      color: BLUE
-      power_level: MAX
-      date_rate: 250KBPS
-      crc_length: DISABLED
-      ir_proto: SONY
-      zoom_in: 0x00000001
-      zoom_out: 0x0000000A
-      focus_in: 5
-      focus_out: 10
+  # this is the first came
+  - channel: 1
+    id: 1
+    address: 1
+    color: BLUE
+    power_level: MAX
+    data_rate: 250KBPS
+    crc_length: DISABLED
+    ir_proto: SONY
+    zoom_in: 0x12345678
+    zoom_out: 0x21436587
+    focus_in: 0x87654321
+    focus_out: 0x78563412
 
-    - channel: 2
-      id: 2
-      address: A1
-      color: RED
-      power_level: MAX
-      date_rate: 250KBPS
-      crc_length: DISABLED
-      ir_proto: SONY
-      zoom_in: 0x00000002
-      zoom_out: 0x0000000B
-      focus_in: 5
-      focus_out: 10
+  - channel: 1
+    id: 2
+    address: 1
+    color: Red
+    power_level: MAX
+    data_rate: 250KBPS
+    crc_length: DISABLED
+    ir_proto: SONY
+    zoom_in: 0x12345678
+    zoom_out: 0x21436587
+    focus_in: 0x87654321
+    focus_out: 0x78563412
+
+  - channel: 1
+    id: 3
+    address: 1
+    color: Green
+    power_level: MAX
+    data_rate: 250KBPS
+    crc_length: DISABLED
+    ir_proto: SONY
+    zoom_in: 0x12345678
+    zoom_out: 0x21436587
+    focus_in: 0x87654321
+    focus_out: 0x78563412
+
+  - channel: 1
+    id: 4
+    address: 1
+    color: Violet
+    power_level: MAX
+    data_rate: 250KBPS
+    crc_length: DISABLED
+    ir_proto: SONY
+    zoom_in: 0x12345678
+    zoom_out: 0x21436587
+    focus_in: 0x87654321
+    focus_out: 0x78563412
+
+  - channel: 1
+    id: 5
+    address: 1
+    color: Orange
+    power_level: MAX
+    data_rate: 250KBPS
+    crc_length: DISABLED
+    ir_proto: SONY
+    zoom_in: 0x12345678
+    zoom_out: 0x21436587
+    focus_in: 0x87654321
+    focus_out: 0x78563412
