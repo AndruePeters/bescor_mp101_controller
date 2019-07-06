@@ -41,37 +41,16 @@ int main()
   wiringPiSetup();
   rf24_init();
 
-  // make iterator. This is what's used for the current node.
-
-
+  // load config file and store items in node_list
   load_config("config.yaml", node_list);
   node_list_it curr_node = node_list.begin();
-  packet p;
-  uint32_t code;
-  create_ir_packet(curr_node, p, 0x12345678);
-  code = p.payload[1] << 24 | p.payload[2] << 16 | p.payload[3] << 8 | p.payload[4];
-  std::cout << std::hex << "Recombined code: \n" << code << std::endl;
 
-
-
-
-
-
-
-
-
-
-
-  // dump for debug
-  for (auto it = node_list.begin(); it != node_list.end(); ++it) {
-    print_curr_node(it);
-    std::cout << "\n\n";
-  }
-
-
+  init_display();
   while (1) {
+    clear();
     process_input(node_list, curr_node);
-
+    display_status(curr_node);
+    refresh();
     std::this_thread::sleep_for(std::chrono::milliseconds(15));
   }
 
@@ -479,4 +458,18 @@ ir_prot_e str_to_irprot(std::string ir)
   }
 
   return ret;
+}
+
+void init_display()
+{
+  initscr();
+  noecho();
+  cbreak();
+}
+
+void display_status(node_list_it &it)
+{
+  std::stringstream ss;
+  ss << "Current Node: " << (unsigned)node_get_id(*it) << std::endl;
+  addstr(ss.str().c_str());
 }
