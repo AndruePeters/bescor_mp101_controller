@@ -4,7 +4,18 @@
 #include <IRLibSendBase.h>
 #include <IRLib_P01_NEC.h>
 #include <IRLib_P02_Sony.h>
+#include <IRLib_P03_RC5.h>
+#include <IRLib_P04_RC6.h>
+#include <IRLib_P05_Panasonic_Old.h>
+#include <IRLib_P06_JVC.h>
+#include <IRLib_P07_NECx.h>
+#include <IRLib_P08_Samsung36.h>
+#include <IRLib_P09_GICable.h>
+#include <IRLib_P10_DirecTV.h>
+#include <IRLib_P11_RCMM.h>
+#include <IRLib_P12_CYKM.h>
 #include <IRLibCombo.h>
+
 
 #include "node.h"
 #include "packet.h"
@@ -17,6 +28,14 @@ const led_pin_config led_pins = {16, 15, 14}; // A2, A1, A0
 
 int main()
 {
+
+}
+
+void process_ir_pack(packet &p)
+{
+  uint32_t ir_code =  (p.payload[1] << 24) | (p.payload[2] << 16) |
+                      (p.payload[3] << 8)  | (p.payload[4]);
+
 
 }
 
@@ -33,8 +52,8 @@ void process_motor_pack(packet &p)
   set_motor_pan(p.payload[2]);
   set_motor_speed(p.payload[0]);
 
-  // let motor run for a short amount of time
-  delay(15); 
+  // let motor run for a short amount of time; 15 ms
+  delay(15);
 
   // turn motor off
   set_motor_speed(0);
