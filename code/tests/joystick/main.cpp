@@ -22,9 +22,9 @@ int printDiagnostic()
   js.update();
 
   if (js.isConnected()) {
-    if ( js.isBtnPressed(DS4::L1)) {
+    if ( js.isBtnPressedRaw(DS4::L1)) {
       --it;
-    } else if (js.isBtnPressed(DS4::R1)) {
+    } else if (js.isBtnPressedRaw(DS4::R1)) {
       ++it;
     }
 
@@ -32,19 +32,19 @@ int printDiagnostic()
               << js.getProductID() << std::endl
               << js.getVendorID() << std::endl;
 
-    stream << "\nX: " << js.isBtnPressed(DS4::X)
-              << "\nO: " << js.isBtnPressed(DS4::O)
-              << "\nTri: " << js.isBtnPressed(DS4::Tri)
-              << "\nSqr: " << js.isBtnPressed(DS4::Sqr)
-              << "\nL1: " << js.isBtnPressed(DS4::L1)
-              << "\nR1: " << js.isBtnPressed(DS4::R1)
-              << "\nL2 " << js.isBtnPressed(DS4::L2)
-              << "\nR2 " << js.isBtnPressed(DS4::R2)
-              << "\nShare: " << js.isBtnPressed(DS4::Share)
-              << "\nOptions: " << js.isBtnPressed(DS4::Opt)
-              << "\nPS Btn: " << js.isBtnPressed(DS4::PS)
-              << "\nLS: " << js.isBtnPressed(DS4::LS)
-              << "\nRS: " << js.isBtnPressed(DS4::RS)
+    stream << "\nX: " << js.isBtnPressedRaw(DS4::X)
+              << "\nO: " << js.isBtnPressedRaw(DS4::O)
+              << "\nTri: " << js.isBtnPressedRaw(DS4::Tri)
+              << "\nSqr: " << js.isBtnPressedRaw(DS4::Sqr)
+              << "\nL1: " << js.isBtnPressedRaw(DS4::L1)
+              << "\nR1: " << js.isBtnPressedRaw(DS4::R1)
+              << "\nL2 " << js.isBtnPressedRaw(DS4::L2)
+              << "\nR2 " << js.isBtnPressedRaw(DS4::R2)
+              << "\nShare: " << js.isBtnPressedRaw(DS4::Share)
+              << "\nOptions: " << js.isBtnPressedRaw(DS4::Opt)
+              << "\nPS Btn: " << js.isBtnPressedRaw(DS4::PS)
+              << "\nLS: " << js.isBtnPressedRaw(DS4::LS)
+              << "\nRS: " << js.isBtnPressedRaw(DS4::RS)
               << "\n\nAxes:"
               << "\nLS_X: " << js.getAxisPos(DS4::LS_X)
               << "\nLS_Y: " << js.getAxisPos(DS4::LS_Y)
