@@ -48,8 +48,9 @@ int main()
   init_display();
   while (1) {
     clear();
-    process_input(node_list, curr_node);
     display_status(curr_node);
+    addstr("\n\n");
+    process_input(node_list, curr_node);
     refresh();
     std::this_thread::sleep_for(std::chrono::milliseconds(15));
   }
@@ -110,7 +111,7 @@ void send_packet(const nrf2401_prop &n, const packet &p)
 void process_input(node_list_t &nl, node_list_it &it)
  {
    if (!js.isConnected()) {
-     std::cout << "Joystick is not connected. Please connect it to continue." << std::endl << std::endl;
+     addstr("Joystick is not connected. Please connect it to continue.\n\n");
      js.waitUntilConnected();
     }
 
@@ -129,6 +130,7 @@ void process_input(node_list_t &nl, node_list_it &it)
    // if magnitude of left stick is greater than 0, then form motor packet
    if (js.getAxisMagnitude(DS4::LS_X, DS4::LS_Y)) {
      create_motor_packet(it, p);
+     print_packet(p);
      send_packet((*it)->rf, p);
    }
 
@@ -136,23 +138,24 @@ void process_input(node_list_t &nl, node_list_it &it)
    // this is all done on the right stick, and L2 must be pressed to toggle
    // between zoom and focus
    // *there's gotta be a better way to factor this logic, check back when not tired
-   if (js.getAxisMagnitude(DS4::RS_Y) >= 10.0f) {
+   if (js.getAxisMagnitude(DS4::RS_Y) >= 50.0f) {
      if (js.isBtnPressedRaw(DS4::L2)) {
        // we're going to focus
-       if (js.getAxisPos(DS4::RS_Y) >= 10.0f) {
+       if (js.getAxisPos(DS4::RS_Y) >= 50.0f) {
          create_ir_packet(it, p, node_get_focus_in(*it));
-       } else if (js.getAxisPos(DS4::RS_Y) <= -10.0f) {
+       } else if (js.getAxisPos(DS4::RS_Y) <= -50.0f) {
          create_ir_packet(it, p, node_get_focus_out(*it));
        }
      } else {
        // now we're going to zoom zoom zoom
-       if (js.getAxisPos(DS4::RS_Y) >= 10.0f) {
+       if (js.getAxisPos(DS4::RS_Y) >= 50.0f) {
          create_ir_packet(it, p, node_get_zoom_in(*it));
-       } else if (js.getAxisPos(DS4::RS_Y) <= -10.0f) {
+       } else if (js.getAxisPos(DS4::RS_Y) <= -50.0f) {
          create_ir_packet(it, p, node_get_zoom_out(*it));
        }
      }
      // if we made it here, then we need to send IR packet
+     print_packet(p);
      send_packet((*it)->rf, p);
    }
 
@@ -225,8 +228,6 @@ void create_ir_packet(node_list_it &it, packet &p, uint32_t ir_code)
   p.payload[2] = ir_code >> 16;
   p.payload[3] = ir_code >> 8;
   p.payload[4] = ir_code;
-
-  print_packet(p);
 }
 
 /*
@@ -235,9 +236,9 @@ void create_ir_packet(node_list_it &it, packet &p, uint32_t ir_code)
 void print_packet(const packet &p)
 {
   std::stringstream ss;
-  ss << "Packet Type: " << (unsigned)p.packet_type
-     << "Payload Used: " << (unsigned)p.payload_used
-     << "\nPacket ID; " << (unsigned)p.id;
+  ss << "\nPacket Type: " << (unsigned)p.packet_type
+     << "\nPayload Used: " << (unsigned)p.payload_used
+     << "\nPacket ID: " << (unsigned)p.id;
   for (int i = 0; i < p.payload_used; ++i) {
     ss << "\nPayload[" << i << "]: " << std::hex << (unsigned)p.payload[i];
   }
@@ -293,7 +294,7 @@ void print_curr_node(node_list_it &it)
      << "\nZoomOut:\t" << node_get_zoom_out(np)
      << "\nFocus In:\t" << node_get_focus_in(np)
      << "\nFocus Out: " << node_get_focus_out(np)
-     << std::endl;
+     << "\n\n";
   addstr(ss.str().c_str());
 }
 
