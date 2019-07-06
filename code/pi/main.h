@@ -69,6 +69,8 @@ void print_packet(const packet &p);
 void load_config(std::string file, node_list_t &nl);
 void print_curr_node(node_list_it &it);
 
+void init_display();
+void display_status(node_list_it &it);
 // These are used to convert strings from config.yaml file to the appropriate type
 color_e str_to_clr(std::string color);
 rf24_pa_dbm_e str_to_pwr(std::string power);
