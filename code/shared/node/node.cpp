@@ -6,7 +6,7 @@
   Implementation for node.h
 */
 
-#include <node.h>
+#include "node.h"
 #include <assert.h>
 
 /*

@@ -18,7 +18,6 @@
 
 #ifndef _DP_NODE_H_
 #define _DP_NODE_H_
-#include <string>
 
 #ifndef ARDUINO
   #include <RF24/RF24.h>
@@ -72,7 +71,7 @@ struct node_prop {
   uint8_t id;
   struct nrf2401_prop rf;
   struct ir_prop ir;
-  std::string description;
+  char description[50];
 };
 
 /*
