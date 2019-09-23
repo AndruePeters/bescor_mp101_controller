@@ -13,6 +13,7 @@
 #include <sstream>
 #include <thread>
 #include <iterator>
+#include <csignal>
 
 #include <RF24/RF24.h>
 #include <wiringPi.h>
@@ -28,6 +29,8 @@
 #include <main.h>
 
 using namespace controller;
+
+
 // global radio instance
 // using wiringPi, so wiringPi pin scheme is also used
 // this is equivalent to radio(22, 0) in the generic gettingstarted.cpp
@@ -35,12 +38,19 @@ RF24 radio(3, 10);
 JS_State js(0);
 node_list_t node_list;
 
+void ctrlCHandler(sig_atomic_t s)
+{
+  endwin();
+  radio.printDetails();
+  exit(1);
+}
+
 int main()
 {
   // initialize wiringPi and RF24
   wiringPiSetup();
   rf24_init();
-
+  signal (SIGINT,ctrlCHandler);
   // load config file and store items in node_list
   load_config("config.yaml", node_list);
   node_list_it curr_node = node_list.begin();
@@ -52,7 +62,7 @@ int main()
     addstr("\n\n");
     process_input(node_list, curr_node);
     refresh();
-    std::this_thread::sleep_for(std::chrono::milliseconds(15));
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
   }
 
   return 0;
@@ -64,9 +74,10 @@ int main()
 void rf24_init()
 {
   radio.begin();
-  radio.setAutoAck(true);
-  radio.setRetries(2, 15);
-  radio.openWritingPipe(ADDRESSES[2]);
+  //radio.setAutoAck(true);
+  //radio.setRetries(2, 15);
+  radio.setChannel(1);
+  radio.openWritingPipe(ADDRESSES[1]);
   radio.openReadingPipe(1, ADDRESSES[0]);
 }
 
@@ -86,12 +97,12 @@ void match_node_radio(const nrf2401_prop &n)
  */
 void send_packet(const nrf2401_prop &n, const packet &p)
 {
-  match_node_radio(n);
+  //match_node_radio(n);
 
   // First, stop listening so we can talk.
   radio.stopListening();
   // attempt to send packet
-  if (!radio.write( &p, sizeof(p))) {
+  if (!radio.write( &p, sizeof(packet))) {
 
   }
 }
@@ -101,6 +112,7 @@ void send_packet(const nrf2401_prop &n, const packet &p)
  */
  void set_rf24_write_addr(const address_e listening_addr)
  {
+   std::cout << "listening_addr: " << listening_addr << "\n";
    radio.openWritingPipe(ADDRESSES[listening_addr]);
    radio.openReadingPipe(1, ADDRESSES[0]);
  }
