@@ -7,11 +7,14 @@
 #include "packet/packet.h"
 
 const int ARDUINO_ID = 0;
+const int RF24_CHANNEL = 1;
+
 
 const motor_pin_config motor_pins {6, 5, 4, 9, 2};
 const led_pin_config led_pins {16, 15, 14}; // A2, A1, A0
 const radio_pin_config radio_pins{7, 8}; 
 state_e current_state = IDLE;
+packet input_packet;
 RF24 radio(radio_pins.ce, radio_pins.cs);
 
 void setup() {
@@ -34,6 +37,11 @@ void loop() {
 
 }
 
+void init_rf24()
+{
+  radio.begin();
+
+}
 
 void process_ir_packet(packet &p)
 {
