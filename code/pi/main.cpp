@@ -232,7 +232,7 @@ void create_motor_packet(node_list_it &it, packet& p)
  */
 void create_ir_packet(node_list_it &it, packet &p, uint32_t ir_code)
 {
-  p.packet_type = 1;
+  p.packet_type = IR;
   p.payload_used = 5;
   p.id = node_get_id(*it);
   p.payload[0] = node_get_ir_prot((*it));
