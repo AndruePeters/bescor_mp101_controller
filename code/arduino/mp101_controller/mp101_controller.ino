@@ -16,36 +16,67 @@ const radio_pin_config radio_pins{7, 8};
 state_e current_state = IDLE;
 packet input_packet;
 RF24 radio(radio_pins.ce, radio_pins.cs);
+IRSend ir_send;
 
-void setup() {
+void setup() 
+{
   // put your setup code here, to run once:
   config_motor_pins();
   current_state = IDLE;
 }
 
-void loop() {
-  
-  if (current_state == IDLE) {
-    continue;
-  } else if (current_state == READ) {
-
-  } else if (current_state == PROCESS) {
-
-  } else {
-
+void loop() 
+{
+  if (radio.available()) {
+      radio.read(&input_packet, sizeof(input_packet));
+      process_packet(input_packet);
   }
+  delay(10); ///< delay 10ms
+}
 
+// packet types defined in packet.h
+void process_packet(packet &p)
+{
+    switch (p.packet_type) {
+    case TELEMETRY: break;
+    case ADMIN: break;
+    case MOTOR: process_motor_packet(p); break;
+    case IR:    process_ir_packet(p); break;
+    default: break;
+    }
 }
 
 void init_rf24()
 {
   radio.begin();
-
+  delay(20); // delay 20ms
+  radio.startListening();
 }
 
 void process_ir_packet(packet &p)
 {
+    uint32_t reconstructed_ir_code = (p.payload[1] << 24) | (p.payload[2] << 16) |
+            (p.payload[3] << 8)  | (p.payload[4]);
 
+    uint8_t protocol = p.payload[0];
+    ir_send.send(protocol, reconstructed_ir_code, 0);
+
+    /*
+    switch(p.payload[0]) {
+        case UNKNOWN:
+        case NEC:
+        case SONY:
+        case RC5:
+        case RC6:
+        case PANASONIC_OLD:
+        case JVC:
+        case NECX:
+        case SAMSUNG36:
+        case GICABLE:
+        case DIRECTV:
+        case RCMM:
+        default:    break;
+    } */
 }
 
 void config_motor_pins()
@@ -60,7 +91,7 @@ void config_motor_pins()
 /*
   Interprets a motor packet, and sets proper pins.
 */
-void process_motor_pack(packet &p)
+void process_motor_packet(packet &p)
 {
   // turn it off before both directional pins are set.
   set_motor_speed(0);
