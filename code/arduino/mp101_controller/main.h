@@ -43,10 +43,10 @@ void init_pins();
 void init_rf24();
 void read_packet();
 void process_packet(packet &p);
-void process_admin_packet();
-void process_telem_packet();
-void process_motor_packet();
-void process_ir_packet();
+void process_admin_packet(packet &p);
+void process_telem_packet(packet &p);
+void process_motor_packet(packet &p);
+void process_ir_packet(packet &p);
 
 void config_motor_pins();
 void set_motor_speed(uint8_t speed);
