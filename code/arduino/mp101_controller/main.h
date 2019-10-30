@@ -1,5 +1,7 @@
 #ifndef _MAIN_H_
 #define _MAIN_H_
+#include "node/node.h"
+#include "packet/packet.h"
 /*
   Contains pin numbers for the motor.
 */
@@ -56,5 +58,7 @@ void set_motor_left(bool value);
 void set_motor_right(bool value);
 void set_motor_tilt(uint8_t value);
 void set_motor_pan(uint8_t value);
+
+void erase_packet(packet& p);
 
 #endif
