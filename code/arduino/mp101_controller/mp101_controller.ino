@@ -1,6 +1,19 @@
 #include <RF24.h>
 #include <SPI.h>
-#include <IRLibAll.h>
+#include <IRLibSendBase.h>
+#include <IRLib_P01_NEC.h>
+#include <IRLib_P02_Sony.h>
+#include <IRLib_P03_RC5.h>
+#include <IRLib_P04_RC6.h>
+#include <IRLib_P05_Panasonic_Old.h>
+#include <IRLib_P06_JVC.h>
+#include <IRLib_P07_NECx.h>
+#include <IRLib_P08_Samsung36.h>
+#include <IRLib_P09_GICable.h>
+#include <IRLib_P10_DirecTV.h>
+#include <IRLib_P11_RCMM.h>
+#include <IRLib_P12_CYKM.h>
+#include <IRLibCombo.h>
 
 #include "main.h"
 #include "node/node.h"
@@ -16,12 +29,14 @@ const radio_pin_config radio_pins{7, 8};
 state_e current_state = IDLE;
 packet input_packet;
 RF24 radio(radio_pins.ce, radio_pins.cs);
-IRSend ir_send;
+IRsend ir_send;
 
 void setup() 
 {
   // put your setup code here, to run once:
   config_motor_pins();
+  init_rf24();
+  init_pins();
   current_state = IDLE;
 }
 
@@ -29,9 +44,16 @@ void loop()
 {
   if (radio.available()) {
       radio.read(&input_packet, sizeof(input_packet));
-      process_packet(input_packet);
+      if (input_packet.id == ARDUINO_ID) {
+        process_packet(input_packet);
+      }
   }
   delay(10); ///< delay 10ms
+}
+
+void erase_packet(packet& p)
+{
+    memset(&p, 0, sizeof(packet));
 }
 
 // packet types defined in packet.h
@@ -53,6 +75,13 @@ void init_rf24()
   radio.startListening();
 }
 
+void init_pins()
+{
+    pinMode(led_pins.red, OUTPUT);
+    pinMode(led_pins.grn, OUTPUT);
+    pinMode(led_pins.blu, OUTPUT);
+}
+
 void process_ir_packet(packet &p)
 {
     uint32_t reconstructed_ir_code = (p.payload[1] << 24) | (p.payload[2] << 16) |
@@ -60,23 +89,7 @@ void process_ir_packet(packet &p)
 
     uint8_t protocol = p.payload[0];
     ir_send.send(protocol, reconstructed_ir_code, 0);
-
-    /*
-    switch(p.payload[0]) {
-        case UNKNOWN:
-        case NEC:
-        case SONY:
-        case RC5:
-        case RC6:
-        case PANASONIC_OLD:
-        case JVC:
-        case NECX:
-        case SAMSUNG36:
-        case GICABLE:
-        case DIRECTV:
-        case RCMM:
-        default:    break;
-    } */
+    erase_packet(p);
 }
 
 void config_motor_pins()
@@ -85,7 +98,7 @@ void config_motor_pins()
   pinMode(motor_pins.right, OUTPUT);
   pinMode(motor_pins.left, OUTPUT);
   pinMode(motor_pins.up, OUTPUT);
-  pinMode(motor_pin_config.down, OUTPUT);
+  pinMode(motor_pins.down, OUTPUT);
 }
 
 /*
@@ -108,6 +121,7 @@ void process_motor_packet(packet &p)
   set_motor_speed(0);
   set_motor_tilt(0);
   set_motor_pan(0);
+  erase_packet(p);
 }
 
 /*
