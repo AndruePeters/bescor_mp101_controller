@@ -20,7 +20,7 @@ typedef struct {
   uint8_t red;
   uint8_t grn;
   uint8_t blu;
-  uint8_t ir;
+  //uint8_t ir;
 } led_pin_config;
 
 
@@ -60,5 +60,10 @@ void set_motor_tilt(uint8_t value);
 void set_motor_pan(uint8_t value);
 
 void erase_packet(packet& p);
+void turn_on_leds(color_e c);
+void turn_on_leds(uint8_t r, uint8_t g, uint8_t b, led_pin_config l); // might use pwm in future
+void turn_on_leds(color_e, led_pin_config l);
+void set_color(color_e &c, uint8_t id);
+
 
 #endif
