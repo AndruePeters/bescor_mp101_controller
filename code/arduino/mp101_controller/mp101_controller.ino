@@ -1,3 +1,7 @@
+#include <AceButton.h>
+#include <AdjustableButtonConfig.h>
+#include <ButtonConfig.h>
+
 #include <RF24.h>
 #include <SPI.h>
 #include <IRLibSendBase.h>
@@ -19,17 +23,17 @@
 #include "node/node.h"
 #include "packet/packet.h"
 
-const int ARDUINO_ID = 0;
+uint8_t ARDUINO_ID = 0;
+color_e ARDUINO_COLOR = OFF;
+
 const int RF24_CHANNEL = 1;
-
-
 const motor_pin_config motor_pins {6, 5, 4, 9, 2};
 const led_pin_config led_pins {16, 15, 14}; // A2, A1, A0
 const radio_pin_config radio_pins{7, 8}; 
 state_e current_state = IDLE;
 packet input_packet;
 RF24 radio(radio_pins.ce, radio_pins.cs);
-IRsend ir_send;
+IRsend ir_send; ///< pin 3
 
 void setup() 
 {
@@ -37,6 +41,8 @@ void setup()
   config_motor_pins();
   init_rf24();
   init_pins();
+  set_color(ARDUINO_COLOR, ARDUINO_ID);
+  turn_on_leds(ARDUINO_COLOR, led_pins);
   current_state = IDLE;
 }
 
@@ -50,6 +56,45 @@ void loop()
   }
   delay(10); ///< delay 10ms
 }
+
+void set_color(color_e &c, uint8_t id)
+{
+    switch(id) {
+    case 0: c = BLUE; break;
+    case 1: c = CYAN; break;
+    case 2: c = GREEN; break;
+    case 3: c = YELLOW; break;
+    case 4: c = RED; break;
+    default: c = OFF;
+    }
+}
+
+void turn_on_leds(uint8_t r, uint8_t g, uint8_t b, led_pin_config p_cfg)
+{
+    uint8_t r_ = r > 0 ? HIGH : LOW;
+    uint8_t g_ = g > 0 ? HIGH : LOW;
+    uint8_t b_ = b > 0 ? HIGH : LOW;
+
+    digitalWrite(p_cfg.red, r_);
+    digitalWrite(p_cfg.grn, g_);
+    digitalWrite(p_cfg.blu, b_);
+}
+
+void turn_on_leds(color_e c, led_pin_config l)
+{
+    switch (c) {
+    case OFF:       turn_on_leds(LOW, LOW, LOW, l); break;
+    case BLUE:      turn_on_leds(LOW, LOW, HIGH, l); break;
+    case GREEN:     turn_on_leds(LOW, HIGH, LOW, l); break;
+    case CYAN:      turn_on_leds(LOW, HIGH, HIGH, l); break;
+    case RED:       turn_on_leds(HIGH, LOW, LOW, l); break;
+    case MAGENTA:   turn_on_leds(HIGH, LOW, HIGH, l); break;
+    case YELLOW:    turn_on_leds(HIGH, HIGH, LOW, l); break;
+    case WHITE:     turn_on_leds(HIGH, HIGH, HIGH, l); break;
+    default:        turn_on_leds(LOW, LOW, LOW, l); break;
+    }
+}
+
 
 void erase_packet(packet& p)
 {
@@ -84,9 +129,10 @@ void init_pins()
 
 void process_ir_packet(packet &p)
 {
-    uint32_t reconstructed_ir_code = (p.payload[1] << 24) | (p.payload[2] << 16) |
-            (p.payload[3] << 8)  | (p.payload[4]);
-
+    uint32_t reconstructed_ir_code =    (static_cast<uint32_t>(p.payload[1]) << 24) | 
+                                        (static_cast<uint32_t>(p.payload[2]) << 16) |
+                                        (static_cast<uint32_t>(p.payload[3]) << 8)  | 
+                                        (static_cast<uint32_t>(p.payload[4]));
     uint8_t protocol = p.payload[0];
     ir_send.send(protocol, reconstructed_ir_code, 0);
     erase_packet(p);
