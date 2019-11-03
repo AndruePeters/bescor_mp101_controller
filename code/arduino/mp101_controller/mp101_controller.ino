@@ -23,6 +23,8 @@
 #include "node/node.h"
 #include "packet/packet.h"
 
+using namespace ace_button;
+
 uint8_t ARDUINO_ID = 0;
 color_e ARDUINO_COLOR = OFF;
 
@@ -35,6 +37,30 @@ packet input_packet;
 RF24 radio(radio_pins.ce, radio_pins.cs);
 IRsend ir_send; ///< pin 3
 
+AceButton button(17);
+
+
+void button_even_handler()
+{
+    if (ARDUINO_ID == 4) {
+       ARDUINO_ID = 0;
+    } else {
+        ++ARDUINO_ID;
+    }
+
+    set_color(ARDUINO_COLOR, ARDUINO_ID);
+    turn_on_leds(ARDUINO_COLOR, led_pins);
+}
+
+void handleButtonEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
+  switch (eventType) {
+    case AceButton::kEventReleased:
+      button_even_handler();
+      break;
+    default: break;
+  }
+}
+
 void setup() 
 {
   // put your setup code here, to run once:
@@ -44,6 +70,7 @@ void setup()
   set_color(ARDUINO_COLOR, ARDUINO_ID);
   turn_on_leds(ARDUINO_COLOR, led_pins);
   current_state = IDLE;
+  button.setEventHandler(handleButtonEvent);
 }
 
 void loop() 
@@ -125,6 +152,7 @@ void init_pins()
     pinMode(led_pins.red, OUTPUT);
     pinMode(led_pins.grn, OUTPUT);
     pinMode(led_pins.blu, OUTPUT);
+    pinMode(17, INPUT_PULLUP);
 }
 
 void process_ir_packet(packet &p)
