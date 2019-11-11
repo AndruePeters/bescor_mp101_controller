@@ -71,6 +71,8 @@ void setup()
   turn_on_leds(ARDUINO_COLOR, led_pins);
   current_state = IDLE;
   button.setEventHandler(handleButtonEvent);
+  Serial.begin(9600);
+  Serial.write ("Finished setup");
 }
 
 void loop() 
@@ -81,17 +83,18 @@ void loop()
         process_packet(input_packet);
       }
   }
+  button.check();
   delay(10); ///< delay 10ms
 }
 
 void set_color(color_e &c, uint8_t id)
 {
     switch(id) {
-    case 0: c = BLUE; break;
-    case 1: c = CYAN; break;
-    case 2: c = GREEN; break;
+    case 0: c = RED; break;
+    case 1: c = GREEN; break;
+    case 2: c = BLUE; break;
     case 3: c = YELLOW; break;
-    case 4: c = RED; break;
+    case 4: c = WHITE; break;
     default: c = OFF;
     }
 }
