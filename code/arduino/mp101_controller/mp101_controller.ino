@@ -29,8 +29,8 @@ uint8_t ARDUINO_ID = 0;
 color_e ARDUINO_COLOR = OFF;
 
 const int RF24_CHANNEL = 1;
-const motor_pin_config motor_pins {6, 5, 4, 9, 2};
-const led_pin_config led_pins {16, 15, 14}; // A2, A1, A0
+const motor_pin_config motor_pins {6, A2, 4, A1, 2};
+const led_pin_config led_pins {5, 9, 10}; // A2, A1, A0
 const radio_pin_config radio_pins{7, 8}; 
 state_e current_state = IDLE;
 packet input_packet;
@@ -101,27 +101,23 @@ void set_color(color_e &c, uint8_t id)
 
 void turn_on_leds(uint8_t r, uint8_t g, uint8_t b, led_pin_config p_cfg)
 {
-    uint8_t r_ = r > 0 ? HIGH : LOW;
-    uint8_t g_ = g > 0 ? HIGH : LOW;
-    uint8_t b_ = b > 0 ? HIGH : LOW;
-
-    digitalWrite(p_cfg.red, r_);
-    digitalWrite(p_cfg.grn, g_);
-    digitalWrite(p_cfg.blu, b_);
+    analogWrite(p_cfg.red, r);
+    analogWrite(p_cfg.grn, g);
+    analogWrite(p_cfg.blu, b);
 }
 
 void turn_on_leds(color_e c, led_pin_config l)
 {
     switch (c) {
-    case OFF:       turn_on_leds(LOW, LOW, LOW, l); break;
-    case BLUE:      turn_on_leds(LOW, LOW, HIGH, l); break;
-    case GREEN:     turn_on_leds(LOW, HIGH, LOW, l); break;
-    case CYAN:      turn_on_leds(LOW, HIGH, HIGH, l); break;
-    case RED:       turn_on_leds(HIGH, LOW, LOW, l); break;
-    case MAGENTA:   turn_on_leds(HIGH, LOW, HIGH, l); break;
-    case YELLOW:    turn_on_leds(HIGH, HIGH, LOW, l); break;
-    case WHITE:     turn_on_leds(HIGH, HIGH, HIGH, l); break;
-    default:        turn_on_leds(LOW, LOW, LOW, l); break;
+    case OFF:       turn_on_leds(0, 0, 0, l); break;
+    case BLUE:      turn_on_leds(0, 0, 255, 1); break;
+    case GREEN:     turn_on_leds(0, 255, 0, l); break;
+    case CYAN:      turn_on_leds(0, 255, 128, l); break;
+    case RED:       turn_on_leds(255, 0, 0, l); break;
+    case MAGENTA:   turn_on_leds(128, 0, 128, l); break;
+    case YELLOW:    turn_on_leds(128, 128, 0, l); break;
+    case WHITE:     turn_on_leds(128, 128, 128, l); break;
+    default:        turn_on_leds(0, 0, 0, l); break;
     }
 }
 
