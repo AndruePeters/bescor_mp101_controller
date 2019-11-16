@@ -39,6 +39,20 @@ IRsend ir_send; ///< pin 3
 
 AceButton button(17);
 
+void dump_packet(packet &p)
+{
+    for (int i = 0; i < p.payload_used; ++i) {
+      Serial.write("\npayload["); Serial.write(i); Serial.write("]: ");
+      int j = (int)p.payload[i];
+      Serial.println(j, DEC);
+    }
+}
+
+void set_pipe(int id)
+{
+  radio.openWritingPipe(ADDRESSES[0]); // write to the Pi
+  radio.openReadingPipe(1, ADDRESSES[1]);
+}
 
 void button_even_handler()
 {
@@ -48,6 +62,8 @@ void button_even_handler()
         ++ARDUINO_ID;
     }
 
+    
+    set_pipe(0);
     set_color(ARDUINO_COLOR, ARDUINO_ID);
     turn_on_leds(ARDUINO_COLOR, led_pins);
 }
@@ -72,14 +88,17 @@ void setup()
   current_state = IDLE;
   button.setEventHandler(handleButtonEvent);
   Serial.begin(9600);
-  Serial.write ("Finished setup");
+  Serial.write ("\nFinished setup.\n");
 }
 
 void loop() 
 {
   if (radio.available()) {
       radio.read(&input_packet, sizeof(input_packet));
+      Serial.write ("Read information.\n");
       if (input_packet.id == ARDUINO_ID) {
+        Serial.write("*************");
+        dump_packet(input_packet);
         process_packet(input_packet);
       }
   }
@@ -131,17 +150,19 @@ void erase_packet(packet& p)
 void process_packet(packet &p)
 {
     switch (p.packet_type) {
-    case TELEMETRY: break;
-    case ADMIN: break;
-    case MOTOR: process_motor_packet(p); break;
-    case IR:    process_ir_packet(p); break;
-    default: break;
+    case TELEMETRY: Serial.write("\nTELEMETRY\n"); break;
+    case ADMIN: Serial.write("\nADMIN\n"); break;
+    case MOTOR: Serial.write("MOTOR\n"); process_motor_packet(p); break;
+    case IR:    Serial.write("\nIR\n"); process_ir_packet(p); break;
+    default: Serial.write("\nDEFAULT\n");break;
     }
 }
 
 void init_rf24()
 {
   radio.begin();
+  set_pipe(0);
+  radio.setChannel(1);
   delay(20); // delay 20ms
   radio.startListening();
 }
@@ -183,12 +204,12 @@ void process_motor_packet(packet &p)
   set_motor_speed(0);
 
   // set directional values before turning speed back on
+  set_motor_speed(p.payload[0]);
   set_motor_tilt(p.payload[1]);
   set_motor_pan(p.payload[2]);
-  set_motor_speed(p.payload[0]);
-
+  
   // let motor run for a short amount of time; 15 ms
-  delay(15);
+  delay(10);
 
   // turn motor off
   set_motor_speed(0);
