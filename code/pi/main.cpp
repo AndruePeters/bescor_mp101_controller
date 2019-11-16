@@ -183,6 +183,7 @@ void cycle_node_left( node_list_t &nl, node_list_it &it)
   } else {
     --it;
   }
+  match_node_radio((*it)->rf);
 }
 
  /*
@@ -194,6 +195,7 @@ void cycle_node_right( node_list_t &nl, node_list_it &it)
   if (it == nl.end()) {
     it = nl.begin();
   }
+  match_node_radio((*it)->rf);
 }
 
 /*
@@ -205,7 +207,7 @@ void create_motor_packet(node_list_it &it, packet& p)
   float norm_mag = js.getNormAxis(x_out, y_out, DS4::LS_X, DS4::LS_Y);
   float speed = norm_mag * 255 ;
 
-  p.packet_type = 0;
+  p.packet_type = MOTOR;
   p.payload_used = 3;
   p.id = (*it)->id;
   p.payload[0] = (unsigned)speed;
