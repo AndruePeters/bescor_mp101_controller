@@ -209,7 +209,7 @@ void create_motor_packet(node_list_it &it, packet& p)
 
   p.packet_type = MOTOR;
   p.payload_used = 3;
-  p.id = (*it)->id;
+  p.id = ((*it)->id) - 1;
   p.payload[0] = (unsigned)speed;
 
   if (x_out > 0.0f)   p.payload[1] = 2;
