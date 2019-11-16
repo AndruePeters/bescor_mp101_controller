@@ -5,15 +5,19 @@ sudo echo "dtparam=spi=on" >> /boot/config.txt
 sudo apt-get install git cmake build-essential -y
 
 instFolder="camera_base_control"
-mkdir $instFolder
-cd $instFolder
+sudo -u mkdir $instFolder
+sudo -u cd $instFolder
 
 # install rf24
-git clone https://github.com/nRF24/RF24
+sudo -u git clone https://github.com/nRF24/RF24
 cd RF24
 ./configure --driver=wiringPi
 sudo make install
 cd ..
+
+# now clean up the RF24 build directory
+cd ..
+sudo rm -rf $instFolder
 
 # intall libyaml-cpp
 sudo apt install libyaml-cpp-dev -y
