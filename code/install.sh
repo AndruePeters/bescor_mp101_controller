@@ -20,3 +20,7 @@ sudo apt install libyaml-cpp-dev -y
 
 # install libsfml-dev
 sudo apt-get install libsfml-dev -y
+
+#install ncurses dev library
+sudo apt-get install libncurses-dev -y
+
