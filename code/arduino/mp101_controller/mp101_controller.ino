@@ -110,7 +110,7 @@ void turn_on_leds(color_e c, led_pin_config l)
 {
     switch (c) {
     case OFF:       turn_on_leds(0, 0, 0, l); break;
-    case BLUE:      turn_on_leds(0, 0, 255, 1); break;
+    case BLUE:      turn_on_leds(0, 0, 255, l); break;
     case GREEN:     turn_on_leds(0, 255, 0, l); break;
     case CYAN:      turn_on_leds(0, 255, 128, l); break;
     case RED:       turn_on_leds(255, 0, 0, l); break;
