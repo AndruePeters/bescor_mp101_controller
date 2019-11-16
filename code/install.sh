@@ -5,11 +5,11 @@ sudo echo "dtparam=spi=on" >> /boot/config.txt
 sudo apt-get install git cmake build-essential -y
 
 instFolder="camera_base_control"
-sudo -u mkdir $instFolder
-sudo -u cd $instFolder
+sudo -u $USER mkdir $instFolder
+sudo -u $USER cd $instFolder
 
 # install rf24
-sudo -u git clone https://github.com/nRF24/RF24
+sudo -u $USER git clone https://github.com/nRF24/RF24
 cd RF24
 ./configure --driver=wiringPi
 sudo make install
