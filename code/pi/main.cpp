@@ -90,6 +90,7 @@ void match_node_radio(const nrf2401_prop &n)
   radio.setCRCLength(n.crc_length);
   radio.setChannel(n.channel);
   set_rf24_write_addr(n.listening_addr);
+  radio.stopListening();
 }
 
 /*
@@ -113,8 +114,10 @@ void send_packet(const nrf2401_prop &n, const packet &p)
  void set_rf24_write_addr(const address_e listening_addr)
  {
    std::cout << "listening_addr: " << listening_addr << "\n";
-   radio.openWritingPipe(ADDRESSES[listening_addr]);
-   radio.openReadingPipe(1, ADDRESSES[0]);
+   //radio.openWritingPipe(ADDRESSES[listening_addr]);
+   //radio.openReadingPipe(1, ADDRESSES[0]);
+  radio.openWritingPipe(ADDRESSES[1]);
+  radio.openReadingPipe(1, ADDRESSES[0]);
  }
 
  /*
@@ -183,7 +186,7 @@ void cycle_node_left( node_list_t &nl, node_list_it &it)
   } else {
     --it;
   }
-  match_node_radio((*it)->rf);
+  //match_node_radio((*it)->rf);
 }
 
  /*
@@ -195,7 +198,7 @@ void cycle_node_right( node_list_t &nl, node_list_it &it)
   if (it == nl.end()) {
     it = nl.begin();
   }
-  match_node_radio((*it)->rf);
+  //match_node_radio((*it)->rf);
 }
 
 /*
@@ -209,7 +212,7 @@ void create_motor_packet(node_list_it &it, packet& p)
 
   p.packet_type = MOTOR;
   p.payload_used = 3;
-  p.id = ((*it)->id) - 1;
+  p.id = (*it)->id;
   p.payload[0] = (unsigned)speed;
 
   if (x_out > 0.0f)   p.payload[1] = 2;
