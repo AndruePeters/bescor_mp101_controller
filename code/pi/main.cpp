@@ -62,7 +62,7 @@ int main()
     addstr("\n\n");
     process_input(node_list, curr_node);
     refresh();
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
   }
 
   return 0;
