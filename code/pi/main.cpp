@@ -245,7 +245,7 @@ void create_ir_packet(node_list_it &it, packet &p, uint32_t ir_code)
   p.payload[2] = ir_code >> 16;
   p.payload[3] = ir_code >> 8;
   p.payload[4] = ir_code;
-  p.payload[5] = node_get_ir_bit_width((*it));
+  p.payload[5] = static_cast<uint8_t>(node_get_ir_bit_width((*it)));
 }
 
 /*
