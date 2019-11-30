@@ -32,7 +32,6 @@ const int RF24_CHANNEL = 1;
 const motor_pin_config motor_pins {6, A2, 4, A1, 2};
 const led_pin_config led_pins {5, 9, 10}; // A2, A1, A0
 const radio_pin_config radio_pins{7, 8}; 
-state_e current_state = IDLE;
 packet input_packet;
 RF24 radio(radio_pins.ce, radio_pins.cs);
 IRsend ir_send; ///< pin 3
@@ -85,10 +84,9 @@ void setup()
   init_pins();
   set_color(ARDUINO_COLOR, ARDUINO_ID);
   turn_on_leds(ARDUINO_COLOR, led_pins);
-  current_state = IDLE;
   button.setEventHandler(handleButtonEvent);
   Serial.begin(9600);
-  Serial.write ("\nFinished setup.\n");
+  Serial.write ("Finished setup.\n");
 }
 
 void loop() 
@@ -205,11 +203,11 @@ void process_motor_packet(packet &p)
 
   // set directional values before turning speed back on
   set_motor_speed(p.payload[0]);
-  set_motor_tilt(p.payload[1]);
-  set_motor_pan(p.payload[2]);
+  set_motor_tilt(p.payload[2]);
+  set_motor_pan(p.payload[1]);
   
   // let motor run for a short amount of time; 15 ms
-  delay(10);
+  delay(25);
 
   // turn motor off
   set_motor_speed(0);
