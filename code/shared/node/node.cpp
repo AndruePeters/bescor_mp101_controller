@@ -298,3 +298,22 @@ uint8_t node_get_ir_prot(struct node_prop *np)
   assert (np != NULL);
   return np->ir.ir_prot;
 }
+
+/*
+    Sets the IR bit width.
+    Used for transmiting an IR signal, especially with Sony protocols.
+*/
+void node_set_ir_bit_width(struct node_prop *np, uint32_t bw)
+{
+    assert (np != NULL);
+    np->ir.ir_bit_width = bw;
+}
+
+/*
+    Returns the ir bit width.
+*/
+uint8_t node_get_ir_bit_width(const struct node_prop *np)
+{
+    assert (np != NULL);
+    return np->ir.ir_bit_width;
+}

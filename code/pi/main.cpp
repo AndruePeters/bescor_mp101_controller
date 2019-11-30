@@ -238,13 +238,14 @@ void create_motor_packet(node_list_it &it, packet& p)
 void create_ir_packet(node_list_it &it, packet &p, uint32_t ir_code)
 {
   p.packet_type = IR;
-  p.payload_used = 5;
+  p.payload_used = 6;
   p.id = node_get_id(*it);
   p.payload[0] = node_get_ir_prot((*it));
   p.payload[1] = ir_code >> 24;
   p.payload[2] = ir_code >> 16;
   p.payload[3] = ir_code >> 8;
   p.payload[4] = ir_code;
+  p.payload[5] = node_get_ir_bit_width((*it));
 }
 
 /*
@@ -288,10 +289,11 @@ void load_config(std::string file, node_list_t &nl)
 
     // configure ir properties
     node_set_ir_prot(np,      str_to_irprot( (*it)["ir_proto"].as<std::string>() ));
-    node_set_zoom_in(np,      (*it)["zoom_in"].as<uint32_t>() );
-    node_set_zoom_out(np,     (*it)["zoom_out"].as<uint32_t>() );
-    node_set_focus_in(np,     (*it)["focus_in"].as<uint32_t>() );
-    node_set_focus_out(np,    (*it)["focus_out"].as<uint32_t>() );
+    node_set_zoom_in(np,        (*it)["zoom_in"].as<uint32_t>() );
+    node_set_zoom_out(np,       (*it)["zoom_out"].as<uint32_t>() );
+    node_set_focus_in(np,       (*it)["focus_in"].as<uint32_t>() );
+    node_set_focus_out(np,      (*it)["focus_out"].as<uint32_t>() );
+    node_set_ir_bit_width(np,   (*it)["ir_bit_width"].as<uint32_t>() );
 
     // now store this created node
     nl.push_back(np);
