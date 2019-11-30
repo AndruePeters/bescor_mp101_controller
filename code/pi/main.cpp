@@ -220,29 +220,30 @@ void cycle_node_right( node_list_t &nl, node_list_it &it)
  */
 void create_motor_packet(node_list_it &it, packet& p)
 {
-  float x_out, y_out;
-  float norm_mag = js.getNormAxis(x_out, y_out, DS4::LS_X, DS4::LS_Y);
-  float speed = norm_mag * 255 ;
+    float x_out, y_out;
+    float norm_mag = js.getNormAxis(x_out, y_out, DS4::LS_X, DS4::LS_Y);
+    float speed = norm_mag * 255 ;
 
-  p.packet_type = MOTOR;
-  p.payload_used = 3;
-  p.id = (*it)->id;
-  p.payload[0] = (unsigned)speed;
+    p.packet_type = MOTOR;
+    p.payload_used = 3;
+    p.id = (*it)->id;
+    p.payload[0] = (unsigned)speed;
 
-  if (x_out > 0.0f)   p.payload[1] = 2;
-  else if (x_out == 0.0f)  p.payload[1] = 0;
-  else if (x_out < 0.0f)   p.payload[1] = 1;
 
-  if (y_out > 0.0f) p.payload[2] = 2;
-  else if (y_out == 0.0f) p.payload[2] = 0;
-  else if (y_out < 0.0f)  p.payload[2] = 1;
+    if (x_out > 0.10f)          p.payload[1] = 2;
+    else if (x_out < -0.10f)    p.payload[1] = 1;
+    else                        p.payload[1] = 0;
 
-  std::stringstream ss;
-  ss  << "\nX raw: " << js.getAxisPos(DS4::LS_X)
-                       << "\nY raw: " << js.getAxisPos(DS4::LS_Y)
-                       << "\nX out: " << x_out
-                       << "\nY out: " << y_out
-                       << "\nSpeed: " << speed << std::endl;
+    if (y_out > 0.25f)          p.payload[2] = 2;
+    else if (y_out < -0.25f)    p.payload[2] = 1;
+    else                        p.payload[2] = 0;
+
+    std::stringstream ss;
+    ss  << "\nX raw: " << js.getAxisPos(DS4::LS_X)
+                        << "\nY raw: " << js.getAxisPos(DS4::LS_Y)
+                        << "\nX out: " << x_out
+                        << "\nY out: " << y_out
+                        << "\nSpeed: " << speed << std::endl;
 
 }
 
