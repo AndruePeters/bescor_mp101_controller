@@ -60,7 +60,7 @@ struct ir_prop {
   uint32_t zoom_out;
   uint32_t focus_in;
   uint32_t focus_out;
-  uint8_t ir_bit_width;
+  uint32_t ir_bit_width;
   uint8_t ir_prot;
 };
 
@@ -242,6 +242,6 @@ void node_set_ir_bit_width(struct node_prop *np, uint32_t bw);
 /*
     Returns the bit width for the ir protocol.
 */
-uint8_t node_get_ir_bit_width(const struct node_prop *np);
+uint32_t node_get_ir_bit_width(const struct node_prop *np);
 
 #endif
