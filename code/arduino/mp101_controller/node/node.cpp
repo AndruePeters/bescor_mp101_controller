@@ -312,7 +312,7 @@ void node_set_ir_bit_width(struct node_prop *np, uint32_t bw)
 /*
     Returns the ir bit width.
 */
-uint8_t node_get_ir_bit_width(const struct node_prop *np)
+uint32_t node_get_ir_bit_width(const struct node_prop *np)
 {
     assert (np != NULL);
     return np->ir.ir_bit_width;
