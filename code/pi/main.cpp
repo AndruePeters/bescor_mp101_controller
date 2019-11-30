@@ -37,6 +37,7 @@ using namespace controller;
 RF24 radio(3, 10);
 JS_State js(0);
 node_list_t node_list;
+const rgb_led_pin_cfg rgb{8, 9, 7}; //in order r, g, b
 
 void ctrlCHandler(sig_atomic_t s)
 {
@@ -45,12 +46,21 @@ void ctrlCHandler(sig_atomic_t s)
   exit(1);
 }
 
+
+
 int main()
 {
   // initialize wiringPi and RF24
   wiringPiSetup();
   rf24_init();
   signal (SIGINT,ctrlCHandler);
+
+    // setup the rgb pins
+    pinMode(rgb.red, OUTPUT);
+    pinMode(rgb.green, OUTPUT);
+    pinMode(rgb.blue, OUTPUT);
+
+
   // load config file and store items in node_list
   load_config("config.yaml", node_list);
   node_list_it curr_node = node_list.begin();
@@ -143,7 +153,7 @@ void process_input(node_list_t &nl, node_list_it &it)
    }
 
    // if magnitude of left stick is greater than 0, then form motor packet
-   if (js.getAxisMagnitude(DS4::LS_X, DS4::LS_Y)) {
+   if (js.getAxisMagnitude(DS4::LS_X, DS4::LS_Y) && js.getAxisMagnitude(DS4::LS_Y) > 50.0f) {
      create_motor_packet(it, p);
      print_packet(p);
      send_packet((*it)->rf, p);
@@ -186,6 +196,8 @@ void cycle_node_left( node_list_t &nl, node_list_it &it)
   } else {
     --it;
   }
+
+  turn_on_leds((*it)->color, rgb);
   //match_node_radio((*it)->rf);
 }
 
@@ -194,10 +206,12 @@ void cycle_node_left( node_list_t &nl, node_list_it &it)
 */
 void cycle_node_right( node_list_t &nl, node_list_it &it)
 {
-  ++it;
-  if (it == nl.end()) {
+    ++it;
+    if (it == nl.end()) {
     it = nl.begin();
-  }
+    }
+
+    turn_on_leds((*it)->color, rgb);
   //match_node_radio((*it)->rf);
 }
 
@@ -492,4 +506,26 @@ void display_status(node_list_it &it)
   std::stringstream ss;
   ss << "Current Node: " << (unsigned)node_get_id(*it) << std::endl;
   addstr(ss.str().c_str());
+}
+
+void turn_on_leds(bool r, bool g, bool b, const rgb_led_pin_cfg p_cfg)
+{
+    digitalWrite(p_cfg.red, r);
+    digitalWrite(p_cfg.grn, g);
+    digitalWrite(p_cfg.blu, b);
+}
+
+void turn_on_leds(color_e clr, const rgb_led_pin_cfg l)
+{
+    switch (c) {
+    case OFF:       turn_on_leds(0, 0, 0, l); break;
+    case BLUE:      turn_on_leds(0, 0, 1, l); break;
+    case GREEN:     turn_on_leds(0, 1, 0, l); break;
+    case CYAN:      turn_on_leds(0, 1, 1, l); break;
+    case RED:       turn_on_leds(1, 0, 0, l); break;
+    case MAGENTA:   turn_on_leds(1, 0, 1, l); break;
+    case YELLOW:    turn_on_leds(1, 1, 0, l); break;
+    case WHITE:     turn_on_leds(1, 1, 1, l); break;
+    default:        turn_on_leds(0, 0, 0, l); break;
+    }
 }
