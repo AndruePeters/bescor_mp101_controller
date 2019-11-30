@@ -41,9 +41,9 @@ AceButton button(17);
 void dump_packet(packet &p)
 {
     for (int i = 0; i < p.payload_used; ++i) {
-      Serial.write("\npayload["); Serial.write(i); Serial.write("]: ");
+      Serial.write("payload["); Serial.write(i); Serial.write("]: ");
       int j = (int)p.payload[i];
-      Serial.println(j, DEC);
+      Serial.println(j, HEX);
     }
 }
 
@@ -93,15 +93,11 @@ void loop()
 {
   if (radio.available()) {
       radio.read(&input_packet, sizeof(input_packet));
-      Serial.write ("Read information.\n");
       if (input_packet.id == ARDUINO_ID) {
-        Serial.write("*************");
-        dump_packet(input_packet);
         process_packet(input_packet);
       }
   }
   button.check();
-  delay(10); ///< delay 10ms
 }
 
 void set_color(color_e &c, uint8_t id)
@@ -148,11 +144,11 @@ void erase_packet(packet& p)
 void process_packet(packet &p)
 {
     switch (p.packet_type) {
-    case TELEMETRY: Serial.write("\nTELEMETRY\n"); break;
-    case ADMIN: Serial.write("\nADMIN\n"); break;
-    case MOTOR: Serial.write("MOTOR\n"); process_motor_packet(p); break;
-    case IR:    Serial.write("\nIR\n"); process_ir_packet(p); break;
-    default: Serial.write("\nDEFAULT\n");break;
+    case TELEMETRY:  break;
+    case ADMIN: break;
+    case MOTOR: process_motor_packet(p); break;
+    case IR:    process_ir_packet(p); break;
+    default: break;
     }
 }
 
@@ -170,7 +166,7 @@ void init_pins()
     pinMode(led_pins.red, OUTPUT);
     pinMode(led_pins.grn, OUTPUT);
     pinMode(led_pins.blu, OUTPUT);
-    pinMode(17, INPUT_PULLUP);
+    pinMode(17, INPUT_PULLUP); // button
 }
 
 void process_ir_packet(packet &p)
@@ -181,6 +177,7 @@ void process_ir_packet(packet &p)
                                         (static_cast<uint32_t>(p.payload[4]));
     uint8_t protocol = p.payload[0];
     ir_send.send(protocol, reconstructed_ir_code, p.payload[5]);
+    dump_packet(p);
     erase_packet(p);
 }
 
