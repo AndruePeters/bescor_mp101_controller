@@ -512,13 +512,13 @@ void display_status(node_list_it &it)
 void turn_on_leds(bool r, bool g, bool b, const rgb_led_pin_cfg p_cfg)
 {
     digitalWrite(p_cfg.red, r);
-    digitalWrite(p_cfg.grn, g);
-    digitalWrite(p_cfg.blu, b);
+    digitalWrite(p_cfg.green, g);
+    digitalWrite(p_cfg.blue, b);
 }
 
 void turn_on_leds(color_e clr, const rgb_led_pin_cfg l)
 {
-    switch (c) {
+    switch (clr) {
     case OFF:       turn_on_leds(0, 0, 0, l); break;
     case BLUE:      turn_on_leds(0, 0, 1, l); break;
     case GREEN:     turn_on_leds(0, 1, 0, l); break;
