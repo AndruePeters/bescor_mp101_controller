@@ -45,6 +45,8 @@ void dump_packet(packet &p)
       int j = (int)p.payload[i];
       Serial.println(j, HEX);
     }
+
+    Serial.println("\n\n\n");
 }
 
 void set_pipe(int id)
