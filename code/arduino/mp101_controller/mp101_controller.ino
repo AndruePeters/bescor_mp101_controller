@@ -182,7 +182,7 @@ void process_ir_packet(packet &p)
                                         (static_cast<uint32_t>(p.payload[3]) << 8)  | 
                                         (static_cast<uint32_t>(p.payload[4]));
     uint8_t protocol = p.payload[0];
-    ir_send.send(protocol, reconstructed_ir_code, 0);
+    ir_send.send(protocol, reconstructed_ir_code, p.payload[5]);
     erase_packet(p);
 }
 
