@@ -48,8 +48,13 @@ void ctrlCHandler(sig_atomic_t s)
 
 
 
-int main()
+int main(int argc, char *argv[])
 {
+    if (argc < 2) {
+        std::cerr << "Invalid number of arguments. Please enter path for file.";
+        return 1;
+    }
+
   // initialize wiringPi and RF24
   wiringPiSetup();
   rf24_init();
@@ -62,7 +67,7 @@ int main()
 
 
   // load config file and store items in node_list
-  load_config("config.yaml", node_list);
+  load_config(argv[1], node_list);
   node_list_it curr_node = node_list.begin();
   turn_on_leds((*curr_node)->color, rgb);
 
