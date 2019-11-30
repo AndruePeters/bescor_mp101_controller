@@ -5,6 +5,7 @@ project (main)
 
 set(CMAKE_CXX_STANDARD 17)
 set (CUSTOM_LIB_PATH $ENV{RPI_TC_PATH}/libs)
+set(CMAKE_CXX_FLAGS "-O3")
 
 # Add the local include directory and custom include directory
 include_directories ( ${CMAKE_CURRENT_SOURCE_DIR}  ../shared/node/ ../shared/packet/ PUBLIC ${CUSTOM_LIB_PATH}/include)
