@@ -64,7 +64,7 @@ int main()
   // load config file and store items in node_list
   load_config("config.yaml", node_list);
   node_list_it curr_node = node_list.begin();
-  turn_on_leds((*it)->color, rgb);
+  turn_on_leds((*curr_node)->color, rgb);
 
   init_display();
   while (1) {
