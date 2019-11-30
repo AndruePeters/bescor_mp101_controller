@@ -37,6 +37,7 @@ using namespace controller;
 RF24 radio(3, 10);
 JS_State js(0);
 node_list_t node_list;
+const rgb_led_pin_cfg rgb{8, 9, 7}; //in order r, g, b
 
 void ctrlCHandler(sig_atomic_t s)
 {
@@ -45,12 +46,21 @@ void ctrlCHandler(sig_atomic_t s)
   exit(1);
 }
 
+
+
 int main()
 {
   // initialize wiringPi and RF24
   wiringPiSetup();
   rf24_init();
   signal (SIGINT,ctrlCHandler);
+
+    // setup the rgb pins
+    pinMode(rgb.red, OUTPUT);
+    pinMode(rgb.green, OUTPUT);
+    pinMode(rgb.blue, OUTPUT);
+
+
   // load config file and store items in node_list
   load_config("config.yaml", node_list);
   node_list_it curr_node = node_list.begin();
@@ -143,7 +153,7 @@ void process_input(node_list_t &nl, node_list_it &it)
    }
 
    // if magnitude of left stick is greater than 0, then form motor packet
-   if (js.getAxisMagnitude(DS4::LS_X, DS4::LS_Y)) {
+   if (js.getAxisMagnitude(DS4::LS_X, DS4::LS_Y) && js.getAxisMagnitude(DS4::LS_Y) > 50.0f) {
      create_motor_packet(it, p);
      print_packet(p);
      send_packet((*it)->rf, p);
@@ -186,6 +196,8 @@ void cycle_node_left( node_list_t &nl, node_list_it &it)
   } else {
     --it;
   }
+
+  turn_on_leds((*it)->color, rgb);
   //match_node_radio((*it)->rf);
 }
 
@@ -194,10 +206,12 @@ void cycle_node_left( node_list_t &nl, node_list_it &it)
 */
 void cycle_node_right( node_list_t &nl, node_list_it &it)
 {
-  ++it;
-  if (it == nl.end()) {
+    ++it;
+    if (it == nl.end()) {
     it = nl.begin();
-  }
+    }
+
+    turn_on_leds((*it)->color, rgb);
   //match_node_radio((*it)->rf);
 }
 
@@ -206,29 +220,30 @@ void cycle_node_right( node_list_t &nl, node_list_it &it)
  */
 void create_motor_packet(node_list_it &it, packet& p)
 {
-  float x_out, y_out;
-  float norm_mag = js.getNormAxis(x_out, y_out, DS4::LS_X, DS4::LS_Y);
-  float speed = norm_mag * 255 ;
+    float x_out, y_out;
+    float norm_mag = js.getNormAxis(x_out, y_out, DS4::LS_X, DS4::LS_Y);
+    float speed = norm_mag * 255 ;
 
-  p.packet_type = MOTOR;
-  p.payload_used = 3;
-  p.id = (*it)->id;
-  p.payload[0] = (unsigned)speed;
+    p.packet_type = MOTOR;
+    p.payload_used = 3;
+    p.id = (*it)->id;
+    p.payload[0] = (unsigned)speed;
 
-  if (x_out > 0.0f)   p.payload[1] = 2;
-  else if (x_out == 0.0f)  p.payload[1] = 0;
-  else if (x_out < 0.0f)   p.payload[1] = 1;
 
-  if (y_out > 0.0f) p.payload[2] = 2;
-  else if (y_out == 0.0f) p.payload[2] = 0;
-  else if (y_out < 0.0f)  p.payload[2] = 1;
+    if (x_out > 0.10f)          p.payload[1] = 2;
+    else if (x_out < -0.10f)    p.payload[1] = 1;
+    else                        p.payload[1] = 0;
 
-  std::stringstream ss;
-  ss  << "\nX raw: " << js.getAxisPos(DS4::LS_X)
-                       << "\nY raw: " << js.getAxisPos(DS4::LS_Y)
-                       << "\nX out: " << x_out
-                       << "\nY out: " << y_out
-                       << "\nSpeed: " << speed << std::endl;
+    if (y_out > 0.25f)          p.payload[2] = 2;
+    else if (y_out < -0.25f)    p.payload[2] = 1;
+    else                        p.payload[2] = 0;
+
+    std::stringstream ss;
+    ss  << "\nX raw: " << js.getAxisPos(DS4::LS_X)
+                        << "\nY raw: " << js.getAxisPos(DS4::LS_Y)
+                        << "\nX out: " << x_out
+                        << "\nY out: " << y_out
+                        << "\nSpeed: " << speed << std::endl;
 
 }
 
@@ -238,13 +253,14 @@ void create_motor_packet(node_list_it &it, packet& p)
 void create_ir_packet(node_list_it &it, packet &p, uint32_t ir_code)
 {
   p.packet_type = IR;
-  p.payload_used = 5;
+  p.payload_used = 6;
   p.id = node_get_id(*it);
   p.payload[0] = node_get_ir_prot((*it));
   p.payload[1] = ir_code >> 24;
   p.payload[2] = ir_code >> 16;
   p.payload[3] = ir_code >> 8;
   p.payload[4] = ir_code;
+  p.payload[5] = static_cast<uint8_t>(node_get_ir_bit_width((*it)));
 }
 
 /*
@@ -288,10 +304,11 @@ void load_config(std::string file, node_list_t &nl)
 
     // configure ir properties
     node_set_ir_prot(np,      str_to_irprot( (*it)["ir_proto"].as<std::string>() ));
-    node_set_zoom_in(np,      (*it)["zoom_in"].as<uint32_t>() );
-    node_set_zoom_out(np,     (*it)["zoom_out"].as<uint32_t>() );
-    node_set_focus_in(np,     (*it)["focus_in"].as<uint32_t>() );
-    node_set_focus_out(np,    (*it)["focus_out"].as<uint32_t>() );
+    node_set_zoom_in(np,        (*it)["zoom_in"].as<uint32_t>() );
+    node_set_zoom_out(np,       (*it)["zoom_out"].as<uint32_t>() );
+    node_set_focus_in(np,       (*it)["focus_in"].as<uint32_t>() );
+    node_set_focus_out(np,      (*it)["focus_out"].as<uint32_t>() );
+    node_set_ir_bit_width(np,   (*it)["ir_bit_width"].as<uint32_t>() );
 
     // now store this created node
     nl.push_back(np);
@@ -324,7 +341,7 @@ color_e str_to_clr(std::string color)
 {
   color_e ret;
   // transform string to upper for comparison
-  std::transform(color.begin(), color.end(), color.begin(), ::toupper);
+  std::transform(color.begin(), color.end(), color.begin(), std::toupper);
   if (color == "BLUE") {
     ret = BLUE;
   } else if (color == "GREEN") {
@@ -490,4 +507,26 @@ void display_status(node_list_it &it)
   std::stringstream ss;
   ss << "Current Node: " << (unsigned)node_get_id(*it) << std::endl;
   addstr(ss.str().c_str());
+}
+
+void turn_on_leds(bool r, bool g, bool b, const rgb_led_pin_cfg p_cfg)
+{
+    digitalWrite(p_cfg.red, r);
+    digitalWrite(p_cfg.green, g);
+    digitalWrite(p_cfg.blue, b);
+}
+
+void turn_on_leds(color_e clr, const rgb_led_pin_cfg l)
+{
+    switch (clr) {
+    case OFF:       turn_on_leds(0, 0, 0, l); break;
+    case BLUE:      turn_on_leds(0, 0, 1, l); break;
+    case GREEN:     turn_on_leds(0, 1, 0, l); break;
+    case CYAN:      turn_on_leds(0, 1, 1, l); break;
+    case RED:       turn_on_leds(1, 0, 0, l); break;
+    case MAGENTA:   turn_on_leds(1, 0, 1, l); break;
+    case YELLOW:    turn_on_leds(1, 1, 0, l); break;
+    case WHITE:     turn_on_leds(1, 1, 1, l); break;
+    default:        turn_on_leds(0, 0, 0, l); break;
+    }
 }

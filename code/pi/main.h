@@ -5,6 +5,12 @@
 
 #include <list>
 
+struct rgb_led_pin_cfg {
+    int red;
+    int blue;
+    int green;
+};
+
 /*
  *  node_list_t is the container to store each camera node
  *  Uses a doubly linked list:
@@ -78,5 +84,7 @@ rf24_datarate_e str_to_datarate(std::string dr);
 rf24_crclength_e str_to_crclen(std::string crc);
 address_e str_to_addr(std::string addr);
 ir_prot_e str_to_irprot(std::string ir);
+void turn_on_leds(bool r, bool g, bool b, const rgb_led_pin_cfg p_cfg);
+void turn_on_leds(color_e clr, const rgb_led_pin_cfg l);
 
 #endif

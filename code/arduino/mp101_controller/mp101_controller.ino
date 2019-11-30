@@ -32,7 +32,6 @@ const int RF24_CHANNEL = 1;
 const motor_pin_config motor_pins {6, A2, 4, A1, 2};
 const led_pin_config led_pins {5, 9, 10}; // A2, A1, A0
 const radio_pin_config radio_pins{7, 8}; 
-state_e current_state = IDLE;
 packet input_packet;
 RF24 radio(radio_pins.ce, radio_pins.cs);
 IRsend ir_send; ///< pin 3
@@ -42,10 +41,12 @@ AceButton button(17);
 void dump_packet(packet &p)
 {
     for (int i = 0; i < p.payload_used; ++i) {
-      Serial.write("\npayload["); Serial.write(i); Serial.write("]: ");
+      Serial.write("payload["); Serial.write((int)i); Serial.write("]: ");
       int j = (int)p.payload[i];
-      Serial.println(j, DEC);
+      Serial.println(j, HEX);
     }
+
+    Serial.println("\n\n\n");
 }
 
 void set_pipe(int id)
@@ -85,25 +86,20 @@ void setup()
   init_pins();
   set_color(ARDUINO_COLOR, ARDUINO_ID);
   turn_on_leds(ARDUINO_COLOR, led_pins);
-  current_state = IDLE;
   button.setEventHandler(handleButtonEvent);
   Serial.begin(9600);
-  Serial.write ("\nFinished setup.\n");
+  Serial.write ("Finished setup.\n");
 }
 
 void loop() 
 {
   if (radio.available()) {
       radio.read(&input_packet, sizeof(input_packet));
-      Serial.write ("Read information.\n");
       if (input_packet.id == ARDUINO_ID) {
-        Serial.write("*************");
-        dump_packet(input_packet);
         process_packet(input_packet);
       }
   }
   button.check();
-  delay(10); ///< delay 10ms
 }
 
 void set_color(color_e &c, uint8_t id)
@@ -150,11 +146,11 @@ void erase_packet(packet& p)
 void process_packet(packet &p)
 {
     switch (p.packet_type) {
-    case TELEMETRY: Serial.write("\nTELEMETRY\n"); break;
-    case ADMIN: Serial.write("\nADMIN\n"); break;
-    case MOTOR: Serial.write("MOTOR\n"); process_motor_packet(p); break;
-    case IR:    Serial.write("\nIR\n"); process_ir_packet(p); break;
-    default: Serial.write("\nDEFAULT\n");break;
+    case TELEMETRY:  break;
+    case ADMIN: break;
+    case MOTOR: process_motor_packet(p); break;
+    case IR:    process_ir_packet(p); break;
+    default: break;
     }
 }
 
@@ -172,7 +168,7 @@ void init_pins()
     pinMode(led_pins.red, OUTPUT);
     pinMode(led_pins.grn, OUTPUT);
     pinMode(led_pins.blu, OUTPUT);
-    pinMode(17, INPUT_PULLUP);
+    pinMode(17, INPUT_PULLUP); // button
 }
 
 void process_ir_packet(packet &p)
@@ -182,7 +178,7 @@ void process_ir_packet(packet &p)
                                         (static_cast<uint32_t>(p.payload[3]) << 8)  | 
                                         (static_cast<uint32_t>(p.payload[4]));
     uint8_t protocol = p.payload[0];
-    ir_send.send(protocol, reconstructed_ir_code, 0);
+    ir_send.send(protocol, reconstructed_ir_code, p.payload[5]);
     erase_packet(p);
 }
 
@@ -205,11 +201,11 @@ void process_motor_packet(packet &p)
 
   // set directional values before turning speed back on
   set_motor_speed(p.payload[0]);
-  set_motor_tilt(p.payload[1]);
-  set_motor_pan(p.payload[2]);
+  set_motor_tilt(p.payload[2]);
+  set_motor_pan(p.payload[1]);
   
   // let motor run for a short amount of time; 15 ms
-  delay(10);
+  delay(25);
 
   // turn motor off
   set_motor_speed(0);
