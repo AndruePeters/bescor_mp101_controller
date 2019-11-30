@@ -341,7 +341,7 @@ color_e str_to_clr(std::string color)
 {
   color_e ret;
   // transform string to upper for comparison
-  std::transform(color.begin(), color.end(), color.begin(), ::toupper);
+  std::transform(color.begin(), color.end(), color.begin(), std::toupper);
   if (color == "BLUE") {
     ret = BLUE;
   } else if (color == "GREEN") {
