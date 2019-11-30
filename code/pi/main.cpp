@@ -154,7 +154,7 @@ void process_input(node_list_t &nl, node_list_it &it)
    }
 
    // if magnitude of left stick is greater than 0, then form motor packet
-   if (js.getAxisMagnitude(DS4::LS_X, DS4::LS_Y) && js.getAxisMagnitude(DS4::LS_Y) > 50.0f) {
+   if (js.getAxisMagnitude(DS4::LS_X, DS4::LS_Y)) {
      create_motor_packet(it, p);
      print_packet(p);
      send_packet((*it)->rf, p);
