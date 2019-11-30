@@ -41,7 +41,7 @@ AceButton button(17);
 void dump_packet(packet &p)
 {
     for (int i = 0; i < p.payload_used; ++i) {
-      Serial.write("payload["); Serial.write(i); Serial.write("]: ");
+      Serial.write("payload["); Serial.write((int)i); Serial.write("]: ");
       int j = (int)p.payload[i];
       Serial.println(j, HEX);
     }
