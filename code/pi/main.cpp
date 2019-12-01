@@ -158,7 +158,7 @@ void process_input(node_list_t &nl, node_list_it &it)
 
 
     if (js.isBtnPressed(DS4::Share) && js.isBtnPressed(DS4::X)) {
-        begin = std::chrono:steady_clock::now();
+        begin = std::chrono::steady_clock::now();
         while (js.isBtnPressed(DS4::Share) && js.isBtnPressed(DS4::X)) {
             end = std::chrono::steady_clock::now();
             if (std::chrono::duration_cast<std::chrono::seconds>(end - begin).count() >= 10) {
