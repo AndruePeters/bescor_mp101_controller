@@ -164,10 +164,11 @@ void process_input(node_list_t &nl, node_list_it &it)
 
 
 
-    if (js.isBtnPressed(DS4::Share) && js.isBtnPressed(DS4::X)) {
+    if (js.isBtnPressed(DS4::Opt) && js.isBtnPressed(DS4::X)) {
         begin = std::chrono::steady_clock::now();
-        while (js.isBtnPressed(DS4::Share) && js.isBtnPressed(DS4::X)) {
+        while (js.isBtnPressed(DS4::Opt) && js.isBtnPressed(DS4::X)) {
             end = std::chrono::steady_clock::now();
+            std::cout << std::chrono::duration_cast<std::chrono::seconds>(end - begin).count() << std::endl;
             if (std::chrono::duration_cast<std::chrono::seconds>(end - begin).count() >= 10) {
                 std::system("sudo shutdown now");
             }
