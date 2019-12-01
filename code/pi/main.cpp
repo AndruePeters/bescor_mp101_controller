@@ -72,13 +72,13 @@ int main(int argc, char *argv[])
   node_list_it curr_node = node_list.begin();
   turn_on_leds((*curr_node)->color, rgb);
 
-  init_display();
+  //init_display();
   while (1) {
-    clear();
-    display_status(curr_node);
-    addstr("\n\n");
+    //clear();
+    //display_status(curr_node);
+    //addstr("\n\n");
     process_input(node_list, curr_node);
-    refresh();
+    //refresh();
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
   }
 
