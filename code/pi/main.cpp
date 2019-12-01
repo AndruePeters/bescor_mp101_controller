@@ -150,7 +150,7 @@ void process_input(node_list_t &nl, node_list_it &it)
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
         turn_on_leds(OFF, rgb);
      }
-
+    turn_on_leds((*nl)->color, rgb);
     }
 
    packet p;
