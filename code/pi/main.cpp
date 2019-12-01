@@ -144,7 +144,13 @@ void process_input(node_list_t &nl, node_list_it &it)
  {
    if (!js.isConnected()) {
      addstr("Joystick is not connected. Please connect it to continue.\n\n");
-     js.waitUntilConnected();
+     refresh();
+     while (!js.isConnected()) {
+        turn_on_leds(RED, rgb);
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        turn_on_leds(OFF, rgb);
+     }
+
     }
 
    packet p;
