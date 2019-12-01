@@ -14,6 +14,7 @@
 #include <thread>
 #include <iterator>
 #include <csignal>
+#include <cstdlib>
 
 #include <RF24/RF24.h>
 #include <wiringPi.h>
@@ -147,9 +148,26 @@ void process_input(node_list_t &nl, node_list_it &it)
     }
 
    packet p;
+    static std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+    static std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+
 
    // get current joystick state
    js.update();
+
+
+
+    if (js.isBtnPressed(DS4::Share) && js.isBtnPressed(DS4::X)) {
+        begin = std::chrono:steady_clock::now();
+        while (js.isBtnPressed(DS4::Share) && js.isBtnPressed(DS4::X)) {
+            end = std::chrono::steady_clock::now();
+            if (std::chrono::duration_cast<std::chrono::seconds>(end - begin).count() >= 10) {
+                std::system("sudo shutdown now");
+            }
+        }
+        
+    }
+
 
    // first check and cycle node
    if (js.isBtnPressed(DS4::L1)) {
