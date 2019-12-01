@@ -130,7 +130,6 @@ void send_packet(const nrf2401_prop &n, const packet &p)
  */
  void set_rf24_write_addr(const address_e listening_addr)
  {
-   std::cout << "listening_addr: " << listening_addr << "\n";
    //radio.openWritingPipe(ADDRESSES[listening_addr]);
    //radio.openReadingPipe(1, ADDRESSES[0]);
   radio.openWritingPipe(ADDRESSES[1]);
@@ -211,7 +210,6 @@ void process_input(node_list_t &nl, node_list_it &it)
      print_packet(p);
      send_packet((*it)->rf, p);
    }
-
  }
 
  /*
