@@ -74,11 +74,11 @@ int main(int argc, char *argv[])
 
   //init_display();
   while (1) {
-    //clear();
-    //display_status(curr_node);
-    //addstr("\n\n");
+    clear();
+    display_status(curr_node);
+    addstr("\n\n");
     process_input(node_list, curr_node);
-    //refresh();
+    refresh();
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
   }
 
@@ -145,35 +145,31 @@ void process_input(node_list_t &nl, node_list_it &it)
    if (!js.isConnected()) {
      addstr("Joystick is not connected. Please connect it to continue.\n\n");
      refresh();
-     js.waitUntilConnected();
-     /*while (!js.isConnected()) {
+     //js.waitUntilConnected();
+     while (!js.isConnected()) {
         turn_on_leds(RED, rgb);
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
         turn_on_leds(OFF, rgb);
+        js.update();
      }
     turn_on_leds((*it)->color, rgb);*/
     }
 
    packet p;
-    static std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-    static std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-
 
    // get current joystick state
    js.update();
 
-
-
-    if (js.isBtnPressed(DS4::Opt) && js.isBtnPressed(DS4::X)) {
-        begin = std::chrono::steady_clock::now();
-        while (js.isBtnPressed(DS4::Opt) && js.isBtnPressed(DS4::X)) {
+    if (js.isBtnPressedRaw(DS4::Opt) && js.isBtnPressedRaw(DS4::X)) {
+        std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+        std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+        while (js.isBtnPressedRaw(DS4::Opt) && js.isBtnPressedRaw(DS4::X)) {
             end = std::chrono::steady_clock::now();
-            std::cout << std::chrono::duration_cast<std::chrono::seconds>(end - begin).count() << std::endl;
             if (std::chrono::duration_cast<std::chrono::seconds>(end - begin).count() >= 10) {
                 std::system("sudo shutdown now");
             }
+            js.update();
         }
-        
     }
 
 
