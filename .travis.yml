@@ -1,0 +1,18 @@
+dist: trusty
+language: cpp
+os: linux
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - arm-linux-gnueabihf-gcc
+      - arm-linux-gnueabihf-g++-8
+      - libsfml-dev:armhf
+      - libncurses-dev:armhf
+      - libyaml-cpp-dev:armhf
+      - cmake
+
+script:
+  - echo "First test"
