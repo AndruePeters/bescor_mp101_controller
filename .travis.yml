@@ -9,14 +9,12 @@ addons:
     sources:
       - ubuntu-toolchain-r-test
     packages:
-      - arm-linux-gnueabihf-gcc
-      - arm-linux-gnueabihf-g++-8
-      - libsfml-dev:armhf
-      - libncurses-dev:armhf
-      - libyaml-cpp-dev:armhf
+      - gcc
+      - g++-8
+      - libsfml-dev
+      - libncurses-dev
+      - libyaml-cpp-dev
       - cmake
 
-before_install:
-  - sudo dpkg --add-architecture armhf        
 script:
   - echo "First test"
