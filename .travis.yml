@@ -1,7 +1,8 @@
 dist: trusty
 language: cpp
 os: linux
-
+arch:
+  - armhf
 addons:
   apt:
     update: true
