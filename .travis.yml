@@ -36,7 +36,8 @@ before_install:
   #- sudo -H python3 -m pip install --upgrade pip wheel setuptools
   #- sudo -H python3 -m pip install conan
   - wget https://archive.raspberrypi.org/debian/pool/main/w/wiringpi/wiringpi_2.50_armhf.deb
-  - sudo dpkg -i wiringpi_2.50_armhf.deb || sudo apt install -f || sudo dpkg -i wiringpi_2.50_armhf.deb
+  - sudo dpkg -i wiringpi_2.50_armhf.deb || sudo apt install -f  
+  - sudo dpkg -i wiringpi_2.50_armhf.deb
 
 
 install: echo "install"
