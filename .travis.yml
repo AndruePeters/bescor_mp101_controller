@@ -19,7 +19,7 @@ addons:
       - python3-pip
 
 install:
-  - pip install conan
+  - pip3 install conan
   - conan user
 
 script:
