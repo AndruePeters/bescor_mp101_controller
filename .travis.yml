@@ -34,7 +34,7 @@ before_install:
   - sudo apt install python3-pip python3-dev 
   - sudo apt build-dep -y  libsfml-dev libncurses5-dev libyaml-cpp-dev cmake || sudo apt install -f 
   - sudo apt install -y libsfml-devlibncurses5-dev libyaml-cpp-dev cmake || sudo apt install -f 
-  - sudo apt-get -y --force-yes --reinstall --ignore-missing --ignore-hold install libc6 libc6-dev
+  - sudo apt-get -y --force-yes --reinstall --ignore-missing --ignore-hold install libc6:armhf libc6-dev:armhf
   - sudo apt-get -y --force-yes --ignore-missing --ignore-hold --auto-remove purge syslog-ng
 
   #- sudo -H python3 -m pip install --upgrade pip wheel setuptools
