@@ -30,11 +30,13 @@ before_install:
   
   - sudo apt update
   - sudo apt install python3-pip python3-dev
+  - sudo apt build-dep -y gcc-8-arm-linux-gnueabihf g++-8-arm-linux-gnueabihf libsfml-dev:armhf libncurses5-dev:armhf libyaml-cpp-dev:armhf cmake || sudo apt install -f 
   - sudo apt install -y gcc-8-arm-linux-gnueabihf g++-8-arm-linux-gnueabihf libsfml-dev:armhf libncurses5-dev:armhf libyaml-cpp-dev:armhf cmake || sudo apt install -f 
+
   #- sudo -H python3 -m pip install --upgrade pip wheel setuptools
   #- sudo -H python3 -m pip install conan
   - wget https://archive.raspberrypi.org/debian/pool/main/w/wiringpi/wiringpi_2.50_armhf.deb
-  - sudo dpkg -i wiringpi_2.50_armhf.deb || sudo apt install -f
+  - sudo dpkg -i wiringpi_2.50_armhf.deb || sudo apt install -f || sudo dpkg -i wiringpi_2.50_armhf.deb
 
 
 install: echo "install"
