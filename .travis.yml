@@ -29,6 +29,7 @@ before_install:
   - echo "deb [arch=armhf] http://ports.ubuntu.com/ bionic main universe" >>  /etc/apt/sources.list
   
   - sudo apt update
+  - sudo apt install python3-pip python3-dev
   - sudo apt install -y gcc-8-arm-linux-gnueabihf g++-8-arm-linux-gnueabihf libsfml-dev:armhf libncurses5-dev:armhf libyaml-cpp-dev:armhf cmake || sudo apt install -f 
   - sudo -H python3 -m pip install --upgrade pip wheel setuptools
   - sudo -H python3 -m pip install conan
