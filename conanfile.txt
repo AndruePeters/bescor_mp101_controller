@@ -1,5 +1,5 @@
 [requires]
-wiringpi/2.50@conan/stable
+wiringpi/2.46@conan/stable
 
 [generators]
 cmake

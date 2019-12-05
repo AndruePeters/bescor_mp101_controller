@@ -24,7 +24,6 @@ before_instal:
 install:
   - sudo -H python3 -m pip install conan
   - conan user
-  - conan remote add conan-center "https://conan.bintray.com"
 
 script:
   - echo "First test"
