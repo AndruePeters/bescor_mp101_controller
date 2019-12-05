@@ -18,10 +18,10 @@ addons:
       - python3
       - python3-pip
 
-before_instal:
-  - python3 -m pip install --upgrade pip wheel setuptools
 install:
-  - python3 -m pip install conan
+  - wget -O tmp_conan.deb https://dl.bintray.com/conan/installers/conan-ubuntu-64_1_20_5.deb
+  - sudo dpkg -i tmp_conan.deb
+  - sudo apt install -f
   - conan user
 
 script:
