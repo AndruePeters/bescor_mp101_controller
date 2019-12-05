@@ -1,31 +1,24 @@
 dist: bionicy
 language: cpp
 os: linux
-arch:
-  - armhf
 addons:
   apt:
     update: true
     sources:
       - ubuntu-toolchain-r-test
     packages:
-      - gcc
-      - g++-8
-      - libsfml-dev
-      - libncurses-dev
-      - libyaml-cpp-dev
+      - arm-linux-gnueabihf-gcc-8
+      - arm-linux-gnueabihf-g++-8
+      - libsfml-dev:armhf
+      - libncurses-dev:armhf
+      - libyaml-cpp-dev:armhf
       - cmake
-      - python3
-      - python3-pip
-      - python3-dev
-
+before_install:
+  - dpkg --add-architecture armhf
+  - sudo apt update
 #before_instal:
   #- sudo -H python3 -m pip install --upgrade pip wheel setuptools
 install:
-  - wget https://project-downloads.drogon.net/wiringpi-latest.deb
-  - sudo dpkg -i wiringpi-latest.deb
-  - apt install -f
-  #- sudo -H python3 -m pip install conan
 
 script:
   - echo "First test"
