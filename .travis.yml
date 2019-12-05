@@ -34,7 +34,8 @@ before_install:
   - sudo apt install -y gcc-8-arm-linux-gnueabihf g++-8-arm-linux-gnueabihf libsfml-dev:armhf libncurses5-dev:armhf libyaml-cpp-dev:armhf cmake || sudo apt install -f 
   #- sudo -H python3 -m pip install --upgrade pip wheel setuptools
   #- sudo -H python3 -m pip install conan
-  - sudo apt install -y wiringpi:armhf
+  - wget https://archive.raspberrypi.org/debian/pool/main/w/wiringpi/wiringpi_2.50_armhf.deb
+  - sudo dpkg -i wiringpi_2.5.0_armhf.deb:armhf
 
 
 
