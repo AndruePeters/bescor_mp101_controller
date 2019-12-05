@@ -22,8 +22,7 @@ addons:
 before_instal:
   - sudo -H python3 -m pip install --upgrade pip wheel setuptools
 install:
-  - sudo -H python3 -m pip install conan
-  - conan user
+  - sudo -H python3 -m pip install conanr
 
 script:
   - echo "First test"
