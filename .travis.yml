@@ -6,27 +6,27 @@ before_install:
   - sudo dpkg --add-architecture armhf
     # ubuntu screws up from adding armhf, so we have to tell it what repos to exclude armhf from
 
-  - echo "deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ bionic main restricted" > /etc/apt/sources.list
-  - echo "deb-src [arch=amd64] http://archive.ubuntu.com/ubuntu/ bionic main restricted" >>  /etc/apt/sources.list
-  - echo "deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ bionic-updates main restricted " >>  /etc/apt/sources.list
-  - echo "deb-src [arch=amd64] http://archive.ubuntu.com/ubuntu/ bionic-updates main restricted" >>  /etc/apt/sources.list
-  - echo "deb [arch=amd64]  http://archive.ubuntu.com/ubuntu/ bionic universe" >>  /etc/apt/sources.list
-  - echo "deb-src [arch=amd64]  http://archive.ubuntu.com/ubuntu/ bionic universe" >>  /etc/apt/sources.list
-  - echo "deb [arch=amd64]  http://archive.ubuntu.com/ubuntu/ bionic-updates universe" >>  /etc/apt/sources.list
-  - echo "deb-src [arch=amd64]  http://archive.ubuntu.com/ubuntu/ bionic-updates universe" >>  /etc/apt/sources.list
-  - echo "deb [arch=amd64]  http://archive.ubuntu.com/ubuntu/ bionic multiverse" >>  /etc/apt/sources.list
-  - echo "deb-src [arch=amd64]  http://archive.ubuntu.com/ubuntu/ bionic multiverse" >>  /etc/apt/sources.list
-  - echo "deb [arch=amd64]  http://archive.ubuntu.com/ubuntu/ bionic-updates multiverse" >>  /etc/apt/sources.list
-  - echo "deb-src [arch=amd64]  http://archive.ubuntu.com/ubuntu/ bionic-updates multiverse" >>  /etc/apt/sources.list
-  - echo "deb [arch=amd64]  http://archive.ubuntu.com/ubuntu/ bionic-backports main restricted universe multiverse" >>  /etc/apt/sources.list
-  - echo "deb-src [arch=amd64]  http://archive.ubuntu.com/ubuntu/ bionic-backports main restricted universe multiverse" >>  /etc/apt/sources.list
-  - echo "deb [arch=amd64] http://security.ubuntu.com/ubuntu bionic-security main restricted" >>  /etc/apt/sources.list
-  - echo "deb-src [arch=amd64] http://security.ubuntu.com/ubuntu bionic-security main restricted" >>  /etc/apt/sources.list
-  - echo "deb [arch=amd64] http://security.ubuntu.com/ubuntu bionic-security universe" >>  /etc/apt/sources.list
-  - echo "deb-src [arch=amd64] http://security.ubuntu.com/ubuntu bionic-security universe" >>  /etc/apt/sources.list
-  - echo "deb [arch=amd64] http://security.ubuntu.com/ubuntu bionic-security multiverse" >>  /etc/apt/sources.list
-  - echo "deb-src [arch=amd64] http://security.ubuntu.com/ubuntu bionic-security multiverse" >>  /etc/apt/sources.list
-  - echo "deb [arch=armhf] http://ports.ubuntu.com/ bionic main universe" >>  /etc/apt/sources.list
+  - echo "deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ xenial main restricted" > /etc/apt/sources.list
+  - echo "deb-src [arch=amd64] http://archive.ubuntu.com/ubuntu/ xenial main restricted" >>  /etc/apt/sources.list
+  - echo "deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ xenial-updates main restricted " >>  /etc/apt/sources.list
+  - echo "deb-src [arch=amd64] http://archive.ubuntu.com/ubuntu/ xenial-updates main restricted" >>  /etc/apt/sources.list
+  - echo "deb [arch=amd64]  http://archive.ubuntu.com/ubuntu/ xenial universe" >>  /etc/apt/sources.list
+  - echo "deb-src [arch=amd64]  http://archive.ubuntu.com/ubuntu/ xenial universe" >>  /etc/apt/sources.list
+  - echo "deb [arch=amd64]  http://archive.ubuntu.com/ubuntu/ xenial-updates universe" >>  /etc/apt/sources.list
+  - echo "deb-src [arch=amd64]  http://archive.ubuntu.com/ubuntu/ xenial-updates universe" >>  /etc/apt/sources.list
+  - echo "deb [arch=amd64]  http://archive.ubuntu.com/ubuntu/ xenial multiverse" >>  /etc/apt/sources.list
+  - echo "deb-src [arch=amd64]  http://archive.ubuntu.com/ubuntu/ xenial multiverse" >>  /etc/apt/sources.list
+  - echo "deb [arch=amd64]  http://archive.ubuntu.com/ubuntu/ xenial-updates multiverse" >>  /etc/apt/sources.list
+  - echo "deb-src [arch=amd64]  http://archive.ubuntu.com/ubuntu/ xenial-updates multiverse" >>  /etc/apt/sources.list
+  - echo "deb [arch=amd64]  http://archive.ubuntu.com/ubuntu/ xenial-backports main restricted universe multiverse" >>  /etc/apt/sources.list
+  - echo "deb-src [arch=amd64]  http://archive.ubuntu.com/ubuntu/ xenial-backports main restricted universe multiverse" >>  /etc/apt/sources.list
+  - echo "deb [arch=amd64] http://security.ubuntu.com/ubuntu xenial-security main restricted" >>  /etc/apt/sources.list
+  - echo "deb-src [arch=amd64] http://security.ubuntu.com/ubuntu xenial-security main restricted" >>  /etc/apt/sources.list
+  - echo "deb [arch=amd64] http://security.ubuntu.com/ubuntu xenial-security universe" >>  /etc/apt/sources.list
+  - echo "deb-src [arch=amd64] http://security.ubuntu.com/ubuntu xenial-security universe" >>  /etc/apt/sources.list
+  - echo "deb [arch=amd64] http://security.ubuntu.com/ubuntu xenial-security multiverse" >>  /etc/apt/sources.list
+  - echo "deb-src [arch=amd64] http://security.ubuntu.com/ubuntu xenial-security multiverse" >>  /etc/apt/sources.list
+  - echo "deb [arch=armhf] http://ports.ubuntu.com/ xenial main universe" >>  /etc/apt/sources.list
   
   - sudo apt update
   - sudo apt install crossbuild-essential-armhf
