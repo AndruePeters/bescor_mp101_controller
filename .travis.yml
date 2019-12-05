@@ -5,7 +5,7 @@ os: linux
 before_install:
   - sudo dpkg --add-architecture armhf
     # ubuntu screws up from adding armhf, so we have to tell it what repos to exclude armhf from
-  - sudo sed -i 'deb http://security.ubuntu.com/ubuntu bionic-security main restricted/ deb [arch=amd64] http://security.ubuntu.com/ubuntu bionic-security main restricted' /etc/apt/sources.list 
+  - sudo sed -i 's/# deb http://security.ubuntu.com/ubuntu bionic-security main restricted/ deb [arch=amd64] http://security.ubuntu.com/ubuntu bionic-security main restricted/' /etc/apt/sources.list 
   - cat /etc/apt/sources.list
   - ls /etc/apt/sources.list.d/
   - cat /etc/apt/sources.list.d/*
