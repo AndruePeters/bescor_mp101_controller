@@ -4,7 +4,6 @@ os: linux
 
 before_install:
   - sudo dpkg --add-architecture armhf
-  - sudo apt update
   - sudo add-apt repository universe
   - sudo apt update
   - sudo apt install gcc-8-arm-linux-gnueabihf g++-8-arm-linux-gnueabihf libsfml-dev:armhf libncurses-dev:armhf libyaml-cpp-dev:armhf cmake
