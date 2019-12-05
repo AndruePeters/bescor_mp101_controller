@@ -29,7 +29,7 @@ before_install:
   - echo "deb [arch=armhf] http://ports.ubuntu.com/ xenial main universe" >>  /etc/apt/sources.list
   
   - sudo apt update
-  - sudo apt install crossbuild-essential-armhf
+  - sudo apt install crossbuild-essential-armhf build-essential:armhf
   - sudo apt-get install libc6-armhf-cross libc6-dev-armhf-cross binutils-arm-linux-gnueabi libncurses5-dev
   - sudo apt install python3-pip python3-dev 
   - sudo apt build-dep -y  libsfml-dev libncurses5-dev libyaml-cpp-dev cmake || sudo apt install -f 
