@@ -30,7 +30,7 @@ before_install:
   
   - sudo apt update
   - sudo apt-get install libc6-armhf-cross libc6-dev-armhf-cross binutils-arm-linux-gnueabi libncurses5-dev
-  - sudo apt install python3-pip python3-dev gcc-multilib 
+  - sudo apt install python3-pip python3-dev gcc-multilib g++-multilib gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf
   - sudo apt build-dep -y gcc-8-arm-linux-gnueabihf g++-8-arm-linux-gnueabihf libsfml-dev libncurses5-dev libyaml-cpp-dev cmake || sudo apt install -f 
   - sudo apt install -y gcc-8-arm-linux-gnueabihf g++-8-arm-linux-gnueabihf libsfml-devlibncurses5-dev libyaml-cpp-dev cmake || sudo apt install -f 
 
