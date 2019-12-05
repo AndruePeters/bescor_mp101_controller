@@ -20,9 +20,9 @@ addons:
       - python3-dev
 
 before_instal:
-  - sudo python3 -m pip install --upgrade pip wheel setuptools
+  - sudo -H python3 -m pip install --upgrade pip wheel setuptools
 install:
-  - sudo python3 -m pip install conan
+  - sudo python3 -H -m pip install conan
   - conan user
 
 script:
