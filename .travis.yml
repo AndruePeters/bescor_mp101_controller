@@ -5,19 +5,8 @@ os: linux
 before_install:
   - dpkg --add-architecture armhf
   - sudo apt update
+  - sudo apt install gcc-8-arm-linux-gnueabihf g++-8-arm-linux-gnueabihf libsfml-dev:armhf libncurses-dev:armhf libyaml-cpp-dev:armhf cmake
 
-addons:
-  apt:
-    update: true
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - gcc-8-arm-linux-gnueabihf
-      - g++-8-arm-linux-gnueabihf
-      - libsfml-dev:armhf
-      - libncurses-dev:armhf
-      - libyaml-cpp-dev:armhf
-      - cmake
 install: echo "install"
 
 script:
