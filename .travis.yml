@@ -27,6 +27,7 @@ before_install:
   - echo "deb [arch=amd64] http://security.ubuntu.com/ubuntu bionic-security multiverse" >>  /etc/apt/sources.list
   - echo "deb-src [arch=amd64] http://security.ubuntu.com/ubuntu bionic-security multiverse" >>  /etc/apt/sources.list
   - echo "deb [arch=armhf] http://ports.ubuntu.com/ bionic main universe" >>  /etc/apt/sources.list
+  - echo "deb [arch=armhf]  http:// eoan main universe" >> /etc/apt/sources.list
   
   - sudo apt update
   - sudo apt install python3-pip python3-dev
