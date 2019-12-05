@@ -1,6 +1,11 @@
-dist: bionicy
+dist: bionic
 language: cpp
 os: linux
+
+before_install:
+  - dpkg --add-architecture armhf
+  - sudo apt update
+
 addons:
   apt:
     update: true
@@ -13,12 +18,7 @@ addons:
       - libncurses-dev:armhf
       - libyaml-cpp-dev:armhf
       - cmake
-before_install:
-  - dpkg --add-architecture armhf
-  - sudo apt update
-#before_instal:
-  #- sudo -H python3 -m pip install --upgrade pip wheel setuptools
-install:
+install: echo "install"
 
 script:
   - echo "First test"
