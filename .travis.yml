@@ -1,4 +1,4 @@
-dist: trusty
+dist: bionicy
 language: cpp
 os: linux
 arch:
