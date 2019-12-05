@@ -22,8 +22,9 @@ addons:
 before_instal:
   - sudo -H python3 -m pip install --upgrade pip wheel setuptools
 install:
-  - sudo python3 -H -m pip install conan
+  - sudo -H python3 -H -m pip install conan
   - conan user
+  - conan remote add conan-center "https://conan.bintray.com"
 
 script:
   - echo "First test"
