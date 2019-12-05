@@ -33,7 +33,7 @@ before_install:
   - ls /etc/apt/sources.list.d/
   - cat /etc/apt/sources.list.d/*
   - sudo apt update
-  - sudo apt install gcc-8-arm-linux-gnueabihf g++-8-arm-linux-gnueabihf libsfml-dev:armhf libncurses-dev:armhf libyaml-cpp-dev:armhf cmake
+  - sudo apt install -y -f gcc-8-arm-linux-gnueabihf g++-8-arm-linux-gnueabihf libsfml-dev:armhf libncurses5-dev:armhf libyaml-cpp-dev:armhf cmake
 
 install: echo "install"
 
