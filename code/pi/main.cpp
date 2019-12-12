@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
   node_list_it curr_node = node_list.begin();
   turn_on_leds((*curr_node)->color, rgb);
 
-  init_display();
+  //init_display();
   while (1) {
     clear();
     display_status(curr_node);
@@ -130,7 +130,6 @@ void send_packet(const nrf2401_prop &n, const packet &p)
  */
  void set_rf24_write_addr(const address_e listening_addr)
  {
-   std::cout << "listening_addr: " << listening_addr << "\n";
    //radio.openWritingPipe(ADDRESSES[listening_addr]);
    //radio.openReadingPipe(1, ADDRESSES[0]);
   radio.openWritingPipe(ADDRESSES[1]);
@@ -145,35 +144,31 @@ void process_input(node_list_t &nl, node_list_it &it)
    if (!js.isConnected()) {
      addstr("Joystick is not connected. Please connect it to continue.\n\n");
      refresh();
-     js.waitUntilConnected();
-     /*while (!js.isConnected()) {
+     //js.waitUntilConnected();
+     while (!js.isConnected()) {
         turn_on_leds(RED, rgb);
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
         turn_on_leds(OFF, rgb);
+        js.update();
      }
     turn_on_leds((*it)->color, rgb);*/
     }
 
    packet p;
-    static std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-    static std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-
 
    // get current joystick state
    js.update();
 
-
-
-    if (js.isBtnPressed(DS4::Opt) && js.isBtnPressed(DS4::X)) {
-        begin = std::chrono::steady_clock::now();
-        while (js.isBtnPressed(DS4::Opt) && js.isBtnPressed(DS4::X)) {
+    if (js.isBtnPressedRaw(DS4::Opt) && js.isBtnPressedRaw(DS4::X)) {
+        std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+        std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+        while (js.isBtnPressedRaw(DS4::Opt) && js.isBtnPressedRaw(DS4::X)) {
             end = std::chrono::steady_clock::now();
-            std::cout << std::chrono::duration_cast<std::chrono::seconds>(end - begin).count() << std::endl;
             if (std::chrono::duration_cast<std::chrono::seconds>(end - begin).count() >= 10) {
                 std::system("sudo shutdown now");
             }
+            js.update();
         }
-        
     }
 
 
@@ -215,7 +210,6 @@ void process_input(node_list_t &nl, node_list_it &it)
      print_packet(p);
      send_packet((*it)->rf, p);
    }
-
  }
 
  /*
