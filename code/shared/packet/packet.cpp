@@ -46,6 +46,9 @@ bool operator==(const packet &p1, const packet &p2)
     }
   }
 
+  return true;
+}
+
 bool operator!=(const packet &p1, const packet &p2) 
 {
   return ! (p1 == p2);

@@ -49,9 +49,6 @@ void packet_init(struct packet *p);
 bool operator==(const packet &p1, const packet &p2);
 
 
-  return true;
-}
-
 bool operator!=(const packet &p1, const packet &p2);
 
 /*
