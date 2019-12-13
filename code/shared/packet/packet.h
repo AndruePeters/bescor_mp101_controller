@@ -43,6 +43,13 @@ struct packet {
 */
 void packet_init(struct packet *p);
 
+/*
+  Returns true if packets are equal. False otherwise.
+*/
+bool operator==(const packet &p1, const packet &p2);
+
+
+bool operator!=(const packet &p1, const packet &p2);
 
 /*
   Sets packet.packet_type.

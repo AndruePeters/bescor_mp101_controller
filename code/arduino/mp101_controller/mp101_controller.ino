@@ -203,15 +203,7 @@ void process_motor_packet(packet &p)
   set_motor_speed(p.payload[0]);
   set_motor_tilt(p.payload[2]);
   set_motor_pan(p.payload[1]);
-  
-  // let motor run for a short amount of time; 15 ms
-  delay(25);
 
-  // turn motor off
-  set_motor_speed(0);
-  set_motor_tilt(0);
-  set_motor_pan(0);
-  erase_packet(p);
 }
 
 /*

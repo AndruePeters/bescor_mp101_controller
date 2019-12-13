@@ -154,7 +154,6 @@ void process_input(node_list_t &nl, node_list_it &it)
     turn_on_leds((*it)->color, rgb);
     }
 
-   packet p;
 
    // get current joystick state
    js.update();
@@ -179,17 +178,29 @@ void process_input(node_list_t &nl, node_list_it &it)
      cycle_node_right(nl, it);
    }
 
-   // if magnitude of left stick is greater than 0, then form motor packet
-   if (js.getAxisMagnitude(DS4::LS_X, DS4::LS_Y)) {
-     create_motor_packet(it, p);
-     print_packet(p);
-     send_packet((*it)->rf, p);
-   }
+    static packet prevMotorPacket;
+    static packet currMotorPacket;
+
+    // let's go ahead and create a motor packet
+    create_motor_packet(it, currMotorPacket);
+
+    // if something has changed then send a new packet, otherwise don't
+    if (currMotorPacket != prevMotorPacket) {
+        print_packet(currMotorPacket);
+        send_packet((*it)->rf, currMotorPacket);
+    }
+    
+    // update previous motor packet.
+    prevMotorPacket = currMotorPacket;
+
+    // don't do the packet stuff with IR yet
+    // won't quite work with current Arduino implementation
 
    // now time to process IR stuff
    // this is all done on the right stick, and L2 must be pressed to toggle
    // between zoom and focus
    // *there's gotta be a better way to factor this logic, check back when not tired
+   packet p;
    if (js.getAxisMagnitude(DS4::RS_Y) >= 50.0f) {
      if (js.isBtnPressedRaw(DS4::L2)) {
        // we're going to focus
