@@ -200,6 +200,7 @@ void process_input(node_list_t &nl, node_list_it &it)
    // this is all done on the right stick, and L2 must be pressed to toggle
    // between zoom and focus
    // *there's gotta be a better way to factor this logic, check back when not tired
+   packet p;
    if (js.getAxisMagnitude(DS4::RS_Y) >= 50.0f) {
      if (js.isBtnPressedRaw(DS4::L2)) {
        // we're going to focus
