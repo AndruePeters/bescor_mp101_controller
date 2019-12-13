@@ -58,6 +58,8 @@ bool operator==(const packet &p1, const packet &p2)
       return false;
     }
   }
+
+  return true;
 }
 
 bool operator!=(const packet &p1, const packet &p2) 
