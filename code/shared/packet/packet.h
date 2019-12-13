@@ -46,7 +46,7 @@ void packet_init(struct packet *p);
 /*
   Returns true if packets are equal. False otherwise.
 */
-bool operator++(const packet &p1, const packet &p2)
+bool operator==(const packet &p1, const packet &p2)
 {
   if (p1.packet_type != p2.packet_type) return false;
   if (p1.id != p2.id) return false;
@@ -58,6 +58,11 @@ bool operator++(const packet &p1, const packet &p2)
       return false;
     }
   }
+}
+
+bool operator!=(const packet &p1, const packet &p2) 
+{
+  return ! (p1 == p2);
 }
 
 
