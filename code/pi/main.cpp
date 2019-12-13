@@ -151,7 +151,7 @@ void process_input(node_list_t &nl, node_list_it &it)
         turn_on_leds(OFF, rgb);
         js.update();
      }
-    turn_on_leds((*it)->color, rgb);*/
+    turn_on_leds((*it)->color, rgb);
     }
 
    packet p;
