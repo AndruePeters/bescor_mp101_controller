@@ -33,6 +33,25 @@ void packet_set_type(struct packet *p, packet_type_t pt)
   p->packet_type = pt;
 }
 
+bool operator==(const packet &p1, const packet &p2)
+{
+  if (p1.packet_type != p2.packet_type) return false;
+  if (p1.id != p2.id) return false;
+  if (p1.payload_used != p2.payload_used) return false;
+
+  // all packets will have same length and same paylod_used at this point
+  for (auto i = 0; i < p1.payload_used; ++i) {
+    if (p1.payload[i] != p2.payload[i]) {
+      return false;
+    }
+  }
+
+bool operator!=(const packet &p1, const packet &p2) 
+{
+  return ! (p1 == p2);
+}
+
+
 
 /*
   Sets packet.id equal to id.
