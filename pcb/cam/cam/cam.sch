@@ -1,5 +1,5 @@
 EESchema Schematic File Version 4
-EELAYER 29 0
+EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
@@ -47,21 +47,21 @@ F 3 "http://www.mouser.com/ds/2/18/40_c091_abd_e-75918.pdf" H 1800 4400 50  0001
 	1    0    0    -1  
 $EndComp
 $Comp
-L Switch:SW_Push SW?
+L Switch:SW_Push SW0
 U 1 1 5DF8236A
-P 7350 1650
-F 0 "SW?" H 7350 1935 50  0000 C CNN
-F 1 "SW_Push" H 7350 1844 50  0000 C CNN
-F 2 "" H 7350 1850 50  0001 C CNN
-F 3 "~" H 7350 1850 50  0001 C CNN
-	1    7350 1650
+P 7800 1650
+F 0 "SW0" H 7800 1935 50  0000 C CNN
+F 1 "SW_Push" H 7800 1844 50  0000 C CNN
+F 2 "" H 7800 1850 50  0001 C CNN
+F 3 "~" H 7800 1850 50  0001 C CNN
+	1    7800 1650
 	1    0    0    -1  
 $EndComp
 $Comp
-L RF:NRF24L01_Breakout U?
+L RF:NRF24L01_Breakout U0
 U 1 1 5DF8328B
 P 9050 3050
-F 0 "U?" H 9430 3096 50  0000 L CNN
+F 0 "U0" H 9430 3096 50  0000 L CNN
 F 1 "NRF24L01_Breakout" H 9430 3005 50  0000 L CNN
 F 2 "RF_Module:nRF24L01_Breakout" H 9200 3650 50  0001 L CIN
 F 3 "http://www.nordicsemi.com/eng/content/download/2730/34105/file/nRF24L01_Product_Specification_v2_0.pdf" H 9050 2950 50  0001 C CNN
@@ -241,4 +241,44 @@ F 3 "" H 9300 2300 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	9250 2300 9300 2300
+Text Label 5250 3450 2    50   ~ 0
+D7_CE
+Wire Wire Line
+	5250 3450 5450 3450
+Text Label 5250 3550 2    50   ~ 0
+D8_CS
+Wire Wire Line
+	5250 3550 5450 3550
+Text Label 5250 3950 2    50   ~ 0
+D12_MISO
+Wire Wire Line
+	5250 3950 5450 3950
+Text Label 8200 2850 2    50   ~ 0
+D12_MISO
+Wire Wire Line
+	8200 2850 8550 2850
+Text Label 5250 4050 2    50   ~ 0
+D13_SCK
+Wire Wire Line
+	5250 4050 5450 4050
+Text Label 8200 2950 2    50   ~ 0
+D13_SCK
+Wire Wire Line
+	8200 2950 8550 2950
+Text Label 8200 2750 2    50   ~ 0
+D11_MOSI
+Wire Wire Line
+	8200 2750 8550 2750
+Text Label 5250 3850 2    50   ~ 0
+D11_MOSI
+Wire Wire Line
+	5250 3850 5450 3850
+Text Label 8200 3250 2    50   ~ 0
+D7_CE
+Wire Wire Line
+	8200 3250 8550 3250
+Text Label 8200 3050 2    50   ~ 0
+D8_CS
+Wire Wire Line
+	8200 3050 8550 3050
 $EndSCHEMATC
