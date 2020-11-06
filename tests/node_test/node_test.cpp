@@ -1,12 +1,6 @@
-#include <stdio.h>
-#include <RF24.h>
-#include <wiringPi.h>
-#include <node.h>
-#include <node.c>
-
-
+#include <node/node.h>
 
 int main()
 {
-
+    return 0;
 }

@@ -1,7 +1,6 @@
 #include <stdio.h>
 
-#include "packet.h"
-#include "packet.c"
+#include <packet/packet.h>
 int main()
 {
   printf("\nBeginning tests\n\n");
