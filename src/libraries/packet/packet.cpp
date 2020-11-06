@@ -5,7 +5,7 @@
 
   Implementation for packet.h
 */
-#include <packet.h>
+#include "packet.h"
 #include <assert.h>
 
 /*
