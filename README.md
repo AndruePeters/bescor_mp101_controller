@@ -18,6 +18,15 @@ User uses a PS4 controller to control the motor.
 
 # Installation
 
+## Building
+The following will actually compile and build the program natively on a Raspberry Pi. Please make sure that all dependencies are installed by running the install.sh script.
+
+```
+  (cd into the bescor_mp101_controller directory)
+  cmake . -Bbuild
+  cmake --build build
+```
+
 ## Raspberry Pi
 * **wiringPi** (dynamically linked since it is preinstalled)
   * wiringPi is installed by default. Follow [the instructions](http://wiringpi.com/download-and-install/) if you need to install it.
