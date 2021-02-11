@@ -1,7 +1,3 @@
-#include <AceButton.h>
-#include <AdjustableButtonConfig.h>
-#include <ButtonConfig.h>
-
 #include <RF24.h>
 #include <SPI.h>
 #include <IRLibSendBase.h>
@@ -23,8 +19,6 @@
 #include "node/node.h"
 #include "packet/packet.h"
 
-using namespace ace_button;
-
 uint8_t ARDUINO_ID = 0;
 color_e ARDUINO_COLOR = OFF;
 
@@ -35,8 +29,6 @@ const radio_pin_config radio_pins{7, 8};
 packet input_packet;
 RF24 radio(radio_pins.ce, radio_pins.cs);
 IRsend ir_send; ///< pin 3
-
-AceButton button(17);
 
 void dump_packet(packet& p) {
     for (int i = 0; i < p.payload_used; ++i) {
@@ -68,16 +60,6 @@ void button_even_handler() {
     turn_on_leds(ARDUINO_COLOR, led_pins);
 }
 
-void handleButtonEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
-    switch (eventType) {
-        case AceButton::kEventReleased:
-            button_even_handler();
-            break;
-        default:
-            break;
-    }
-}
-
 void setup() {
     // put your setup code here, to run once:
     config_motor_pins();
@@ -85,7 +67,6 @@ void setup() {
     init_pins();
     set_color(ARDUINO_COLOR, ARDUINO_ID);
     turn_on_leds(ARDUINO_COLOR, led_pins);
-    button.setEventHandler(handleButtonEvent);
     Serial.begin(9600);
     Serial.write("Finished setup.\n");
 }
@@ -93,11 +74,12 @@ void setup() {
 void loop() {
     if (radio.available()) {
         radio.read(&input_packet, sizeof(input_packet));
+        Serial.write("Radio is available.\n");
         if (input_packet.id == ARDUINO_ID) {
+            Serial.write("Read packet for this Arduino\n");
             process_packet(input_packet);
         }
     }
-    button.check();
 }
 
 void set_color(color_e& c, uint8_t id) {
