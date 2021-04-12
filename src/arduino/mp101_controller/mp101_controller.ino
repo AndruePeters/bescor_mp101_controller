@@ -23,6 +23,8 @@ uint8_t ARDUINO_ID = 0;
 color_e ARDUINO_COLOR = OFF;
 
 const int RF24_CHANNEL = 1;
+
+/// speed, right, left, up, down
 const motor_pin_config motor_pins{6, A2, 4, A1, 2};
 const led_pin_config led_pins{5, 9, 10}; // A2, A1, A0
 const radio_pin_config radio_pins{7, 8};
