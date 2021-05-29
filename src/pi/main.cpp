@@ -43,7 +43,7 @@ node_list_t node_list;
 const rgb_led_pin_cfg rgb{8, 9, 7}; //in order r, g, b
 
 void ctrlCHandler(sig_atomic_t s) {
-    endwin();
+    spdlog::error("Ctrl+C was pressed. Gracefully exiting.");
     radio.printDetails();
     exit(1);
 }
@@ -69,13 +69,11 @@ int main(int argc, char* argv[]) {
     // load config file and store items in node_list
     load_config(argv[1], node_list);
     node_list_it curr_node = node_list.begin();
+    nodelist_it prev_node = node_list.begin();
     turn_on_leds((*curr_node)->color, rgb);
 
-    init_display();
     while (1) {
         clear();
-        display_status(curr_node);
-        addstr("\n\n");
         process_input(node_list, curr_node);
         refresh();
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
@@ -136,8 +134,7 @@ void set_rf24_write_addr(const address_e listening_addr) {
  */
 void process_input(node_list_t& nl, node_list_it& it) {
     if (!js.isConnected()) {
-        addstr("Joystick is not connected. Please connect it to continue.\n\n");
-        refresh();
+        spdlog::warning("Joystick is not connected. Please connect it to continue.");
         //js.waitUntilConnected();
         while (!js.isConnected()) {
             turn_on_leds(RED, rgb);
@@ -145,16 +142,16 @@ void process_input(node_list_t& nl, node_list_it& it) {
             turn_on_leds(OFF, rgb);
             js.update();
         }
+        spdlog::warning("Joystick has been reconnected!");
         turn_on_leds((*it)->color, rgb);
     }
-
 
     // get current joystick state
     js.update();
 
     if (js.isBtnPressedRaw(DS4::Opt) && js.isBtnPressedRaw(DS4::X)) {
-        std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-        std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+        const auto begin = std::chrono::steady_clock::now();
+        auto end = std::chrono::steady_clock::now();
         while (js.isBtnPressedRaw(DS4::Opt) && js.isBtnPressedRaw(DS4::X)) {
             end = std::chrono::steady_clock::now();
             if (std::chrono::duration_cast<std::chrono::seconds>(end - begin).count() >= 10) {
@@ -168,8 +165,10 @@ void process_input(node_list_t& nl, node_list_it& it) {
     // first check and cycle node
     if (js.isBtnPressed(DS4::L1)) {
         cycle_node_left(nl, it);
+        spdlog::info("Current node: {}", (*it)->id);
     } else if (js.isBtnPressed(DS4::R1)) {
         cycle_node_right(nl, it);
+        spdlog::info("Current node: {}", (*it)->id);
     }
 
     static packet prevMotorPacket;
