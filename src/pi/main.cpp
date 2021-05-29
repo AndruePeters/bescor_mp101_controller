@@ -69,7 +69,7 @@ int main(int argc, char* argv[]) {
     // load config file and store items in node_list
     load_config(argv[1], node_list);
     node_list_it curr_node = node_list.begin();
-    nodelist_it prev_node = node_list.begin();
+    node_list_it prev_node = node_list.begin();
     turn_on_leds((*curr_node)->color, rgb);
 
     while (1) {
@@ -134,7 +134,7 @@ void set_rf24_write_addr(const address_e listening_addr) {
  */
 void process_input(node_list_t& nl, node_list_it& it) {
     if (!js.isConnected()) {
-        spdlog::warning("Joystick is not connected. Please connect it to continue.");
+        spdlog::warn("Joystick is not connected. Please connect it to continue.");
         //js.waitUntilConnected();
         while (!js.isConnected()) {
             turn_on_leds(RED, rgb);
@@ -142,7 +142,7 @@ void process_input(node_list_t& nl, node_list_it& it) {
             turn_on_leds(OFF, rgb);
             js.update();
         }
-        spdlog::warning("Joystick has been reconnected!");
+        spdlog::warn("Joystick has been reconnected!");
         turn_on_leds((*it)->color, rgb);
     }
 
