@@ -29,6 +29,8 @@
 #include <yaml-cpp/yaml.h>
 #include <main.h>
 
+#include <spdlog/spdlog.h>
+
 using namespace controller;
 
 
@@ -49,8 +51,8 @@ void ctrlCHandler(sig_atomic_t s) {
 
 int main(int argc, char* argv[]) {
     if (argc < 2) {
-        std::cerr << "Invalid number of arguments. Please enter path for file.";
-        return 1;
+        spdlog::error("Invalid number of arguments.\nCorrect Use is: {} path/to/config.yaml", argv[0]);
+        return EXIT_FAILURE;
     }
 
     // initialize wiringPi and RF24
@@ -69,7 +71,7 @@ int main(int argc, char* argv[]) {
     node_list_it curr_node = node_list.begin();
     turn_on_leds((*curr_node)->color, rgb);
 
-    //init_display();
+    init_display();
     while (1) {
         clear();
         display_status(curr_node);
@@ -306,11 +308,12 @@ void print_packet(const packet& p) {
  *  Reads and parses a yaml file (file) and stores nodes in nl
  */
 void load_config(std::string file, node_list_t& nl) {
+    spdlog::info("Loading configuration file");
     node_prop* np = NULL;
     // verify correct loading of file in future.
     YAML::Node base = YAML::LoadFile(file.c_str());
     YAML::Node arr = base["camera_nodes"];
-    std::cout << "\nLoaded file\n";
+    spdlog::info("Finished loading configuration file");
 
     for (auto it = arr.begin(); it != arr.end(); ++it) {
         np = new node_prop;
