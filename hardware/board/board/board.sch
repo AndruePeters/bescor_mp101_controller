@@ -10788,6 +10788,11 @@ Audio, scart, microphone, headphone&lt;p&gt;
 <junction x="137.16" y="78.74"/>
 <label x="129.54" y="78.74" size="1.778" layer="95"/>
 </segment>
+<segment>
+<pinref part="ARDUINO_NANO1" gate="G$1" pin="3V3"/>
+<wire x1="30.48" y1="88.9" x2="25.4" y2="88.9" width="0.1524" layer="91"/>
+<label x="20.32" y="88.9" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="N$6" class="0">
 <segment>
