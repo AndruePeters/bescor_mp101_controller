@@ -20,15 +20,14 @@
 #include "packet/packet.h"
 
 uint8_t ARDUINO_ID = 0;
-color_e ARDUINO_COLOR = OFF;
 
 const int RF24_CHANNEL = 1;
 
 /// speed, right, left, up, down
 const motor_pin_config motor_pins{6, A2, 4, A1, 2};
-const led_pin_config led_pins{5, 9, 10}; // A2, A1, A0
-const radio_pin_config radio_pins{7, 8};
+const radio_pin_config radio_pins{9, 10};
 packet input_packet;
+
 RF24 radio(radio_pins.ce, radio_pins.cs);
 IRsend ir_send; ///< pin 3
 
@@ -49,26 +48,10 @@ void set_pipe(int id) {
     radio.openReadingPipe(1, ADDRESSES[1]);
 }
 
-void button_even_handler() {
-    if (ARDUINO_ID == 4) {
-        ARDUINO_ID = 0;
-    } else {
-        ++ARDUINO_ID;
-    }
-
-
-    set_pipe(0);
-    set_color(ARDUINO_COLOR, ARDUINO_ID);
-    turn_on_leds(ARDUINO_COLOR, led_pins);
-}
-
 void setup() {
     // put your setup code here, to run once:
     config_motor_pins();
     init_rf24();
-    init_pins();
-    set_color(ARDUINO_COLOR, ARDUINO_ID);
-    turn_on_leds(ARDUINO_COLOR, led_pins);
     Serial.begin(9600);
     Serial.write("Finished setup.\n");
 }
@@ -76,74 +59,14 @@ void setup() {
 void loop() {
     if (radio.available()) {
         radio.read(&input_packet, sizeof(input_packet));
-        Serial.write("Radio is available.\n");
+        dump_packet(input_packet);
+        //Serial.write("Radio is available.\n");
         if (input_packet.id == ARDUINO_ID) {
             Serial.write("Read packet for this Arduino\n");
             process_packet(input_packet);
         }
     }
 }
-
-void set_color(color_e& c, uint8_t id) {
-    switch (id) {
-        case 0:
-            c = RED;
-            break;
-        case 1:
-            c = GREEN;
-            break;
-        case 2:
-            c = BLUE;
-            break;
-        case 3:
-            c = YELLOW;
-            break;
-        case 4:
-            c = WHITE;
-            break;
-        default:
-            c = OFF;
-    }
-}
-
-void turn_on_leds(uint8_t r, uint8_t g, uint8_t b, led_pin_config p_cfg) {
-    analogWrite(p_cfg.red, r);
-    analogWrite(p_cfg.grn, g);
-    analogWrite(p_cfg.blu, b);
-}
-
-void turn_on_leds(color_e c, led_pin_config l) {
-    switch (c) {
-        case OFF:
-            turn_on_leds(0, 0, 0, l);
-            break;
-        case BLUE:
-            turn_on_leds(0, 0, 255, l);
-            break;
-        case GREEN:
-            turn_on_leds(0, 255, 0, l);
-            break;
-        case CYAN:
-            turn_on_leds(0, 255, 128, l);
-            break;
-        case RED:
-            turn_on_leds(255, 0, 0, l);
-            break;
-        case MAGENTA:
-            turn_on_leds(128, 0, 128, l);
-            break;
-        case YELLOW:
-            turn_on_leds(128, 128, 0, l);
-            break;
-        case WHITE:
-            turn_on_leds(128, 128, 128, l);
-            break;
-        default:
-            turn_on_leds(0, 0, 0, l);
-            break;
-    }
-}
-
 
 void erase_packet(packet& p) {
     memset(&p, 0, sizeof(packet));
@@ -175,12 +98,6 @@ void init_rf24() {
     radio.startListening();
 }
 
-void init_pins() {
-    pinMode(led_pins.red, OUTPUT);
-    pinMode(led_pins.grn, OUTPUT);
-    pinMode(led_pins.blu, OUTPUT);
-    pinMode(17, INPUT_PULLUP); // button
-}
 
 void process_ir_packet(packet& p) {
     uint32_t reconstructed_ir_code = (static_cast<uint32_t>(p.payload[1]) << 24) |
@@ -211,7 +128,6 @@ void process_motor_packet(packet& p) {
     set_motor_speed(p.payload[0]);
     set_motor_tilt(p.payload[2]);
     set_motor_pan(p.payload[1]);
-
 }
 
 /*
@@ -225,11 +141,6 @@ void set_motor_speed(uint8_t speed) {
     analogWrite(motor_pins.speed, speed);
 }
 
-/*
-  Sets the motor pan up.
-
-  Valid values: HIGH or LOW
-*/
 void set_motor_up(bool value) {
     digitalWrite(motor_pins.up, value);
 }
