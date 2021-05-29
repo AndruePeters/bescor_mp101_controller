@@ -42,8 +42,8 @@ include(cmake/StaticAnalyzers.cmake)
 set(CONAN_EXTRA_REQUIRES "")
 set(CONAN_EXTRA_OPTIONS "")
 
-#include(cmake/Conan.cmake)
-#run_conan()
+include(cmake/Conan.cmake)
+run_conan()
 
 add_subdirectory(src)
 add_subdirectory(tests)
