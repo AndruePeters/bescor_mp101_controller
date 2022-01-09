@@ -321,11 +321,11 @@ void load_config(std::string file, node_list_t& nl) {
         node_set_color(np, str_to_clr((*it)["color"].as<std::string>()));
 
         // configure rf properties
-        node_set_power_level(np, str_to_pwr((*it)["power_level"].as<std::string>()));
-        node_set_data_rate(np, str_to_datarate((*it)["data_rate"].as<std::string>()));
-        node_set_crc_length(np, str_to_crclen((*it)["crc_length"].as<std::string>()));
-        node_set_channel(np, (uint8_t)(*it)["channel"].as<unsigned>()); // yaml-cpp has issue converting to uint8_t
-        node_set_address(np, str_to_addr((*it)["address"].as<std::string>()));
+        // node_set_power_level(np, str_to_pwr((*it)["power_level"].as<std::string>()));
+        // node_set_data_rate(np, str_to_datarate((*it)["data_rate"].as<std::string>()));
+        // node_set_crc_length(np, str_to_crclen((*it)["crc_length"].as<std::string>()));
+        // node_set_channel(np, (uint8_t)(*it)["channel"].as<unsigned>()); // yaml-cpp has issue converting to uint8_t
+        // node_set_address(np, str_to_addr((*it)["address"].as<std::string>()));
 
         // configure ir properties
         node_set_ir_prot(np, str_to_irprot((*it)["ir_proto"].as<std::string>()));
