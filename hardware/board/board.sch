@@ -10631,6 +10631,8 @@ Audio, scart, microphone, headphone&lt;p&gt;
 <classes>
 <class number="0" name="default" width="0" drill="0">
 </class>
+<class number="1" name="power" width="0" drill="0">
+</class>
 </classes>
 <parts>
 <part name="ARDUINO_NANO1" library="ArduinoNanoV30" deviceset="ARDUINO_NANO" device=""/>
@@ -10639,12 +10641,12 @@ Audio, scart, microphone, headphone&lt;p&gt;
 <part name="GND2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND3" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="LED1" library="led" library_urn="urn:adsk.eagle:library:259" deviceset="LED" device="5MM" package3d_urn="urn:adsk.eagle:package:15799/2"/>
-<part name="C1" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="10 uF"/>
+<part name="C1" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="22 uF"/>
 <part name="R1" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0805" package3d_urn="urn:adsk.eagle:package:23553/2" value="220"/>
 <part name="GND4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="X1" library="con-hirschmann" library_urn="urn:adsk.eagle:library:153" deviceset="MAB7SH" device="" package3d_urn="urn:adsk.eagle:package:7450/1"/>
 <part name="GND5" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="C2" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="10 uF"/>
+<part name="C2" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="C0805" package3d_urn="urn:adsk.eagle:package:23617/2" value="22 uF"/>
 <part name="GND6" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 </parts>
 <sheets>
@@ -10684,19 +10686,19 @@ Audio, scart, microphone, headphone&lt;p&gt;
 <instance part="GND4" gate="1" x="116.84" y="45.72" smashed="yes">
 <attribute name="VALUE" x="114.3" y="43.18" size="1.778" layer="96"/>
 </instance>
-<instance part="X1" gate="G$1" x="96.52" y="35.56" smashed="yes" rot="R180">
-<attribute name="VALUE" x="96.52" y="24.765" size="1.778" layer="96" rot="R180"/>
-<attribute name="NAME" x="106.68" y="24.765" size="1.778" layer="95" rot="R180"/>
+<instance part="X1" gate="G$1" x="101.6" y="35.56" smashed="yes" rot="R180">
+<attribute name="VALUE" x="101.6" y="24.765" size="1.778" layer="96" rot="R180"/>
+<attribute name="NAME" x="111.76" y="24.765" size="1.778" layer="95" rot="R180"/>
 </instance>
-<instance part="GND5" gate="1" x="109.22" y="30.48" smashed="yes">
-<attribute name="VALUE" x="106.68" y="27.94" size="1.778" layer="96"/>
+<instance part="GND5" gate="1" x="116.84" y="30.48" smashed="yes">
+<attribute name="VALUE" x="114.3" y="27.94" size="1.778" layer="96"/>
 </instance>
-<instance part="C2" gate="G$1" x="73.66" y="38.1" smashed="yes">
-<attribute name="NAME" x="75.184" y="38.481" size="1.778" layer="95"/>
-<attribute name="VALUE" x="75.184" y="33.401" size="1.778" layer="96"/>
+<instance part="C2" gate="G$1" x="60.96" y="38.1" smashed="yes">
+<attribute name="NAME" x="52.324" y="35.941" size="1.778" layer="95"/>
+<attribute name="VALUE" x="52.324" y="33.401" size="1.778" layer="96"/>
 </instance>
-<instance part="GND6" gate="1" x="73.66" y="30.48" smashed="yes">
-<attribute name="VALUE" x="71.12" y="27.94" size="1.778" layer="96"/>
+<instance part="GND6" gate="1" x="60.96" y="27.94" smashed="yes">
+<attribute name="VALUE" x="58.42" y="25.4" size="1.778" layer="96"/>
 </instance>
 </instances>
 <busses>
@@ -10773,10 +10775,12 @@ Audio, scart, microphone, headphone&lt;p&gt;
 <segment>
 <pinref part="GND5" gate="1" pin="GND"/>
 <pinref part="X1" gate="G$1" pin="7"/>
+<wire x1="114.3" y1="33.02" x2="116.84" y2="33.02" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="GND6" gate="1" pin="GND"/>
 <pinref part="C2" gate="G$1" pin="2"/>
+<wire x1="60.96" y1="33.02" x2="60.96" y2="30.48" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="3V3" class="0">
@@ -10812,11 +10816,13 @@ Audio, scart, microphone, headphone&lt;p&gt;
 <net name="VIN" class="0">
 <segment>
 <pinref part="X1" gate="G$1" pin="2"/>
-<wire x1="81.28" y1="40.64" x2="73.66" y2="40.64" width="0.1524" layer="91"/>
+<wire x1="86.36" y1="40.64" x2="60.96" y2="40.64" width="0.1524" layer="91"/>
 <label x="71.12" y="43.18" size="1.778" layer="95"/>
 <pinref part="C2" gate="G$1" pin="1"/>
-<wire x1="73.66" y1="40.64" x2="68.58" y2="40.64" width="0.1524" layer="91"/>
-<junction x="73.66" y="40.64"/>
+<junction x="60.96" y="40.64"/>
+<pinref part="ARDUINO_NANO1" gate="G$1" pin="VIN"/>
+<wire x1="30.48" y1="55.88" x2="30.48" y2="40.64" width="0.1524" layer="91"/>
+<wire x1="30.48" y1="40.64" x2="60.96" y2="40.64" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$8" class="0">
@@ -10825,33 +10831,24 @@ Audio, scart, microphone, headphone&lt;p&gt;
 <wire x1="71.12" y1="76.2" x2="78.74" y2="76.2" width="0.1524" layer="91"/>
 <wire x1="78.74" y1="76.2" x2="78.74" y2="33.02" width="0.1524" layer="91"/>
 <pinref part="X1" gate="G$1" pin="6"/>
-<wire x1="78.74" y1="33.02" x2="83.82" y2="33.02" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="N$9" class="0">
-<segment>
-<pinref part="X1" gate="G$1" pin="3"/>
-<wire x1="111.76" y1="35.56" x2="111.76" y2="15.24" width="0.1524" layer="91"/>
-<wire x1="111.76" y1="15.24" x2="22.86" y2="15.24" width="0.1524" layer="91"/>
-<wire x1="22.86" y1="15.24" x2="22.86" y2="78.74" width="0.1524" layer="91"/>
-<pinref part="ARDUINO_NANO1" gate="G$1" pin="A2"/>
-<wire x1="22.86" y1="78.74" x2="30.48" y2="78.74" width="0.1524" layer="91"/>
+<wire x1="78.74" y1="33.02" x2="88.9" y2="33.02" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$10" class="0">
 <segment>
-<pinref part="X1" gate="G$1" pin="1"/>
 <pinref part="ARDUINO_NANO1" gate="G$1" pin="D4"/>
-<wire x1="81.28" y1="35.56" x2="81.28" y2="71.12" width="0.1524" layer="91"/>
 <wire x1="81.28" y1="71.12" x2="71.12" y2="71.12" width="0.1524" layer="91"/>
+<wire x1="81.28" y1="71.12" x2="81.28" y2="35.56" width="0.1524" layer="91"/>
+<pinref part="X1" gate="G$1" pin="1"/>
+<wire x1="81.28" y1="35.56" x2="86.36" y2="35.56" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$11" class="0">
 <segment>
 <pinref part="X1" gate="G$1" pin="5"/>
-<wire x1="109.22" y1="38.1" x2="116.84" y2="38.1" width="0.1524" layer="91"/>
-<wire x1="116.84" y1="38.1" x2="116.84" y2="12.7" width="0.1524" layer="91"/>
-<wire x1="116.84" y1="12.7" x2="20.32" y2="12.7" width="0.1524" layer="91"/>
+<wire x1="114.3" y1="38.1" x2="127" y2="38.1" width="0.1524" layer="91"/>
+<wire x1="127" y1="38.1" x2="127" y2="12.7" width="0.1524" layer="91"/>
+<wire x1="127" y1="12.7" x2="20.32" y2="12.7" width="0.1524" layer="91"/>
 <wire x1="20.32" y1="12.7" x2="20.32" y2="81.28" width="0.1524" layer="91"/>
 <pinref part="ARDUINO_NANO1" gate="G$1" pin="A1"/>
 <wire x1="20.32" y1="81.28" x2="30.48" y2="81.28" width="0.1524" layer="91"/>
@@ -10859,15 +10856,34 @@ Audio, scart, microphone, headphone&lt;p&gt;
 </net>
 <net name="N$12" class="0">
 <segment>
-<pinref part="X1" gate="G$1" pin="4"/>
 <pinref part="ARDUINO_NANO1" gate="G$1" pin="D2"/>
-<wire x1="83.82" y1="38.1" x2="83.82" y2="66.04" width="0.1524" layer="91"/>
 <wire x1="83.82" y1="66.04" x2="71.12" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="83.82" y1="66.04" x2="83.82" y2="38.1" width="0.1524" layer="91"/>
+<pinref part="X1" gate="G$1" pin="4"/>
+<wire x1="83.82" y1="38.1" x2="88.9" y2="38.1" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$13" class="0">
+<segment>
+<pinref part="X1" gate="G$1" pin="3"/>
+<wire x1="116.84" y1="35.56" x2="121.92" y2="35.56" width="0.1524" layer="91"/>
+<wire x1="121.92" y1="35.56" x2="121.92" y2="15.24" width="0.1524" layer="91"/>
+<wire x1="22.86" y1="15.24" x2="22.86" y2="78.74" width="0.1524" layer="91"/>
+<pinref part="ARDUINO_NANO1" gate="G$1" pin="A2"/>
+<wire x1="22.86" y1="78.74" x2="30.48" y2="78.74" width="0.1524" layer="91"/>
+<wire x1="22.86" y1="15.24" x2="121.92" y2="15.24" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
 </sheet>
 </sheets>
+<errors>
+<approved hash="202,1,71.12,60.96,ARDUINO_NANO1,!RESET,,,,"/>
+<approved hash="202,1,30.48,86.36,ARDUINO_NANO1,AREF,,,,"/>
+<approved hash="202,1,30.48,60.96,ARDUINO_NANO1,!RESET,,,,"/>
+<approved hash="113,1,50.8,76.4138,ARDUINO_NANO1,,,,,"/>
+<approved hash="113,1,117.162,52.07,LED1,,,,,"/>
+</errors>
 </schematic>
 </drawing>
 <compatibility>
