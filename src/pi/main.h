@@ -71,7 +71,7 @@ void load_config(node_list_t& nl);
 
 void create_ir_packet(node_list_it& it, packet& P, uint32_t ir_code);
 
-void create_motor_packet(node_list_it& it, packet& p);
+void create_motor_packet(node_list_it& it, packet& p, bool slow_mode);
 
 void print_packet(const packet& p);
 

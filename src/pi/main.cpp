@@ -76,7 +76,7 @@ int main(int argc, char* argv[]) {
         clear();
         process_input(node_list, curr_node);
         refresh();
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }
 
     return 0;
@@ -88,7 +88,9 @@ int main(int argc, char* argv[]) {
 void rf24_init() {
     radio.begin();
     //radio.setAutoAck(true);
-    //radio.setRetries(2, 15);
+    //radio.setRetries(10, 15);
+    //radio.enableAckPayload();
+    //radio.enableDynamicPayloads();
     radio.setChannel(1);
     radio.openWritingPipe(ADDRESSES[1]);
     radio.openReadingPipe(1, ADDRESSES[0]);
@@ -117,6 +119,14 @@ void send_packet(const nrf2401_prop& n, const packet& p) {
     if (!radio.write(&p, sizeof(packet))) {
 
     }
+    //radio.stopListening();
+    //if (radio.write(&p, sizeof(packet))) {
+    //   if (radio.isAckPayloadAvailable()) {
+    //        int rec;
+    //	    radio.read(&rec, sizeof(rec));
+    //   }
+    // }
+//    radio.writeAckPayload(1, &p, sizeof(packet));
 }
 
 /*
@@ -133,7 +143,8 @@ void set_rf24_write_addr(const address_e listening_addr) {
  * Handle and process the input of a joystick
  */
 void process_input(node_list_t& nl, node_list_it& it) {
-    if (!js.isConnected()) {
+        static int thing = 0;
+	if (!js.isConnected()) {
         spdlog::warn("Joystick is not connected. Please connect it to continue.");
         //js.waitUntilConnected();
         while (!js.isConnected()) {
@@ -161,30 +172,50 @@ void process_input(node_list_t& nl, node_list_it& it) {
         }
     }
 
+    static packet prevMotorPacket;                                      
+    static packet currMotorPacket;            
+    static auto prevSent = std::chrono::steady_clock::now();
+    auto now = std::chrono::steady_clock::now();
+    // let's go ahead and create a motor packet
+    create_motor_packet(it, currMotorPacket, js.isBtnPressedRaw(DS4::Sqr));   
+                          
+     //if something has changed then send a new packet, otherwise don't 
+    if (currMotorPacket != prevMotorPacket) {                               
+        //print_packet(currMotorPacket);
+        send_packet((*it)->rf, currMotorPacket);
+        prevSent = now;
+	thing=0;
+    }
+
+    /// the real issue seems to be power by sending packets too close together
+    /// need to get capacitors for the real pi radio to prevent this
+    if (thing < 10 && currMotorPacket.payload[1] == 0 && currMotorPacket.payload[2] == 0 && 
+                std::chrono::duration_cast<std::chrono::milliseconds>(now - prevSent).count() < 100) {
+        send_packet((*it)->rf, currMotorPacket);
+        prevSent = now;
+	thing++;
+    }
+    // update previous motor packet.
+    prevMotorPacket = currMotorPacket;
+
+
 
     // first check and cycle node
     if (js.isBtnPressed(DS4::L1)) {
+	currMotorPacket.payload[0] = currMotorPacket.payload[1] = currMotorPacket.payload[2] = 0;
+	send_packet((*it)->rf, currMotorPacket);
         cycle_node_left(nl, it);
         spdlog::info("Current node: {}", (*it)->id);
+	thing = false;
     } else if (js.isBtnPressed(DS4::R1)) {
+	currMotorPacket.payload[0] = currMotorPacket.payload[1] = currMotorPacket.payload[2] = 0;
+	send_packet((*it)->rf, currMotorPacket);
         cycle_node_right(nl, it);
         spdlog::info("Current node: {}", (*it)->id);
+	thing = false;
     }
 
-    static packet prevMotorPacket;
-    static packet currMotorPacket;
 
-    // let's go ahead and create a motor packet
-    create_motor_packet(it, currMotorPacket);
-
-    // if something has changed then send a new packet, otherwise don't
-    if (currMotorPacket != prevMotorPacket) {
-        print_packet(currMotorPacket);
-        send_packet((*it)->rf, currMotorPacket);
-    }
-
-    // update previous motor packet.
-    prevMotorPacket = currMotorPacket;
 
     // don't do the packet stuff with IR yet
     // won't quite work with current Arduino implementation
@@ -246,22 +277,23 @@ void cycle_node_right(node_list_t& nl, node_list_it& it) {
 /*
  *  Creates motor packet.
  */
-void create_motor_packet(node_list_it& it, packet& p) {
+void create_motor_packet(node_list_it& it, packet& p, bool slow_mode) {
     float x_out, y_out;
     float norm_mag = js.getNormAxis(x_out, y_out, DS4::LS_X, DS4::LS_Y);
     float speed = norm_mag * 255;
-
     p.packet_type = MOTOR;
     p.payload_used = 3;
     p.id = (*it)->id;
     p.payload[0] = (unsigned) speed;
 
-
-    if (x_out > 0.10f) p.payload[1] = 2;
-    else if (x_out < -0.10f) p.payload[1] = 1;
+    if (slow_mode) {
+	    p.payload[0] = 1; //std::max(0u, static_cast<unsigned>(speed/20));
+    }
+    if (x_out > 0.010f) p.payload[1] = 2;
+    else if (x_out < -0.010f) p.payload[1] = 1;
     else p.payload[1] = 0;
 
-    if (y_out > 0.25f) p.payload[2] = 2;
+    if (y_out > 0.025f) p.payload[2] = 2;
     else if (y_out < -0.25f) p.payload[2] = 1;
     else p.payload[2] = 0;
 
@@ -300,7 +332,7 @@ void print_packet(const packet& p) {
     for (int i = 0; i < p.payload_used; ++i) {
         ss << "\nPayload[" << i << "]: " << std::hex << (unsigned) p.payload[i];
     }
-    addstr(ss.str().c_str());
+    spdlog::info("{}", ss.str());
 }
 
 /*
