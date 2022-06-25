@@ -126,8 +126,8 @@ void process_motor_packet(packet& p) {
 
     // set directional values before turning speed back on
     set_motor_speed(p.payload[0]);
-    set_motor_tilt(p.payload[2]);
-    set_motor_pan(p.payload[1]);
+    set_motor_tilt(p.payload[3], p.payload[4]);
+    set_motor_pan(p.payload[1], p.payload[2]);
 }
 
 /*
@@ -141,47 +141,47 @@ void set_motor_speed(uint8_t speed) {
     analogWrite(motor_pins.speed, speed);
 }
 
-void set_motor_up(bool value) {
-    digitalWrite(motor_pins.up, value);
+void set_motor_up(uint8_t value) {
+    analogWrite(motor_pins.up, value);
 }
 
-void set_motor_down(bool value) {
-    digitalWrite(motor_pins.down, value);
+void set_motor_down(uint8_t value) {
+    analogWrite(motor_pins.down, value);
 }
 
-void set_motor_left(bool value) {
-    digitalWrite(motor_pins.left, value);
+void set_motor_left(uint8_t value) {
+    analogWrite(motor_pins.left, value);
 }
 
-void set_motor_right(bool value) {
-    digitalWrite(motor_pins.right, value);
+void set_motor_right(uint8_t value) {
+    analogWrite(motor_pins.right, value);
 }
 
 
-void set_motor_tilt(uint8_t value) {
+void set_motor_tilt(uint8_t dir, uint8_t value) {
     // set tilt direction
-    if (value == 0) {
+    if (dir == 0) {
         set_motor_down(LOW);
         set_motor_up(LOW);
-    } else if (value == 1) {
-        set_motor_down(HIGH);
+    } else if (dir == 1) {
+        set_motor_down(value);
         set_motor_up(LOW);
-    } else if (value == 2) {
+    } else if (dir == 2) {
         set_motor_down(LOW);
-        set_motor_up(HIGH);
+        set_motor_up(value);
     }
 }
 
-void set_motor_pan(uint8_t value) {
-    if (value == 0) {
+void set_motor_pan(uint8_t dir, uint8_t value) {
+    if (dir == 0) {
         set_motor_left(LOW);
         set_motor_right(LOW);
     }
-    if (value == 1) {
-        set_motor_left(HIGH);
+    if (dir == 1) {
+        set_motor_left(value);
         set_motor_right(LOW);
-    } else if (value == 2) {
+    } else if (dir == 2) {
         set_motor_left(LOW);
-        set_motor_right(HIGH);
+        set_motor_right(value);
     }
 }

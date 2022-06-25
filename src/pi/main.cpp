@@ -92,6 +92,7 @@ void rf24_init() {
     //radio.enableAckPayload();
     //radio.enableDynamicPayloads();
     radio.setChannel(1);
+    radio.setPALevel(RF24_PA_MAX);
     radio.openWritingPipe(ADDRESSES[1]);
     radio.openReadingPipe(1, ADDRESSES[0]);
 }
@@ -286,23 +287,22 @@ void create_motor_packet(node_list_it& it, packet& p, bool slow_mode) {
     p.id = (*it)->id;
     p.payload[0] = (unsigned) speed;
 
-    if (slow_mode) {
-	    p.payload[0] = 1; //std::max(0u, static_cast<unsigned>(speed/20));
+
+    if (std::abs(x_out) > 0.010f) {
+        p.payload[2] = x_out * 255;
     }
+
     if (x_out > 0.010f) p.payload[1] = 2;
     else if (x_out < -0.010f) p.payload[1] = 1;
     else p.payload[1] = 0;
 
-    if (y_out > 0.025f) p.payload[2] = 2;
-    else if (y_out < -0.25f) p.payload[2] = 1;
-    else p.payload[2] = 0;
+    if (std::abs(y_out) > 0.025f) {
+        p.payload[3] = y_out * 255;
+    }
 
-    std::stringstream ss;
-    ss << "\nX raw: " << js.getAxisPos(DS4::LS_X)
-       << "\nY raw: " << js.getAxisPos(DS4::LS_Y)
-       << "\nX out: " << x_out
-       << "\nY out: " << y_out
-       << "\nSpeed: " << speed << std::endl;
+    if (y_out > 0.025f) p.payload[4] = 2;
+    else if (y_out < -0.25f) p.payload[4] = 1;
+    else p.payload[2] = 0;
 
 }
 

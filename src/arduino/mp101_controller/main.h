@@ -62,13 +62,13 @@ void config_motor_pins();
 
 void set_motor_speed(uint8_t speed);
 
-void set_motor_up(bool value);
+void set_motor_up(uint8_t value);
 
-void set_motor_down(bool value);
+void set_motor_down(uint8_t value);
 
-void set_motor_left(bool value);
+void set_motor_left(uint8_t value);
 
-void set_motor_right(bool value);
+void set_motor_right(uint8_t value);
 
 void set_motor_tilt(uint8_t value);
 
